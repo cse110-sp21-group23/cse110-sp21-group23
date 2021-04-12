@@ -40,40 +40,7 @@ Group Bonding Event | • done!
 Item | Who | Notes |
 ---- | ---- | ---- |
 Topic 1: Introductions| who | notes |
-Topic 2: Group Kickoff| who | Team Brand
-Team Name
-Pineapple 1
-iHaveNoIdeaWhatImDoing
-23andMe 111111
-Brand/Theme we want to express
-Logo
-Tree
-2aM 1
-23AndMe Logo
-23aM 1 1111111
-Team Colors
-23andMe Colors 1111
-Powerpoint themes (Does anyone have design/graphics experience)?
-23andMe Colors 1111
-
-
-Team Page
-Markdown page that includes:
-	Team Name
-Team Members
-Brand
-Values we Think are important
-Slack link
-Team Intro Video
-Max 2.5 mins to Introduce Our Team
-yuchenjin0571@gmail.com
-Everyone creates their own video: BY WEDNESDAY 4/14
-Introduce yourself
-Incorporate something funny or personal/cool?
-
-Group Contract
-Create a Collaborative Group Contract
- |
+Topic 2: Group Kickoff| who | Team Brand |
 Topic 3: Group Bonding Event| who |  https://skribbl.io/ |
 
 
