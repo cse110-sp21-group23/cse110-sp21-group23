@@ -1,21 +1,19 @@
 # Team Rules
 
-## //Team Name
+## 23AndMe
 
 ### Team Member Info
 <ol>
-<li>Daniel Huynh</li>
-<li>Kent Jonathan Utomo</li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+- Daniel Huynh
+- Bas Beeuwsaert
+- Sophia Lui
+- Caroline Xiong
+- Christopher Yoon
+- Michael Fu
+- Wen Tian 
+- Yuchen Jin
+- Kent Utomo
 </ol>
-
-
 
 
 
@@ -33,7 +31,7 @@
 
 
 ### Team Member Signatures
-<ol>
-<li></li>
+<ul>
+<li>Sign Here: _________________</li>
 
-</ol>
+</ul>
