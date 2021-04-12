@@ -24,14 +24,14 @@ People who attended:
 Item | Description
 ---- | ----
 Introductions | •Introductions; Let’s get to know each other first! 
+Group Kickoff | • Group Git Repo: https://github.com/cse110-sp21-group23/cse110-sp21-group23
 
-Group Kickoff | • Group Git Repo : https://github.com/cse110-sp21-group23/cse110-sp21-group23
-<br>• Team Brand
+Team Brand
 - Team Name: 23andMe
 - Logo:23aM 1 1111111
 - Team Colors: Lime and Pink
 
-<br>
+
 Group Bonding Event | • done!
 
 
