@@ -1,3 +1,3 @@
 fix_conflict:
-	git fetch origin master:master
-	git merge master
+	git fetch origin main:main
+	git merge main

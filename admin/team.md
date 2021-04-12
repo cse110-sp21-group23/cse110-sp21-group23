@@ -6,12 +6,13 @@
 - Sophia Lui
 - Caroline Xiong
 - Christopher Yoon
-- Michael Gu
+- Michael Fu
 - Wen Tian 
 - Yuchen Jin
 - Kent Utomo
 
 ## Team members
+**Name**: 23 and me eqsque 
 **Branding**: 23 and me eqsque 
 **Color**: Green and pink
 
