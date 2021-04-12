@@ -5,7 +5,7 @@
 ### Team Member Info
 <ol>
 <li>Daniel Huynh</li>
-<li></li>
+<li>Kent Jonathan Utomo</li>
 <li></li>
 <li></li>
 <li></li>
