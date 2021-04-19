@@ -8,15 +8,15 @@
 
 ## Attendees
 People who attended (place initials next to name):
-- Bas Beeuwsaert: 
-- Caroline Xiong: 
-- Christopher Yoon: 
-- Daniel Huynh: 
-- Kent Utomo: 
-- Michael Fu: 
-- Sophia Lui: 
-- Wen Tian: 
-- Yuchen Jin: 
+- Bas Beeuwsaert: BB
+- Caroline Xiong: CX
+- Christopher Yoon: CY
+- Daniel Huynh: DH
+- Kent Utomo: KU
+- Michael Fu: MF
+- Sophia Lui: SL
+- Wen Tian: WT
+- Yuchen Jin: YJ
 
 ## Agenda Items
 
@@ -29,17 +29,17 @@ Brainstorm Activity | • Define the problem <br>• Write down ideas and findin
 ## Discussion Items
 Item | Who | Notes |
 ---- | ---- | ---- |
-Bullet Journal Overview | who | https://en.wikipedia.org/wiki/Bullet_journal https://bulletjournal.com/pages/learn|
-item | who | notes |
-item | who | notes |
+Bullet Journal Overview | everyone | https://en.wikipedia.org/wiki/Bullet_journal https://bulletjournal.com/pages/learn|
+Bullet Journal Ideas | everyone | Created a mind map on Miro<br>Discussed about implementation|
 
 
 ## Action Items
 | Done? | Item | Responsible | Due Date |
 | ---- | ---- | ---- | ---- |
-| | item | who | due_date |
-| | item | who | due_date |
-| | item | who | due_date |
+| | Work on brainstorming | who | April 26 |
+
 
 ## Other Notes & Information
-N/A
+- reschedule when to meet
+
+
