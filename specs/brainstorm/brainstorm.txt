@@ -1,1 +1,3 @@
 This directory will continue the distilled documents and diagrams we produced of the ideas you want to capture from our meetings. We will export the contents as an image, PDF, or markdown file to capture our appropriate assets.
+
+https://miro.com/app/board/o9J_lJNiW04=/
