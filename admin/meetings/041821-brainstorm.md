@@ -29,7 +29,7 @@ Brainstorm Activity | • Define the problem <br>• Write down ideas and findin
 ## Discussion Items
 Item | Who | Notes |
 ---- | ---- | ---- |
-item | who | notes |
+Bullet Journal Overview | who | https://en.wikipedia.org/wiki/Bullet_journal https://bulletjournal.com/pages/learn|
 item | who | notes |
 item | who | notes |
 
