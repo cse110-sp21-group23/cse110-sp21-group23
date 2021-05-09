@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entry Cretor Test </title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+  <main></main>
+
+  <div id="textWrapper">
+    <h3>Entries: </h3>
+    
+    <p class="textB">
+    </p>
+  </div>
+
+  <template id="entry-creator-temp"> 
+    <div id="wrapper">
+      <form id="entryCreator">
+        <!--Determine type of bullet point it'll be-->
+        <div id="radio1">
+          <input type="radio" name="entryType" id="task" value="task">
+          <label for="task">Task</label>
+          <input type="radio" name="entryType" id="event" value="event"> 
+          <label for="event">Event </label>
+          <input type="radio" name="entryType" id="note" value="note"> 
+          <label for="note">Note </label> 
+        </div>
+
+        <!--Image input-->
+        <input type="file" name="image" id="image-input" accept="image/*"> <br> 
+  
+        <!--Where they'll log their stuff-->
+        <input type="text" name="entryBox" id="entryBox" placeholder="Your entry">
+  
+        <!--Add button-->
+        <button type="submit" id="addButton"> Add </button> 
+      </form>
+    </div>
+  </template>
+
+  <!--entry-creator component-->
+  <script src="entry-creator.js" type="module"></script>
+
+  <!--Control script-->
+  <script src="script.js" type="module"></script>
+</body>
+
+</html>
