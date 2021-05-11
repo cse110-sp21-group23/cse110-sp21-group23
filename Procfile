@@ -1,1 +1,1 @@
-web: cd source/frontend && npm run prod
+web: cd source/frontend && ls && npm run prod
