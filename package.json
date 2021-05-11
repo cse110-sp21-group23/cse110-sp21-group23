@@ -1,0 +1,29 @@
+{
+  "name": "cse110-w21-group23",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cse110-w21-group23/cse110-w21-group23.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cse110-w21-group23/cse110-w21-group23/issues"
+  },
+  "homepage": "https://github.com/cse110-w21-group23/cse110-w21-group23#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "dependencies": {
+    "jsdoc": "^3.6.6"
+  }
+}
