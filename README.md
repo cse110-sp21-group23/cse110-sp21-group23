@@ -24,6 +24,11 @@
 </p>
 
 
+<!-- Quick Access List -->
+<ol>
+    <li><a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1">23andMe Kanban Board</a></li>
+
+</ol>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
