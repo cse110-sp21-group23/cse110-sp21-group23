@@ -1,7 +1,7 @@
 # Team 23andMe Bullet Journal
 
 
-# [View Our Team Page](admin/team.md)
+## [View Our Team Page](admin/team.md)
 
 <!-- PROJECT SHIELDS -->
 <!--

@@ -3,6 +3,7 @@
 ## 23AndMe
 
 ### Team Member Info
+
 <ol>
 - Daniel Huynh
 - Bas Beeuwsaert
@@ -10,14 +11,13 @@
 - Caroline Xiong
 - Christopher Yoon
 - Michael Fu
-- Wen Tian 
+- Wen Tian
 - Yuchen Jin
 - Kent Utomo
 </ol>
 
-
-
 ### Rules of Agreement
+
 <ol>
     <li>Meeting Deadlines(Be sure to all meet up as a group to meet deadlines)</li>
     <li>Psychological Safety (Open and honest communication between members)</li>
@@ -28,9 +28,8 @@
     <li>Scheduled Meetings: Current weekly meeting every week at 6:00PM Sundays.</li>
 </ol>
 
-
-
 ### Team Member Signatures
+
 <ul>
 <li>Sign Here: _________________</li>
 
