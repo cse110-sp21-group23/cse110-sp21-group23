@@ -1,6 +1,5 @@
 "use strict";
 var userService = require('../service/user')
-
 const userRouter = require('express').Router();
 
 userRouter.post('/register', async (req, res, next) => {
@@ -9,7 +8,9 @@ userRouter.post('/register', async (req, res, next) => {
         await userService.register(email, password)
         res.send("success")
     } catch (err) {
-        res.status(400).send(err)
+        res.status(400).send({
+            error: err 
+        })
     }
 });
 
@@ -21,7 +22,9 @@ userRouter.get('/login', async (req, res, next) => {
             token
         })
     } catch (err) {
-        res.status(400).send(err)
+        res.status(400).send({
+            error: err
+        })
     }
 })
 

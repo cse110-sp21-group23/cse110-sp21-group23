@@ -1,13 +1,12 @@
 require('dotenv').config()
-const {createDb, migrate} =  require("postgres-migrations")
+const { createDb, migrate } = require("postgres-migrations")
 const { Pool } = require('pg')
 
 const pool = new Pool({
-    user: process.env.DB_USERNAME,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+    connectionString: process.env.HEROKU_POSTGRES,
+    ssl: {
+        rejectUnauthorized: false
+      }
 })
 
 module.exports = {
@@ -23,7 +22,7 @@ module.exports = {
     migrate: async () => {
         try {
             const client = await pool.connect()
-            await migrate({client}, `${process.cwd()}/migrations`)
+            await migrate({ client }, `${process.cwd()}/migrations`)
             await client.end()
             console.log("DB successfully migrated!!!")
             return 'Database Migrated'

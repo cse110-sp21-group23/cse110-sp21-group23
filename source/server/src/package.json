@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon",
-    "stat:prod": "node app.js"
+    "dev": "nodemon",
+    "prod": "node app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "node-postgres": "^0.6.2",
     "pg": "^8.6.0",
     "postgres-migrations": "^5.1.1"

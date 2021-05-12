@@ -8,6 +8,14 @@ var jwt = require('../utils/jwt')
 module.exports = {
     register: async (email, password) => {
         try {
+            if (!common.validateEmail(email)) {
+                throw 'Invalid email address'
+            }
+            const user = await userDB.getByEmail(email)
+            console.log(user)
+            if (user != null) {
+                throw 'The email has already been used'
+            }
             await userDB.store(email, bcrypt.hashSync(password, 10))
             return 'Success'
         } catch (err) {
