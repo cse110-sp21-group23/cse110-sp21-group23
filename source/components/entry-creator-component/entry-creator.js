@@ -79,14 +79,18 @@ class EntryCreator extends HTMLElement{
         let text = this.shadowRoot.querySelector("#entryBox").value; 
         entry.content = text; 
 
-        //GET this stuff to work TODO 
+        
         //Get the image if applicable 
         let image = this.shadowRoot.querySelector("#image-input"); 
+
+        //HACK: I have no clue why image.alt and image.src are blank. The alt gets the right value, but src does not 
         if (image.value) { 
-            entry.image.src = image.src; 
-            entry.image.alt = image.alt; 
+            entry.image.src = URL.createObjectURL(image.files[0]); 
+            console.log("From entry-creator.js " + entry.image.src);
+            entry.image.alt = image.value;  //gets the alt
         }
 
+        //GET this stuff to work TODO 
         //Get audio if applicable 
         let audio = this.shadowRoot.querySelector("#audio-input");
         if (audio.value) { 
