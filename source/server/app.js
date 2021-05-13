@@ -1,5 +1,5 @@
 'use strict';
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: './.env' });
 const db = require('./app/lib/pg');
 const express = require('express');
 const userRouter = require('./app/api/user')
@@ -15,6 +15,8 @@ db.migrate()
 // App
 const app = express();
 app.use(bodyParser.json())
+
+app.use('', (req, res, next) => {})
 
 app.use('/user', userRouter);
 

@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({ path: './.env' });
 const { createDb, migrate } = require("postgres-migrations")
 const { Pool } = require('pg')
 
