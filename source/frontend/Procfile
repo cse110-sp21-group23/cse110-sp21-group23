@@ -1,1 +1,1 @@
-web: ls && npm i -force && npm i -g node -force && node server.js
+web: ls && ls ./app && npm i -force && npm i -g node -force && node server.js
