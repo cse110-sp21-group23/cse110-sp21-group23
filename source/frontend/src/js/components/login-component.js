@@ -9,7 +9,7 @@ function signInFunction() {
         password
     });
 
-    console.log(email + '\n' + password);
+    console.log(email + "\n" + password);
     //return request.get(req);
 
 	
