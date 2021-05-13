@@ -4,7 +4,7 @@ class EntryCreator extends HTMLElement{
         //Grab the template 
         const template = document.getElementById('entry-creator-temp');
 
-        this.attachShadow({ mode: 'open'}); 
+        this.attachShadow({ mode: "open"}); 
 
         //Add styling (Temporary for proof of concept)
         let style = document.createElement('style'); 
