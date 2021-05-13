@@ -1,4 +1,4 @@
-.PHONY: build_server run_server clean_server
+.PHONY: build_server run_server clean_server deploy_frontend deploy_server
 
 build_server:
 	sudo docker-compose up --build 
@@ -23,3 +23,9 @@ setup_docker:
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	sudo chmod +x /usr/local/bin/docker-compose
 	docker-compose --version1000
+
+deploy_frontend:
+	git push https://git.heroku.com/cse110-23-web.git HEAD:master
+
+deploy_server:
+	git push https://git.heroku.com/cse110-23-api.git HEAD:master
