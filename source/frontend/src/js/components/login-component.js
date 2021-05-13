@@ -19,7 +19,7 @@ function signUpFunction() {
 
 	var email = document.getElementById('username-signup-input').value;
     var password = document.getElementById('password-signup-input').value;
-    var passwordconfirm = document.getElementById('password-signup-confirm').value;
+    var passwordconfirm = document.getElementById("password-signup-confirm").value;
 
     //Check if both passwords match
     console.log(email + ' ' + password + ' ' + (password === passwordconfirm));
