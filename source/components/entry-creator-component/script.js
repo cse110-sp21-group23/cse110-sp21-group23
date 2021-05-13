@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     template = document.createElement('entry-creator'); 
 
     //Grab the main block and append
-    let mainB = document.getElementsByTagName('main'); 
+    let mainB = document.getElementsByTagName("main"); 
     mainB[0].appendChild(template); 
 
     //Assign id to created component
@@ -34,4 +34,3 @@ document.addEventListener("DOMContentLoaded", ()=>{
         entryForm.reset(); 
     });       
 }); 
-
