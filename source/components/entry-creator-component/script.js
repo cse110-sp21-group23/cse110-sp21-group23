@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     let entryForm = document.getElementById("entryTemplate").shadowRoot.getElementById("entryCreator"); 
     
     //Send the entry from the form to textbox
-    entryForm.addEventListener('submit', (event) =>{
+    entryForm.addEventListener('submit', (event) => {
         event.preventDefault(); 
 
         //Obtain the text box in index.html
@@ -34,5 +34,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
         entryForm.reset(); 
     });       
 }); 
-
 
