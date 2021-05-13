@@ -3,7 +3,7 @@ let img = document.createElement("img");
 document.addEventListener("DOMContentLoaded", ()=>{ 
 
     //Create the component in the DOM 
-    template = document.createElement('entry-creator'); 
+    template = document.createElement("entry-creator"); 
 
     //Grab the main block and append
     let mainB = document.getElementsByTagName("main"); 
