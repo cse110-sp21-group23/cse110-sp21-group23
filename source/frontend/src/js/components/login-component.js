@@ -6,7 +6,7 @@ function signInFunction() {
 
 	var req = JSON.stringify({
         "email": email,
-        "password": password
+        password
     });
 
     console.log(email + '\n' + password);
