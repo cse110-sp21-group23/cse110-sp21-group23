@@ -24,8 +24,3 @@ setup_docker:
 	sudo chmod +x /usr/local/bin/docker-compose
 	docker-compose --version1000
 
-deploy_frontend:
-	git push https://git.heroku.com/cse110-23-web.git HEAD:master
-
-deploy_server:
-	git push https://git.heroku.com/cse110-23-api.git HEAD:master
