@@ -2,7 +2,7 @@
 function signInFunction() {
 
 	var email = document.getElementById('username-input').value;
-	var password = document.getElementById('password-input').value;
+	var password = document.getElementById("password-input").value;
 
 	var req = JSON.stringify({
         "email": email,
