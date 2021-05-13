@@ -8,19 +8,19 @@ var bodyParser = require('body-parser')
 // Constants
 const PORT = process.env.PORT || 8080;
 
-db.migrate()
-  .then()
-  .catch()
-
 // App
 const app = express();
 app.use(bodyParser.json())
 
-app.use('', (req, res, next) => {})
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 app.use('/user', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Running on PORT ${PORT}`);
-
+  db.migrate()
+    .then()
+    .catch()
 });
