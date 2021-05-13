@@ -19,62 +19,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
     entryForm.addEventListener('submit', (event) =>{
         event.preventDefault(); 
 
-        let textBox = document.getElementById("textWrapper");
+        //Obtain the text box in index.html
+        let textBox = document.getElementById("entry-container");
+        //Make an entry component 
+        let entryComponent = document.createElement('entry-comp');
+        
+        //Create entry object using entry-creator and use to set entry-component
         let entry = template.createEntry(); 
+        entryComponent.entry = entry; 
+
+        //Add the entry component to the text box        
+        textBox.appendChild(entryComponent); 
         
-        let newEntry = document.createElement("p"); 
-
-        let bullet;
-        let choices = document.getElementById("entryTemplate").shadowRoot.querySelectorAll("input[name='entryType']"); 
-        for (const choice of choices) { 
-            if (choice.checked){ 
-                bullet = choice.value; 
-            }
-        }
-
-        //Puts the bullet point infront of the journal entry
-        //TODO: Find better looking bullets
-        switch(bullet) {
-            case "task":
-                newEntry.innerHTML = "☐ " + entry.content;
-                break;
-            case "event": //TODO: get a better empty bullet point symbol
-                newEntry.innerHTML = "○ " + entry.content;
-                break;
-            case "note":
-                newEntry.innerHTML = "\u2022 " + entry.content; 
-                break;
-        }
-
-        //Only showing the text and picture right now **TODO** 
-        textBox.appendChild(newEntry);
-
-        if(img.alt != "") {
-            textBox.appendChild(img);
-
-        } 
-
         entryForm.reset(); 
-        img = document.createElement("img");
-    });
-
-    //Obtain userImage from the shadow root of created component
-    let userImage = document.getElementById("entryTemplate").shadowRoot.getElementById("image-input");
-
-    //updates img variable with chosen image from user
-    userImage.addEventListener("change", () => {
-
-        let picture = userImage.files[0];
-        
-        img.src = URL.createObjectURL(picture);
-        //console.log("From scripts.js " + img.src);
-        img.alt = userImage.value;
-
-        //TODO: adjust picture size based on the resolution of picture cause these resolution make some pics wacky 
-        img.style.height = '300px';
-        img.style.width = '390px';
-    });
-        
+    });       
 }); 
 
 

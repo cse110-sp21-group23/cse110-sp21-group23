@@ -56,15 +56,14 @@ class EntryCreator extends HTMLElement{
      * will presumably be used to create an Entry web component. 
      */
     createEntry() { 
-        //Entry to be returned
         let entry ={ 
             type: null, 
             content: null, 
-            image:{
+            image:{ 
                 src: null,
-                alt: null
+                alt: null,
             },
-            audio:null,
+            audio:null
         }; 
 
         //Get the type of bullet it'll be 
@@ -79,26 +78,21 @@ class EntryCreator extends HTMLElement{
         let text = this.shadowRoot.querySelector("#entryBox").value; 
         entry.content = text; 
 
-        
-        //Get the image if applicable 
-        let image = this.shadowRoot.querySelector("#image-input"); 
-
-        //HACK: I have no clue why image.alt and image.src are blank. The alt gets the right value, but src does not 
-        if (image.value) { 
-            entry.image.src = URL.createObjectURL(image.files[0]); 
-            console.log("From entry-creator.js " + entry.image.src);
-            entry.image.alt = image.value;  //gets the alt
+        //Populate image fields with those inputted into the form 
+        let inputImage = this.shadowRoot.querySelector("#image-input")
+        if (inputImage.value != '') { 
+            entry.image.src = URL.createObjectURL(inputImage.files[0]); 
+            entry.image.alt = inputImage.value.split("\\").pop(); 
         }
 
-        //GET this stuff to work TODO 
-        //Get audio if applicable 
-        let audio = this.shadowRoot.querySelector("#audio-input");
-        if (audio.value) { 
-            entry.audio = audio.src; 
+        //Get audio from file input 
+        let inputAudio = this.shadowRoot.querySelector("#audio-input");
+        if (inputAudio.value != '') { 
+            entry.audio = URL.createObjectURL(inputAudio.files[0]); 
         } 
+
         return entry; 
     }
 }
-
 //Make the custom element 
 customElements.define('entry-creator', EntryCreator); 

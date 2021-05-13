@@ -15,12 +15,23 @@
   <main></main>
 
   <div id="textWrapper">
+
     <h3>Entries: </h3>
+    <ul id="entry-container"> 
+    </ul>
     
-    <p class="textB">
-    </p>
   </div>
 
+  <!--Teamplate for entry-->
+  <template id="entry"> 
+    <li id="type" class="type-name">
+      <p id="content"></p> <br>
+      <img src="" alt="" class="entry-image"></img> <br>
+      <audio src="" class="entry-audio"></audio>
+    </li>
+  </template>
+    
+  <!--Template for entry creator -->
   <template id="entry-creator-temp"> 
     <div id="wrapper">
       <form id="entryCreator">
