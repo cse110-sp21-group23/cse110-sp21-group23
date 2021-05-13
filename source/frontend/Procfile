@@ -1,1 +1,1 @@
-web: ls && npm i && npm run prod
+web: ls && npm i && npm i -g node && node server.js
