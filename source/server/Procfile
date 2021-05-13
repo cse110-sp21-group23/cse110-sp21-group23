@@ -1,1 +1,1 @@
-web: npm i -g node && npm i && npm run prod
+web: echo "Installing Node" && npm i -g -force node && echo "Finished installing node" && cd source/server/src && echo "Installing dependencies" && npm i -f && echo "Finished Installing dependencies" && npm run prod
