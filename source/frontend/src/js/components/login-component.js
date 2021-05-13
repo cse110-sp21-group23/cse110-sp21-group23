@@ -22,7 +22,7 @@ function signUpFunction() {
     var passwordconfirm = document.getElementById("password-signup-confirm").value;
 
     //Check if both passwords match
-    console.log(email + ' ' + password + ' ' + (password === passwordconfirm));
+    console.log(email + " " + password + ' ' + (password === passwordconfirm));
 
 	var req = JSON.stringify({
 	  "email": email,
