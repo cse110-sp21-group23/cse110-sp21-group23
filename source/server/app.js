@@ -2,6 +2,7 @@
 require('dotenv').config({ path: './.env' });
 const db = require('./app/lib/pg');
 const express = require('express');
+var cors = require('cors')
 const userRouter = require('./app/api/user')
 var bodyParser = require('body-parser')
 
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 8080;
 // App
 const app = express();
 app.use(bodyParser.json())
-
+app.use(cors())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", '*');
   res.header("Access-Control-Allow-Credentials", true);
