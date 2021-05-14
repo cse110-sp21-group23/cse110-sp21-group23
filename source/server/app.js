@@ -1,24 +1,28 @@
 'use strict';
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: './.env' });
 const db = require('./app/lib/pg');
 const express = require('express');
+var cors = require('cors')
 const userRouter = require('./app/api/user')
 var bodyParser = require('body-parser')
 
 // Constants
 const PORT = process.env.PORT || 8080;
 
-db.migrate()
-  .then()
-  .catch()
-
 // App
 const app = express();
+app.use(cors())
 app.use(bodyParser.json())
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 app.use('/user', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Running on PORT ${PORT}`);
-
+  db.migrate()
+    .then()
+    .catch()
 });
