@@ -18,15 +18,16 @@ export const register = async (email, password) => {
 }
 
 export const login = async (email, password) => {
+    console.log("URL", URL)
     try {
         const res = await axios.post(
             `${URL}/user/login`,
             {
-                email: email,
-                password: password
+                "email": email,
+                "password": password
             },
         )
-        return 'success'
+        // SET TOKEN HERE
     } catch (err) {
         throw err.response.data
     }
