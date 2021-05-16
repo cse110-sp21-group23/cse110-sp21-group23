@@ -29,6 +29,7 @@ export const login = async (email, password) => {
         )
         // SET TOKEN HERE
     } catch (err) {
+        console.log(err.response.data.error)
         throw err.response.data
     }
 }
