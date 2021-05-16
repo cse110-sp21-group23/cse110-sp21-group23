@@ -12,11 +12,23 @@
       }
     </style>
   </head>
+
   <body>
+    <main></main>
+
+    <!--Weekly component template-->
+    <template id="weekly-component">
+      <button class="collapsible"> Monday </button>
+      <div class="content">
+        <ul></ul>
+      </div>
+    </template>
+
     <ul id='header'></ul>
     <div id='main'></div>
 
-    <script src='./bundle.js'></script>
-    <script src='./js/components/weekComponent.js'></script>
+    <script src='../dist/bundle.js'></script>
+    <script src='./js/components/weekComponent.js' type="module"></script>
+    <script src="./js/components/weekControl.js" type="module"></script>
   </body>
 </html>
