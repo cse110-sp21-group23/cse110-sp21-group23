@@ -1,8 +1,51 @@
 class EntryCreator extends HTMLElement{ 
     constructor(){ 
         super(); 
+        //Create template and insert html
         //Grab the template 
-        const template = document.getElementById('entry-creator-temp');
+        const template = document.createElement('template');
+        template.innerHTML = `
+        <div id="wrapper">
+            <form id="entryCreator">
+                <ul>
+                <!--Determine type of bullet point it'll be-->
+                    <li>
+                    <div id="radio1">
+                        <input type="radio" name="entryType" id="task" value="task" required>
+                        <label for="task">Task</label>
+                        <input type="radio" name="entryType" id="event" value="event"> 
+                        <label for="event">Event </label>
+                        <input type="radio" name="entryType" id="note" value="note"> 
+                        <label for="note">Note </label> 
+                    </div>
+                    </li>
+
+                    <!--Image input-->
+                    <li>
+                    <label for="image-input">Insert Image</label>
+                    <input type="file" name="image" id="image-input" accept="image/*"> <br>
+                    </li>
+                    
+                    <!--Audio input-->
+                    <li>
+                    <label for="audio-input">Insert Audio</label>
+                    <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
+                    </li>
+                    
+
+                    <!--Where they'll log their stuff-->
+                    <li>
+                    <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+                    </li>
+                    
+            
+                    <!--Add button-->
+                    <li>
+                    <button type="submit" id="addButton"> Add </button> 
+                    </li>
+                </ul>
+            </form>
+        </div>`
 
         this.attachShadow({ mode: "open"}); 
 

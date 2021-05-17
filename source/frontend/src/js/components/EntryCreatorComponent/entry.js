@@ -3,8 +3,14 @@ class Entry extends HTMLElement{
     constructor() { 
         super(); 
 
-        //Grab the template 
-        const template = document.getElementById('entry');
+        //Create the template and insert html 
+        const template = document.createElement('template');
+        template.innerHTML = `
+        <li id="type" class="type-name">
+            <p id="content"></p> <br>
+            <img src="" alt="" class="entry-image"></img> <br>
+            <audio src="" class="entry-audio"></audio>
+        </li>`
 
         this.attachShadow({ mode: 'open'}); 
 
