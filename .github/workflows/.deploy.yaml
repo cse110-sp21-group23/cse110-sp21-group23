@@ -16,8 +16,6 @@ jobs:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_app_name: "cse110-23-api"
         heroku_email: ${{secrets.HEROKU_API_KEY}}
-      env:
-        HD_APP_BASE: "src/api"
     - name: Release Web Client
       uses: akhileshns/heroku-deploy@v3.0.4
       with:
