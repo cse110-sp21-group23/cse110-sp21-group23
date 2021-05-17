@@ -5,7 +5,7 @@ export class DefaultPage extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = (`<a href="MyPage.html">My page</a>`)
+        this.innerHTML = (`<a href="MyPage.html">Should Change</a>`)
     }
 }
 
