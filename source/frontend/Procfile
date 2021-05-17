@@ -1,1 +1,1 @@
-web: npm i node -g -force && cd source/frontend && npm i -force && npm run build && node server.js
+web: npm i node -g -force && cd source/frontend && npm i -force && npm run prod
