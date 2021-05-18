@@ -25,31 +25,29 @@ export default class DatePicker extends HTMLElement {
 
         this.attachShadow({ mode: 'open' })
 
-        //const tmpl = document.querySelector('#custom-title-template')
-
         const template = document.createElement('template');
 
         template.innerHTML = `
 
-        <div class="full-date">
-            <i class='fas fa-angle-left fa-pull-left' id="prev"> &lt;</i>
-            <div id="date"></div>
-            <i class='fas fa-angle-right' id="next"> &gt; </i>
-        </div>
+            <div class="full-date">
+                <i class='fas fa-angle-left fa-pull-left' id="prev"> &lt;</i>
+                <div id="date"></div>
+                <i class='fas fa-angle-right' id="next"> &gt; </i>
+            </div>
 
-    `
+        `
         let style = document.createElement('style');
 
         style.textContent = `
-        .full-date {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-    `
+            .full-date {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+        `
 
-        this.shadowRoot.appendChild(tmpl.content.cloneNode(true));
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.shadowRoot.appendChild(style);
 
         this.shadowRoot.getElementById("date").innerText = dateText;
