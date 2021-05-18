@@ -26,7 +26,7 @@ export default class DatePicker extends HTMLElement{
         
         super(); 
 
-         const template = document.createElement('template'); 
+         const template = document.createElement("template"); 
          this.attachShadow({mode: 'open'}); 
     
 
