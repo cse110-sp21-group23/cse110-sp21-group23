@@ -15,6 +15,6 @@
 - We are utilizing JsDocs so each dev will properly comment functions and their code to the JsDoc style. Then during each build of the app, we will jsdoc all ".js" files to automatically generate our documentation. 
  
 ### Heroku Deployment - Functional 
-![phase 1 image](phase1.png.png)
+![phase 1 image](phase1.png)
 - When code is pushed to master, git will run a script which logs into heroku and then with the heroku credentials, copies the code from master to the heroku front and back end repository. The Procfiles in the "/frontend" and "/server" folders of the repository determine which scripts that the frontend and backend repositories in heroku will download and build. 
 
