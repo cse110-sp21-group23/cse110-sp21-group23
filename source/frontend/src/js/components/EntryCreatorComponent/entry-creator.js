@@ -1,3 +1,5 @@
+import Entry from '../EntryCreatorComponent/entry'
+
 export default class EntryCreator extends HTMLElement{ 
     constructor(){ 
         super(); 
@@ -45,6 +47,10 @@ export default class EntryCreator extends HTMLElement{
                     </li>
                 </ul>
             </form>
+        </div>
+        <div id="textBox"> 
+            <ul id="entryContainer">
+            </ul> 
         </div>`
 
         this.attachShadow({ mode: "open"}); 
@@ -59,6 +65,14 @@ export default class EntryCreator extends HTMLElement{
             display: flex; 
             flex-direction: column; 
             align-items: flex-start; 
+            width: 60%; 
+        }
+
+        #textBox{
+            border: 1px solid; 
+            margin-left: auto; 
+            margin-right: auto; 
+            margin-top: 30px; 
             width: 60%; 
         }
 
@@ -136,6 +150,36 @@ export default class EntryCreator extends HTMLElement{
 
         return entry; 
     }
+
+    connectedCallback(){ 
+        this.render(); 
+    }
+
+    render(){ 
+        //Get the form in entry-creator
+        const form = this.shadowRoot.getElementById("entryCreator");
+
+        //Attach submit event listener to ec form 
+        form.addEventListener('submit', (event)=>{
+            event.preventDefault(); 
+
+            //Obtain the text box in component
+            let textBox = this.shadowRoot.querySelector("#entryContainer");
+
+            //Make an entry component 
+            let entryComponent = document.createElement('entry-comp');
+            
+            //Create entry object using entry-creator and use to set entry-component
+            let entry = this.createEntry(); 
+            entryComponent.entry = entry; 
+    
+            //Add the entry component to the text box        
+            textBox.appendChild(entryComponent); 
+            form.reset(); 
+        });    
+    }
 }
+
 //Make the custom element 
 customElements.define('entry-creator', EntryCreator); 
+
