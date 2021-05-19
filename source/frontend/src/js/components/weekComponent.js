@@ -2,10 +2,17 @@ export default class WeeklyComponent extends HTMLElement {
     constructor() {
         super();
 
-        const template = document.createElement('weekly-component');
+        //Create HTML of weeklyComponent 
+        const template = document.createElement('template');
+        template.innerHTML =`
+        <button class="collapsible"> Monday </button>
+        <div class="content">
+          <ul></ul>
+        </div>`;
 
         this.attachShadow({ mode: 'open' });
 
+        //Add styling to weeklyComponent
         let style = document.createElement('style');
         style.textContent = `
         .collapsible {
@@ -44,6 +51,7 @@ export default class WeeklyComponent extends HTMLElement {
           content: '-';
         }`;
         
+        //Attach template and style to this shadowRoot
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.shadowRoot.appendChild(style);
     }
