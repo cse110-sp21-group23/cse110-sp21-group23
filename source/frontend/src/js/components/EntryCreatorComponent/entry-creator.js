@@ -1,4 +1,4 @@
-import Entry from '../EntryCreatorComponent/entry'
+import Entry from "../EntryCreatorComponent/entry"
 
 export default class EntryCreator extends HTMLElement{ 
     constructor(){ 
@@ -180,4 +180,3 @@ export default class EntryCreator extends HTMLElement{
 
 //Make the custom element 
 customElements.define('entry-creator', EntryCreator); 
-
