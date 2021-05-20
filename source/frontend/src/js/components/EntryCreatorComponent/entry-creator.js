@@ -67,7 +67,6 @@ export default class EntryCreator extends HTMLElement{
             align-items: flex-start; 
             width: 60%; 
         }
-
         #textBox{
             border: 1px solid; 
             margin-left: auto; 
@@ -75,7 +74,6 @@ export default class EntryCreator extends HTMLElement{
             margin-top: 30px; 
             width: 60%; 
         }
-
         #entryCreator { 
             margin-top: 10px; 
             margin-bottom: 10px; 
@@ -150,7 +148,7 @@ export default class EntryCreator extends HTMLElement{
 
         return entry; 
     }
-
+  
     connectedCallback(){ 
         this.render(); 
     }

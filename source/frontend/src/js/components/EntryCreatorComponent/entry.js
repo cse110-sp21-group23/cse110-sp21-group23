@@ -1,5 +1,6 @@
 export default class Entry extends HTMLElement{ 
 
+
     constructor() { 
         super(); 
 
