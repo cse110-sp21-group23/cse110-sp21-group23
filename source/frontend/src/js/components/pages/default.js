@@ -9,7 +9,7 @@ export class DefaultPage extends HTMLElement {
 
     render() {
         const template = document.createElement("template");
-        this.attachShadow({ mode: 'open' })
+        this.attachShadow({ mode: "open" })
 
         template.innerHTML = (`
             <div id="defaultPageDiv">
