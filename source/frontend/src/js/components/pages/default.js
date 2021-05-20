@@ -23,7 +23,7 @@ export class DefaultPage extends HTMLElement {
 
         //Event handler to get to daily page
         this.shadowRoot.querySelector('button').addEventListener('click', ()=>{
-            window.location = 'dailyPage'
+            window.location = "dailyPage"
         });
     }
 }
