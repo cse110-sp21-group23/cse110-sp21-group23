@@ -8,7 +8,7 @@ export class DefaultPage extends HTMLElement {
     }
 
     render() {
-        const template = document.createElement('template');
+        const template = document.createElement("template");
         this.attachShadow({ mode: 'open' })
 
         template.innerHTML = (`
