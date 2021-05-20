@@ -22,4 +22,4 @@ export class DailyPage extends HTMLElement{
     }
 }
 
-customElements.define('daily-page', DailyPage);
+customElements.define("daily-page", DailyPage);
