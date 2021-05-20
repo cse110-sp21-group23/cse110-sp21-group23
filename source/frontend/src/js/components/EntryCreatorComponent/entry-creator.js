@@ -165,7 +165,7 @@ export default class EntryCreator extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = document.createElement('entry-comp');
+            let entryComponent = document.createElement("entry-comp");
             
             //Create entry object using entry-creator and use to set entry-component
             let entry = this.createEntry(); 
