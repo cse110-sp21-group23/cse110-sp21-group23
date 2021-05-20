@@ -18,7 +18,7 @@ export class DailyPage extends HTMLElement{
 
         //Attach entry creator to template div 
         const ec = document.createElement('entry-creator');
-        this.shadowRoot.querySelector('#entryCreatorDiv').append(ec); 
+        this.shadowRoot.querySelector("#entryCreatorDiv").append(ec); 
     }
 }
 
