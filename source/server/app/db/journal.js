@@ -2,7 +2,7 @@
 const db = require('../lib/pg');
 
 module.exports = {
-    store: async bullet => {
+    store: async (bullet) => {
         try {
             const { journalId, body, type, priority, mood, date } = bullet
             const statement = `
@@ -111,4 +111,3 @@ module.exports = {
         }
     }
 }
-
