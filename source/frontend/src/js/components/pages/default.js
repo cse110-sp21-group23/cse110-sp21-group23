@@ -1,5 +1,4 @@
 import { login, register } from '../../api/user'
-
 import WeeklyComponent from '../weekComponent'
 export class DefaultPage extends HTMLElement {
 
@@ -8,34 +7,24 @@ export class DefaultPage extends HTMLElement {
     }
 
     render() {
-        const template = document.createElement('template');
-        this.attachShadow({ mode: 'open' })
+        const template = document.createElement("template");
+        this.attachShadow({ mode: "open" })
 
         template.innerHTML = (`
             <div id="defaultPageDiv">
                 <h1>yeet</h1>
-                <button name="toWeeklyPage"></button>
-                <label for="toWeeklyPage"> Go to weekly page </label>
+                <button name="toDailyPage"></button> 
+                <label for="toDailyPage"> Go to daily page </label> 
             </div>
-        `
-        );
-        this.shadowRoot.appendChild(template.content.cloneNode(true))
+        `)
 
-        // this.shadowRoot.querySelector('.button').addEventListener('click', e => {
-        //     console.log("pressed")
-        //     login('es@gmail.com', 'asd')
-        // })
-        // customElements.whenDefined('weekly-component').then(() => {
-        //     console.log("asdsd")
+        this.shadowRoot.appendChild(template.content.cloneNode(true)); 
 
-        // })
-        const c = document.createElement('weekly-component')
-        this.shadowRoot.getElementById('defaultPageDiv').append(c)
-        console.log(c)
-        
-        // this.shadowRoot.querySelector('button').addEventListener('click' () => {
-        //     window.location = 'weeklyPage';
-        // });
+        //Event handler to get to daily page
+        this.shadowRoot.querySelector('button').addEventListener('click', ()=>{
+            window.location = "dailyPage"
+        });
     }
 }
+
 customElements.define('default-page', DefaultPage);

@@ -1,4 +1,4 @@
-class Entry extends HTMLElement{ 
+export default class Entry extends HTMLElement{ 
     constructor() { 
         super(); 
 
