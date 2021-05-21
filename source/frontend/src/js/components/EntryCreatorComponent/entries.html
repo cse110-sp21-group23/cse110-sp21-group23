@@ -17,35 +17,37 @@
   <div id="textWrapper">
     <h3>Entries: </h3>
     <ul id="entry-container"> 
-    </ul>
-
     <!-- https://www.w3schools.com/howto/howto_css_modals.asp -->
-    <!-- The Modal -->
+    <!-- The Modal --->
+
     <div id="myModal" class="modal">
-      <!-- Modal content -->
       <div class="modal-content">
         <div class = "modal-header"> 
           <span class="close">&times;</span>
           <h4 class = "modal-title"> Edit bullet </h4>
         </div>
         <form id="edit">
-          <p id="modal-words" contenteditable="true">Some text in the Modal..</p>
-          <div id="radioEdit">
-            <input type="radio" name="entryTypeEdit" id="task" value="task">
-            <label for="task">Task</label>
-            <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-            <label for="event">Event </label>
-            <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-            <label for="note">Note </label> 
-          </div>
-          <button type="submit" id="editButton"> Confirm Edit </button>
+          <ul>
+            <p id="modal-words" contenteditable="true">Some text in the Modal..</p>
+            <div id="radioEdit">
+              <input type="radio" name="entryTypeEdit" id="task" value="task">
+              <label for="task">Task</label>
+              <input type="radio" name="entryTypeEdit" id="event" value="event"> 
+              <label for="event">Event </label>
+              <input type="radio" name="entryTypeEdit" id="note" value="note"> 
+              <label for="note">Note </label> 
+            </div>
+            <button id="editButton"> Confirm Edit </button>
+            <button id="doneButton"> Finish Bullet </button>
+          </ul>
         </form>
       </div> 
     </div>
-
+        
+    </ul>
   </div>
 
-  <!--Teamplate for entry-->
+  <!--Template for entry-->
   <template id="entry"> 
     <li id="type" class="type-name">
       <p id="content"></p> <br>

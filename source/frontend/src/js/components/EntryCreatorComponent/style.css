@@ -37,6 +37,9 @@ h3{
     width: 90%; /* Could be more or less, depending on screen size */
     height: 25%;
 }
+[contenteditable] {
+    outline: 2px solid;
+}
 
 /* The Close Button */
 .close {
@@ -54,6 +57,10 @@ h3{
 }
 
 #editButton {
+    margin-top:20px;
+    padding: 10px;
+}
+#doneButton {
     margin-top:20px;
     padding: 10px;
 }
