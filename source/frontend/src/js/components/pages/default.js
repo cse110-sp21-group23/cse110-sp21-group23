@@ -1,6 +1,5 @@
-import { Index } from "../..";
-import { DailyPage } from "./dailyPage";
-
+import { login, register } from '../../api/user'
+import WeeklyComponent from '../weekComponent'
 export class DefaultPage extends HTMLElement {
 
     connectedCallback() {

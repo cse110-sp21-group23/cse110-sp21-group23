@@ -12,12 +12,11 @@ module.exports = {
                 throw 'Invalid email address'
             }
             const user = await userDB.getByEmail(email)
-            console.log(user)
             if (user != null) {
                 throw 'The email has already been used'
             }
-            await userDB.store(email, bcrypt.hashSync(password, 10))
-            return 'Success'
+            const res = await userDB.store(email, bcrypt.hashSync(password, 10))
+            return res.id
         } catch (err) {
             throw err
         }   

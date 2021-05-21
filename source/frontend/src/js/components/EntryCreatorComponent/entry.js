@@ -1,18 +1,15 @@
 export default class Entry extends HTMLElement{ 
-
-
     constructor() { 
         super(); 
 
         //Create the template and insert html 
         const template = document.createElement('template');
         template.innerHTML = `
-        <li id="type" class="type-name">
-            <p id="content"></p> <br>
-            <img src="" alt="" class="entry-image"></img> <br>
-            <audio src="" class="entry-audio"></audio>
-        </li>`
-
+            <li id="type" class="type-name">
+                <p id="content"></p> <br>
+                <img src="" alt="" class="entry-image"></img> <br>
+                <audio src="" class="entry-audio"></audio>
+            </li>`
         this.attachShadow({ mode: 'open'}); 
 
         //Add styling for bullet points 
@@ -30,6 +27,7 @@ export default class Entry extends HTMLElement{
         
         p { 
             display: inline; 
+            font-size: 20px;
         }
         img{ 
             height: 300px; 

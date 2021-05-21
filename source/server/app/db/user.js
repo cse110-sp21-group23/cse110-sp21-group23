@@ -14,8 +14,7 @@ module.exports = {
             `
             const res = (await db.queryParam(statement, [email, password])).rows[0]
             return {
-                name: res.name,
-
+                id: res.id,
             }
         } catch (err) {
             throw err
