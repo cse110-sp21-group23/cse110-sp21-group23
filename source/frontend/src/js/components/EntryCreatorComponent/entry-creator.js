@@ -19,7 +19,6 @@ class EntryCreator extends HTMLElement{
                         <label for="note">Note </label> 
                     </div>
                     </li>
-
                     <!--Image input-->
                     <li>
                     <label for="image-input">Insert Image</label>
@@ -32,7 +31,6 @@ class EntryCreator extends HTMLElement{
                     <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
                     </li>
                     
-
                     <!--Where they'll log their stuff-->
                     <li>
                     <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
@@ -61,17 +59,14 @@ class EntryCreator extends HTMLElement{
             align-items: flex-start; 
             width: 60%; 
         }
-
         #entryCreator { 
             margin-top: 10px; 
             margin-bottom: 10px; 
             margin-left: -10px; 
         }
-
         #radio1 { 
             margin-bottom: 10px; 
         }
-
         #image-input, #audio-input { 
             margin-top: 10px; 
             margin-bottom: 10px; 
@@ -81,6 +76,7 @@ class EntryCreator extends HTMLElement{
             padding: 10px; 
             width: 50vw; 
             box-sizing: border-box; 
+            font-size: 15pt;
         }
         
         ul { 
