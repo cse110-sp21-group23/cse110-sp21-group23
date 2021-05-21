@@ -4,22 +4,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack/webpack.config.js --open",
-    "build": "webpack --config webpack/webpack.prod.config.js && npm run copy-files",
+    "build": "./node_modules/webpack/bin/webpack.js --config webpack/webpack.prod.config.js && npm run copy-files",
     "copy-files": "cp src/index.html dist",
-    "prod": "node server.js"
+    "prod": "npm run build && node server.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-stage-2": "^6.24.1",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
-    "webpack-merge": "^5.7.3"
-  },
-  "dependencies": {
     "axios": "^0.21.1",
     "connect-history-api-fallback": "^1.6.0",
     "express": "^4.15.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-merge": "^5.7.3"
   }
 }

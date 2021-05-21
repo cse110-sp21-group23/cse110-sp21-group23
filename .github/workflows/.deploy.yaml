@@ -1,0 +1,24 @@
+name: Push stack to heroku
+
+on: 
+  push:
+    branches:
+      - main 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Release Web Client
+      uses: akhileshns/heroku-deploy@v3.0.4
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "cse110-23-web"
+        heroku_email: ${{secrets.HEROKU_API_KEY}}
+    - name: Release API
+      uses: akhileshns/heroku-deploy@v3.0.4
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "cse110-23-api"
+        heroku_email: ${{secrets.HEROKU_API_KEY}}
