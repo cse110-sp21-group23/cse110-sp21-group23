@@ -7,6 +7,9 @@ module.exports = options => {
       path: path.join(__dirname, '../', '/dist'),
       filename: 'bundle.js',
     },
+    node: {
+      fs: 'empty'
+    },
     module: {
       loaders: [
         {

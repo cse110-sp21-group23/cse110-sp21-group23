@@ -261,9 +261,10 @@ export class LoginPage extends HTMLElement {
 window.onload = function () {
     var signinbutton = document.getElementById('signin-button');
     var signupbutton = document.getElementById('signup-button');
-    signinbutton.addEventListener('click', signinFunction);
-    signupbutton.addEventListener('click', signupFunction);
-
+    if (signinbutton && signupbutton) {
+        signinbutton.addEventListener('click', signinFunction);
+        signupbutton.addEventListener('click', signupFunction);
+    }
 }
 
 
@@ -273,7 +274,12 @@ window.onload = function () {
 function signinFunction() {
     var username = document.getElementById('username-input').value;
     var password = document.getElementById('password-input').value;
-    login(username, password);
+    login(username, password)
+        .then()
+        .catch(err => {
+            console.log(err)
+        }
+        )
 }
 
 
@@ -291,6 +297,6 @@ function signupFunction() {
     else {
         console.log("Passwords do not match");
     }
-}  
+}
 
 customElements.define('login-page', LoginPage);

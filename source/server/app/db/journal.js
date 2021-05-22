@@ -62,6 +62,27 @@ module.exports = {
             throw err
         }
     },
+
+    getJournalByUserId: async (id) => {
+        try {
+            const statement = `
+                SELECT
+                    j.id,
+                    j.title
+                FROM
+                    user_journal u_j
+                INNER JOIN
+                    journal j
+                ON
+                    j.id = u_j.journal_id
+                WHERE
+                    u_j.user_id = $1;
+            `
+            return (await db.queryParam(statement, [id])).rows
+        } catch (err) {
+            throw err
+        }
+    },
     
     getByInterval: async (journalId, start, end) => {
         try {

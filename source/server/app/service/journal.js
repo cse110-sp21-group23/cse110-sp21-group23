@@ -15,6 +15,14 @@ module.exports = {
         }
     },
     
+    getJournalByUserId: async (id) => {
+        try {
+            return common.toCamelCase(await journalDB.getJournalByUserId(id))
+        } catch (err) {
+            throw err
+        }
+    },
+    
     createBullet: async (bullet) => {
         try {
             const newBullet = cleanBulletDate(bullet)
@@ -39,7 +47,7 @@ module.exports = {
     
     updateBullet: async bullet => {
         try {
-            await journalDB.update(bullet)
+            await journalDB.update(cleanBulletDate(bullet))
             return 'Success'
         } catch (err) {
             throw err
@@ -53,9 +61,8 @@ module.exports = {
             throw err
         }
     },
+
 }
-
-
 
 const cleanBulletDate = bullet => {
     

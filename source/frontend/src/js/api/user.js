@@ -1,11 +1,10 @@
-import axios from 'axios'
-
-const URL = 'http://cse110-23-api.herokuapp.com'
+import axios from './axios'
+import { setToken } from '../utils/localStorage'
 
 export const register = async (email, password) => {
     try {
         const res = await axios.post(
-            `${URL}/user/register`,
+            `user/register`,
             {
                 email: email,
                 password: password
@@ -18,18 +17,18 @@ export const register = async (email, password) => {
 }
 
 export const login = async (email, password) => {
-    console.log("URL", URL)
     try {
         const res = await axios.post(
-            `${URL}/user/login`,
+            `user/login`,
             {
                 "email": email,
                 "password": password
             },
         )
+        setToken(res.data.token)
         // SET TOKEN HERE
     } catch (err) {
-        console.log(err.response.data.error)
+        console.log("ERR: ", err)
         throw err.response.data
     }
 }
