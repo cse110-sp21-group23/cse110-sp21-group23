@@ -3,13 +3,23 @@
 var jwt = require('../utils/jwt')
 var common = require('../utils/common')
 const journalRouter = require('express').Router();
-var journalService = require('../service/journal')
+var journalService = require('../service/journal');
+const journal = require('../db/journal');
 
 journalRouter.post('/', async (req, res, next) => {
     try {
         const { id } = jwt.verifyAndDecode(req.headers.authorization)
         await journalService.createJournal(id, req.body.title)
         common.httpSuccess(res)
+    } catch (err) {
+        common.htttpError(res, err)
+    }
+})
+
+journalRouter.get('/', async (req, res, next) => {
+    try {  
+        const { id } = jwt.verifyAndDecode(req.headers.authorization)
+        res.send((await journalService.getJournalByUserId(id)))
     } catch (err) {
         common.htttpError(res, err)
     }
