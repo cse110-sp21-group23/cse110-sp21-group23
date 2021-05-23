@@ -1,4 +1,4 @@
-import Entry from '../EntryCreatorComponent/entry'
+import Entry from "../EntryCreatorComponent/entry"
 
 export default class EntryCreator extends HTMLElement{ 
     constructor(){ 
@@ -21,7 +21,6 @@ export default class EntryCreator extends HTMLElement{
                         <label for="note">Note </label> 
                     </div>
                     </li>
-
                     <!--Image input-->
                     <li>
                     <label for="image-input">Insert Image</label>
@@ -34,7 +33,6 @@ export default class EntryCreator extends HTMLElement{
                     <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
                     </li>
                     
-
                     <!--Where they'll log their stuff-->
                     <li>
                     <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
@@ -67,7 +65,6 @@ export default class EntryCreator extends HTMLElement{
             align-items: flex-start; 
             width: 60%; 
         }
-
         #textBox{
             border: 1px solid; 
             margin-left: auto; 
@@ -75,17 +72,14 @@ export default class EntryCreator extends HTMLElement{
             margin-top: 30px; 
             width: 60%; 
         }
-
         #entryCreator { 
             margin-top: 10px; 
             margin-bottom: 10px; 
             margin-left: -10px; 
         }
-
         #radio1 { 
             margin-bottom: 10px; 
         }
-
         #image-input, #audio-input { 
             margin-top: 10px; 
             margin-bottom: 10px; 
@@ -95,6 +89,7 @@ export default class EntryCreator extends HTMLElement{
             padding: 10px; 
             width: 50vw; 
             box-sizing: border-box; 
+            font-size: 15pt;
         }
         
         ul { 
@@ -150,7 +145,7 @@ export default class EntryCreator extends HTMLElement{
 
         return entry; 
     }
-
+  
     connectedCallback(){ 
         this.render(); 
     }
@@ -167,7 +162,7 @@ export default class EntryCreator extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = document.createElement('entry-comp');
+            let entryComponent = document.createElement("entry-comp");
             
             //Create entry object using entry-creator and use to set entry-component
             let entry = this.createEntry(); 
@@ -182,4 +177,3 @@ export default class EntryCreator extends HTMLElement{
 
 //Make the custom element 
 customElements.define('entry-creator', EntryCreator); 
-

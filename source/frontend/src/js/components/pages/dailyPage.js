@@ -9,7 +9,7 @@ export class DailyPage extends HTMLElement{
 
     render(){ 
 
-        const template = document.createElement('template'); 
+        const template = document.createElement("template"); 
         this.attachShadow({mode: 'open'});
 
         template.innerHTML = `
@@ -19,13 +19,15 @@ export class DailyPage extends HTMLElement{
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+
         //Attach entry creator and datepicker to template div 
         const ec = document.createElement('entry-creator');
         const datePicker = document.createElement('date-picker'); 
 
         this.shadowRoot.querySelector('#datePickerDiv').append(datePicker);
         this.shadowRoot.querySelector('#entryCreatorDiv').append(ec); 
+
     }
 }
 
-customElements.define('daily-page', DailyPage);
+customElements.define("daily-page", DailyPage);
