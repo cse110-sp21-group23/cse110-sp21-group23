@@ -4,6 +4,8 @@ const dates = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; 
+
 let myDate = new Date();
 let year;
 let month;
@@ -19,7 +21,7 @@ export default class DatePicker extends HTMLElement {
         day = myDate.getDay();
         date = myDate.getDate();
 
-        dateText = months[month] + " " + dates[date] + ", " + year;
+        dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year;
 
         super();
 
@@ -73,13 +75,11 @@ export default class DatePicker extends HTMLElement {
 
     next() {
         myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
-        //myDate = new Date(myDate + 86400000);
         year = myDate.getFullYear();
         month = myDate.getMonth();
         day = myDate.getDay();
         date = myDate.getDate();
-        //var dateText = days[day]+ "," + " "+ dates[date] + " "+ "of" + " " + months[month] +  " "  + year
-        let dateText = months[month] + " " + dates[date] + ", " + year;
+        let dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year;
         this.shadowRoot.getElementById("date").innerHTML = dateText;
     }
 
@@ -89,7 +89,7 @@ export default class DatePicker extends HTMLElement {
         month = myDate.getMonth();
         day = myDate.getDay();
         date = myDate.getDate();
-        let dateText = months[month] + " " + dates[date] + ", " + year
+        let dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year
         this.shadowRoot.getElementById("date").innerHTML = dateText;
     }
 }
