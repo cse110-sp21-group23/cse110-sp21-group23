@@ -54,7 +54,7 @@ export default class DatePicker extends HTMLElement {
 
         this.shadowRoot.getElementById("date").innerText = dateText;
 
-        this.shadowRoot.getElementById("next").addEventListener('click', e => {
+        this.shadowRoot.getElementById("next").addEventListener('click', (e) => {
             this.next();
         })
 
@@ -95,4 +95,3 @@ export default class DatePicker extends HTMLElement {
 }
 
 window.customElements.define('date-picker', DatePicker);
-
