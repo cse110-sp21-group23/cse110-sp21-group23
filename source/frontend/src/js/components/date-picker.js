@@ -58,7 +58,7 @@ export default class DatePicker extends HTMLElement {
             this.next();
         })
 
-        this.shadowRoot.getElementById("prev").addEventListener('click', e => {
+        this.shadowRoot.getElementById("prev").addEventListener('click', (e) => {
             this.prev();
         })
 
