@@ -113,23 +113,34 @@ export default class Entry extends HTMLElement{
     }
 
     handleDrop(event) {
+        //event.target is the node that is being dropped on
         if (event.stopPropagation) {
             event.stopPropagation(); // Stops some browsers from redirecting.
         }
-        console.log(dragSrcEl.getBoundingClientRect().top); 
-        console.log(event.target.getBoundingClientRect().top);
 
-        if (dragSrcEl.isSameNode(event.target)){
-            console.log('the same');
-        }
+        //Get nodes' shadowRoots
+        console.log(dragSrcEl.getRootNode()); 
+        console.log(event.target.getRootNode());
+
+        let droppedRoot = dragSrcEl.getRootNode();
+        let eventRoot = event.target.getRootNode(); 
 
         // Don't do anything if dropping the same column we're dragging.
         if (!(dragSrcEl.isSameNode(event.target))) {
+            let parent; 
+            //If they have the same shadowroot
+            if (droppedRoot.isSameNode(eventRoot)) { 
+                parent = event.target.parentNode; 
+            }
+
+            else { 
+                parent = dragSrcEl.parentNode; 
+            }
             //Dragged object was above the one it's dropped on
             if (dragSrcEl.getBoundingClientRect().top > event.target.getBoundingClientRect().top){ 
                 console.log('down-up');
                 //Remove the entry we're dragging from textbox
-                event.target.parentNode.removeChild(dragSrcEl);
+                parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = document.createElement('entry-comp');

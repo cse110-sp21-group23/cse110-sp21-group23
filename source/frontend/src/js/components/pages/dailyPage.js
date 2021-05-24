@@ -12,7 +12,9 @@ export class DailyPage extends HTMLElement{
         this.attachShadow({mode: 'open'});
 
         template.innerHTML = `
-        <div id="entryCreatorDiv"> </div>`; 
+        <div id="entryCreatorDiv"> 
+        <entry-creator></entry-creator>
+        </div>`; 
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
