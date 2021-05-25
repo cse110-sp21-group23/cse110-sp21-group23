@@ -1,4 +1,4 @@
-import Entry from "../EntryCreatorComponent/entry"
+import Entry from "../EntryCreatorComponent/entry.js"
 
 export default class EntryCreator extends HTMLElement{ 
     constructor(){ 
