@@ -3,8 +3,8 @@ let template;
 
 //Modal parts came from https://www.w3schools.com/howto/howto_css_modals.asp
 // Get the modal
+/*
 var modal = document.getElementById("myModal");
-console.log(modal);
 var modalcontent = document.getElementsByClassName("modal-content");
 
 // Get the <span> element that closes the modal
@@ -17,7 +17,7 @@ span.onclick = function() {
 } 
 
 // When the user clicks anywhere outside of the modal, close it
-/*window.addEventListener("click", (event) =>  {
+window.addEventListener("click", (event) =>  {
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         let entry = template.createEntry(); 
         let textBox = document.getElementById("entry-container");
 
-        
+        /*
         //Opens modal to edit bullet
         entryComponent.addEventListener("click", () => {
 
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 modal.style.display = "none"
             }
 
-            /*
+            
             //Edit your bullet
             edit.addEventListener("submit", (event) => {
                 event.preventDefault();
@@ -121,11 +121,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 modal.style.display = "none"
             });
             edit.reset();
-            */
-        });
+            
+        });*/
         
-        
-        console.log("here");
         entryComponent.entry = entry; 
 
         //Add the entry component to the text box        
