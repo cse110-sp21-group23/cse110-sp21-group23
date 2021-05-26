@@ -1,0 +1,29 @@
+.bullet-list li {
+    list-style-type: none;
+    border-style: solid;
+    border-width: 1pt;
+    border-color: #6a828d;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px #6a828d;
+    margin: 0.5em;
+}
+
+.bullet-list li button {
+    border: none;
+    background-color: white;
+    text-align: left;
+    padding: 0.6em;
+    margin: 0.5em;
+}
+
+.bullet-list li:hover {
+    background-color: #f9f9f8;
+}
+
+.bullet-list li button:hover {
+    background-color: #f9f9f8;
+}
+
+.bullet-container {
+    width: 50%;
+}
