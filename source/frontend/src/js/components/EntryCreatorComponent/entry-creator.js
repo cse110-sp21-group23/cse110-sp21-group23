@@ -1,4 +1,6 @@
 import Entry from "../EntryCreatorComponent/entry"
+import {addBullet} from "../../api/journal"
+import {getJournal, setJournal} from '../../utils/localStorage'
 
 export default class EntryCreator extends HTMLElement{ 
     constructor(){ 
@@ -154,6 +156,13 @@ export default class EntryCreator extends HTMLElement{
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
+        //Render all bullets in the backend 
+        let journalId = getJournal(); 
+
+        //Find what day it is 
+        
+        
+
         //Attach submit event listener to ec form 
         form.addEventListener('submit', (event)=>{
             event.preventDefault(); 
@@ -167,7 +176,32 @@ export default class EntryCreator extends HTMLElement{
             //Create entry object using entry-creator and use to set entry-component
             let entry = this.createEntry(); 
             entryComponent.entry = entry; 
-    
+
+            //Add bullet to backend 
+            let bullet = {}
+            /*
+            Bullet must look like this
+                {
+                    "journalId": 7, 
+                    "body": "23", 
+                    "type": "task", 
+                    "priority": 2, 
+                    "mood": 1, 
+                    "date": "2021-03-30"
+                }
+            */
+
+            /*       
+            let entry ={ 
+            type: null, 
+            content: null, 
+            image:{ 
+                src: null,
+                alt: null,
+            },
+            audio:null
+            }; */
+
             //Add the entry component to the text box        
             textBox.appendChild(entryComponent); 
             form.reset(); 
