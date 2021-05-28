@@ -12,7 +12,6 @@ export const getJournals = async () => {
 
 export const getBulletsByDay = async (journalId, start) => {
     try {
-        console.log("start: ", start)
         return (await axios.get(`journal/${journalId}/bullet/day/${start.toDateString()}`, getHeader())).data
     } catch (err) {
         console.log(err)
@@ -67,9 +66,25 @@ export const editBullet = async bullet => {
     }
 }
 
+export const updateSorting = async (journalId, date, array) => {
+    try {
+        return (
+            await axios.patch(
+                `journal/${journalId}/day/${date.toDateString()}`,
+                {
+                    array: array
+                },
+                getHeader()
+            )
+        ).data
+    } catch (err) {
+        throw err
+    }
+
+}
+
 const getHeader = () => {
     const token = getToken()
-    console.log("token:  ", token)
     return {
         headers: {
             Authorization: token,
