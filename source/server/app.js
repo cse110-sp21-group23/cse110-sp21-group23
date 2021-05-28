@@ -10,6 +10,8 @@ var bodyParser = require('body-parser')
 // Constants
 const PORT = process.env.PORT || 8080;
 
+console.log(process.env)
+
 // App
 const app = express();
 app.use(cors({

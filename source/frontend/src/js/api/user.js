@@ -1,6 +1,6 @@
 import axios from './axios'
 import { setToken } from '../utils/localStorage'
-
+// test
 export const register = async (email, password) => {
     try {
         const res = await axios.post(
