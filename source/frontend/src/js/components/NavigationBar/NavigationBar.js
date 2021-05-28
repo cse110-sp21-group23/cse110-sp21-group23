@@ -1,5 +1,6 @@
 // <navigation-bar> custom web component
-
+import { store } from '../../store';
+import { loadRoute } from '../../actions'
 class NavigationBar extends HTMLElement {
     constructor(custom) {
       super();
@@ -101,9 +102,8 @@ class NavigationBar extends HTMLElement {
 
           <div class="sidebar">
                 <button id="hide"><</button>
-                <button class="sidebar-entry">Day</button>
-                <button class="sidebar-entry">Week</button>
-                <button class="sidebar-entry">Month</button>
+                <button class="sidebar-entry" data-page="day">Day</button>
+                <button class="sidebar-entry" data-page="week">Week</button>
                 <hr id="splitline">
                 <button class="sidebar-entry">Mood Tracker</button>
                 <button class="sidebar-entry">Future Log</button>
@@ -114,8 +114,6 @@ class NavigationBar extends HTMLElement {
 
           
           `;
-
-
 
       this.setAttribute('custom', custom);
       this.attachShadow({ mode: 'open' })
@@ -168,6 +166,7 @@ class NavigationBar extends HTMLElement {
       var entries = this.shadowRoot.querySelectorAll(".sidebar-entry");
       for(var i = 0; i < entries.length; i++){
           entries[i].onclick = function(e){
+            store.dispatch(loadRoute({ path: this.dataset.page }))
             for(var j = 0; j < entries.length; j++){
                 entries[j].style.backgroundColor = '#d9daca';
             }

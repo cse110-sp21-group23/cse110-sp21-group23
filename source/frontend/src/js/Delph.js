@@ -1,5 +1,5 @@
 import { loadRoute } from './actions'
-
+import { NavigationBar } from './components/NavigationBar/NavigationBar'
 export class Delph {
     
   constructor(config){
@@ -12,7 +12,6 @@ export class Delph {
   }
 
   handleBackButton = (store) => {
- 
     window.onpopstate = (event) => {
       let content = "";
       if (event.state) {
@@ -26,6 +25,14 @@ export class Delph {
     if (previousState.route.path != state.route.path ){
       let page = state.route.path
       let back = state.route.back
+      if (state.route.path != 'login') {
+        let newBar;
+        let custom = []
+        newBar = new NavigationBar(custom);
+        let main = document.querySelector("main");
+        main.append(newBar);
+      }
+
       let route = this.routes.find((route) => route.path === page)
       while (this.routerOutlet.firstChild) {
         this.routerOutlet.removeChild(this.routerOutlet.firstChild);

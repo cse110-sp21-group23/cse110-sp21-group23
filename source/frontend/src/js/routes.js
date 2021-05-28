@@ -5,5 +5,5 @@ import { DailyPage } from "./components/pages/dailyPage"
 export const routes = [
     {title: 'index', path: '', component: DefaultPage},
     {title: "login", path: 'login', component: LoginPage},
-    {title: 'daily', path: 'dailyPage', component: DailyPage}
+    {title: 'daily', path: 'day', component: DailyPage}
 ]
