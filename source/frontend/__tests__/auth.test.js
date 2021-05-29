@@ -18,7 +18,7 @@ describe('Authentication flow', () => {
         expect(page.url()).toBe('http://0.0.0.0:2014/')
     })
 
-    it('Test3: Redirect - check if page redirects to login if URL has changed without blank token', async () => {
+    it('Test3: Redirect - check if page redirects to login if URL has changed without token', async () => {
         await page.goto('http://0.0.0.0:2014/daily');
         await page.waitForTimeout(500);
 
