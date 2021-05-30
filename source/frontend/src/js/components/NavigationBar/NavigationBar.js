@@ -11,17 +11,21 @@ class NavigationBar extends HTMLElement {
       template.innerHTML = `
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+            
+            
             .sidebar {
-                position: relative;
-                height: 100vh;
-                width: 190px;
-                border-radius: 10px;
-                z-index: 1;
-                top: 80px;
-                bottom: -10px;
-                left: -20px;
-                background-color: #C9CBB3;
-                padding-top: 1px;
+              position: fixed;
+              height: 100vh;
+              width: 190px;
+              border-radius: 10px;
+              z-index: 1;
+              top: 80px;
+              bottom: -10px;
+              left: -20px;
+              background-color: #C9CBB3;
+              padding-top: 1px;
+
+
             }
             
             .sidebar-entry {
@@ -115,6 +119,7 @@ class NavigationBar extends HTMLElement {
           
           `;
 
+
       this.setAttribute('custom', custom);
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.appendChild(template.content.cloneNode(true))
@@ -194,8 +199,25 @@ class NavigationBar extends HTMLElement {
         });
       this.setAttribute('custom', custom);
     }
-  }
+
+    //Infinite loop?
+    connectedCallback(){ 
+      this.render();
+    }
+
+    render() {
+      /*
+      let newBar;
+      let custom = []
+      newBar = new NavigationBar(custom);
+      let main = document.querySelector("main");
+      main.append(newBar);
+      */
+    }
+
+
+}
   customElements.define('navigation-bar', NavigationBar);
 
-
+  
   export { NavigationBar };

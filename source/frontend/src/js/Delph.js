@@ -1,5 +1,6 @@
 import { loadRoute } from './actions'
 import { NavigationBar } from './components/NavigationBar/NavigationBar'
+import { getEmail } from './utils/localStorage'
 export class Delph {
     
   constructor(config){
@@ -25,22 +26,35 @@ export class Delph {
     if (previousState.route.path != state.route.path ){
       let page = state.route.path
       let back = state.route.back
+
+      //load navBar for every page not login
       if (state.route.path != 'login') {
-        let newBar;
-        let custom = []
-        newBar = new NavigationBar(custom);
         let main = document.querySelector("main");
-        main.append(newBar);
+        if(main.childNodes[0] == null) {
+          //Creates navigation bar and appends it to main
+          let newBar;
+          let custom = []
+          newBar = new NavigationBar(custom);
+          main.append(newBar);
+        }
+
+        //changes the upper right hand corner text to proper email
+        document.getElementById("email").innerHTML = getEmail();
       }
 
+      //used for eventually adding user setting and logout part
+      document.getElementById("email").addEventListener("click", (event) => {
+      });
+
       let route = this.routes.find((route) => route.path === page)
+
       while (this.routerOutlet.firstChild) {
         this.routerOutlet.removeChild(this.routerOutlet.firstChild);
       }
       if (!back){
         history.pushState({ page}, null, `/${page}`);
       }
-      const c = new route.component
+      const c = new route.component;
       this.routerOutlet.appendChild(new route.component)
     }
   }
