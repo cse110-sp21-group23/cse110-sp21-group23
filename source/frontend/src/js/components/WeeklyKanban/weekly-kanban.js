@@ -9,7 +9,17 @@ export default class WeeklyKanban extends HTMLElement {
             <div class="column-container">
                 <div class="day monday">
                     <p>Monday</p>
-                    <div class="column-content"></div>
+                    <div class="column-content">
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                       <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                       <button class="bullet-entry">Today I went to the park mfdjsfndjfhdjkfjkdfhdjjfhdjksfhkdjfjkhsfhjdhjfdhkjs</button>
+                    </div>
                 </div>
                 <div class="day tuesday">
                     <p>Tuesday</p>
@@ -80,9 +90,26 @@ export default class WeeklyKanban extends HTMLElement {
             max-height: 75%;
         }
         
-        .column-content > p {
+        .column-content > button {
           word-wrap: break-word;
-          font-size: 60%;
+          font-size: 50%;
+        }
+        .bullet-entry {
+            border-style: solid;
+            border-width: 1pt;
+            border-color: #6a828d;
+            border-radius: 10px;
+            box-shadow: 1px 1px 3px #6a828d;
+            background-color: #f9f9f8;
+            text-align: left;
+            padding: 0.6em;
+            margin: auto;
+            width: 100%;
+            height: auto;
+        }
+        
+        .bullet-entry:hover {
+            background-color: #b3d4db;
         }`;
         
         // Attach template and style to this shadowRoot
