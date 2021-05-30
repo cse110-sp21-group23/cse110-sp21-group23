@@ -65,6 +65,9 @@ export default class Entry extends HTMLElement{
         shadow.querySelector("#type").setAttribute("class", entry.type);
         shadow.querySelector("#content").innerHTML = entry.content; 
         
+        if (entry.image == undefined) { 
+            return; 
+        }
         //Set necesary image content if the src isn't null
         if (entry.image.src != null) { 
             entryImage.setAttribute("src", entry.image.src); 
@@ -72,7 +75,7 @@ export default class Entry extends HTMLElement{
         }
 
         //Set audio if applicable
-        if (entry.audio != null){ 
+        if (entry.audio != undefined){ 
             let entryAudio = shadow.querySelector(".entry-audio"); 
             entryAudio.setAttribute("src", entry.audio);
             entryAudio.setAttribute("controls", true);

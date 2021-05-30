@@ -3,10 +3,14 @@ export const setToken = token => {
 }
 
 export const setJournal = id => {
-    console.log("fuck"); 
     window.localStorage.setItem('journal', id)
+}
+
+export const setDate = date => { 
+    window.localStorage.setItem('date', date); 
 }
 
 export const getToken = () => window.localStorage.getItem('token')
 export const getJournal = () => window.localStorage.getItem('journal')
+export const getDate = () => window.localStorage.getItem('date'); 
 
