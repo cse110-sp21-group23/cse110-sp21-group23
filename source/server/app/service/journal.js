@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash');
+
 var journalDB = require('../db/journal')
 var jwt = require('../utils/jwt')
 var common = require('../utils/common')
@@ -26,21 +28,46 @@ module.exports = {
     createBullet: async (bullet) => {
         try {
             const newBullet = cleanBulletDate(bullet)
-            await journalDB.store(newBullet)
-            return 'Success'
+            return await journalDB.store(newBullet)
         } catch (err) {
             throw err
         }
     },
     
+    // getBulletByDay: async (journalId, date) => {
+    //     try {
+    //         const start = new Date(new Date(date).toDateString())
+    //         start.setDate(start.getDate() + 1)
+    //         const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
+    //         end.setDate(end.getDate() + 1)
+    //         const bullets = common.toCamelCase((await journalDB.getByInterval(journalId, start, end)))
+    //         bullets.sort((a, b) => (a.priority > b.priority) ? 1 : -1)
+    //         return bullets
+    //     } catch (err) {
+    //         throw err
+    //     }
+    // },
+
     getBulletByDay: async (journalId, date) => {
         try {
             const start = new Date(new Date(date).toDateString())
+            start.setDate(start.getDate() + 1)
             const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
+            end.setDate(end.getDate() + 1)
+            const day = await journalDB.getDayByInterval(journalId, start, end)
+            if (day.length == 0) {
+                return []
+            }
             const bullets = common.toCamelCase((await journalDB.getByInterval(journalId, start, end)))
-            bullets.sort((a, b) => (a.priority > b.priority) ? 1 : -1)
-            return bullets
+
+            if (bullets.length == 0) {
+                return []
+            }
+            return _.sortBy(bullets, function(item) {
+                return day[0].bullets.indexOf(item.id)
+            }) 
         } catch (err) {
+            console.log(err)
             throw err
         }
     },
@@ -61,6 +88,25 @@ module.exports = {
             throw err
         }
     },
+
+    updateSorting: async (journalId, date, arr) => {
+        try {
+            const start = new Date(new Date(date).toDateString())
+            start.setDate(start.getDate() + 1)
+            const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
+            const days = await journalDB.getDayByInterval(journalId, start, end)
+            let dayId
+            if (days.length == 0) {
+                dayId = await journalDB.storeDay(journalId, start)
+            } else {
+                dayId = days[0].id  
+            }
+            await journalDB.updateSorting(dayId, arr)
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    } 
 
 }
 

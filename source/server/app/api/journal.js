@@ -28,9 +28,8 @@ journalRouter.get('/', async (req, res, next) => {
 journalRouter.post('/bullet', async (req, res, next) => {
     try {
         jwt.verifyAndDecode(req.headers.authorization)
-        console.log(req.body)
-        await journalService.createBullet(req.body)
-        common.httpSuccess(res)
+        const data = await journalService.createBullet(req.body)
+        res.send(data)
     } catch (err) {
         console.log(err)
         common.htttpError(res, err)
@@ -57,6 +56,22 @@ journalRouter.delete('/bullet/:id', async (req, res, next) => {
             }
         }
         await journalService.deleteBullet(parseInt(req.params.id))
+        common.httpSuccess(res)
+    } catch (err) {
+        common.htttpError(res, err)
+    }
+})
+
+
+journalRouter.patch('/:id/day/:date', async (req, res) => {
+    try {
+        const { id, date } = req.params
+        if (id == null || date == null) {
+            throw {
+                error: "missing id or or date"
+            }
+        }
+        await journalService.updateSorting(id, date, req.body.array)
         common.httpSuccess(res)
     } catch (err) {
         common.htttpError(res, err)

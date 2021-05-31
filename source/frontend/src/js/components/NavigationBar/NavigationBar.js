@@ -1,5 +1,6 @@
 // <navigation-bar> custom web component
-
+import { store } from '../../store';
+import { loadRoute } from '../../actions'
 class NavigationBar extends HTMLElement {
     constructor(custom) {
       super();
@@ -10,17 +11,21 @@ class NavigationBar extends HTMLElement {
       template.innerHTML = `
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+            
+            
             .sidebar {
-                position: relative;
-                height: 100vh;
-                width: 190px;
-                border-radius: 10px;
-                z-index: 1;
-                top: 80px;
-                bottom: -10px;
-                left: -20px;
-                background-color: #C9CBB3;
-                padding-top: 1px;
+              position: fixed;
+              height: 100vh;
+              width: 190px;
+              border-radius: 10px;
+              z-index: 1;
+              top: 80px;
+              bottom: -10px;
+              left: -20px;
+              background-color: #C9CBB3;
+              padding-top: 1px;
+
+
             }
             
             .sidebar-entry {
@@ -101,9 +106,8 @@ class NavigationBar extends HTMLElement {
 
           <div class="sidebar">
                 <button id="hide"><</button>
-                <button class="sidebar-entry">Day</button>
-                <button class="sidebar-entry">Week</button>
-                <button class="sidebar-entry">Month</button>
+                <button class="sidebar-entry" data-page="day">Day</button>
+                <button class="sidebar-entry" data-page="week">Week</button>
                 <hr id="splitline">
                 <button class="sidebar-entry">Mood Tracker</button>
                 <button class="sidebar-entry">Future Log</button>
@@ -114,7 +118,6 @@ class NavigationBar extends HTMLElement {
 
           
           `;
-
 
 
       this.setAttribute('custom', custom);
@@ -168,6 +171,7 @@ class NavigationBar extends HTMLElement {
       var entries = this.shadowRoot.querySelectorAll(".sidebar-entry");
       for(var i = 0; i < entries.length; i++){
           entries[i].onclick = function(e){
+            store.dispatch(loadRoute({ path: this.dataset.page }))
             for(var j = 0; j < entries.length; j++){
                 entries[j].style.backgroundColor = '#d9daca';
             }
@@ -195,8 +199,25 @@ class NavigationBar extends HTMLElement {
         });
       this.setAttribute('custom', custom);
     }
-  }
+
+    //Infinite loop?
+    connectedCallback(){ 
+      this.render();
+    }
+
+    render() {
+      /*
+      let newBar;
+      let custom = []
+      newBar = new NavigationBar(custom);
+      let main = document.querySelector("main");
+      main.append(newBar);
+      */
+    }
+
+
+}
   customElements.define('navigation-bar', NavigationBar);
 
-
+  
   export { NavigationBar };
