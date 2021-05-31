@@ -1,3 +1,5 @@
+import {setDate} from "../utils/localStorage"
+
 // July 9, 2021
 const dates = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
     "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
@@ -54,13 +56,18 @@ export default class DatePicker extends HTMLElement {
 
         this.shadowRoot.getElementById("date").innerText = dateText;
 
+        //Store the date into local storage 
+        setDate(myDate); 
+
         this.shadowRoot.getElementById("next").addEventListener('click', (e) => {
             this.next();
-        })
+            setDate(myDate); 
+        });
 
         this.shadowRoot.getElementById("prev").addEventListener('click', (e) => {
             this.prev();
-        })
+            setDate(myDate); 
+        });
 
     }
 
@@ -91,6 +98,10 @@ export default class DatePicker extends HTMLElement {
         date = myDate.getDate();
         let dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year
         this.shadowRoot.getElementById("date").innerHTML = dateText;
+    }
+    
+    get date() { 
+        return myDate; 
     }
 }
 

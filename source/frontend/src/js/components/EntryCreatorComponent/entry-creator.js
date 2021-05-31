@@ -1,4 +1,6 @@
-import Entry from "../EntryCreatorComponent/entry"
+import {addBullet} from "../../api/journal"
+import {getJournal, getDate} from '../../utils/localStorage'
+import {getBulletsByDay} from '../../api/journal'
 
 export default class EntryCreator extends HTMLElement{ 
     constructor(){ 
@@ -109,13 +111,17 @@ export default class EntryCreator extends HTMLElement{
      */
     createEntry() { 
         let entry ={ 
+            date: null, 
+            id: null, 
+            priority: null, 
+            mood: null, 
             type: null, 
             content: null, 
-            image:{ 
-                src: null,
-                alt: null,
+            image: { 
+                src: null, 
+                alt: null
             },
-            audio:null
+            audio:undefined 
         }; 
 
         //Get the type of bullet it'll be 
@@ -145,11 +151,68 @@ export default class EntryCreator extends HTMLElement{
 
         return entry; 
     }
+
+    /**
+     * Function which renders all bullets from the backend for the journalID and 
+     * date stored in local storage
+     */
+    renderBullets() { 
+        //Grab journal id from local storage 
+        let journalId = getJournal(); 
+        let theDate = getDate();
+
+
+        //Get bullets for that day from the backend and populate bulletArray
+        getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+
+            //Clear the textbox
+            let textBox = this.shadowRoot.querySelector("#entryContainer");
+            textBox.innerHTML = ""; 
+
+            //No bullets for that day, return
+            if (value.length == 0){ 
+                return; 
+            }
+
+            //Create entry components for each and populate entry-creator
+            value.forEach((element) => { 
+
+                //Make an entry component 
+                let entryComponent = document.createElement("entry-comp");
+                let entry = { 
+                    id: element.id, 
+                    priority: element.priority, 
+                    mood: element.mood, 
+                    type: element.type, 
+                    content: element.body, 
+                    date: element.date
+                }
+
+                //Append the component to the page 
+                entryComponent.entry = entry; 
+                textBox.appendChild(entryComponent); 
+            });
+        });
+    }
+
+    /**
+     * Function which stores passed in bullet into the backend 
+     * @param {Object} entry - The bullet object formatted in entry / entry-creator fashion
+     * which will be reformatted to be stored in backend format 
+     */
+    storeBullet(entry) { 
+        let bullet = { 
+            journalId: entry
+        };
+    }
   
     connectedCallback(){ 
         this.render(); 
     }
 
+    /**
+     * Function which renders the entryComponent on the page.
+     */
     render(){ 
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
@@ -166,11 +229,14 @@ export default class EntryCreator extends HTMLElement{
             
             //Create entry object using entry-creator and use to set entry-component
             let entry = this.createEntry(); 
-            entryComponent.entry = entry; 
-    
+            entryComponent.entry = entry;
+
             //Add the entry component to the text box        
             textBox.appendChild(entryComponent); 
             form.reset(); 
+
+            //Add bullet to backend 
+            this.storeBullet(entry); 
         });    
     }
 }
