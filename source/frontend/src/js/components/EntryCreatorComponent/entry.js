@@ -5,16 +5,41 @@ export default class Entry extends HTMLElement{
         //Create the template and insert html 
         const template = document.createElement('template');
         template.innerHTML = `
-            <li id="type" class="type-name">
-                <p id="content"></p> <br>
-                <img src="" alt="" class="entry-image"></img> <br>
-                <audio src="" class="entry-audio"></audio>
+            <li >
+                <div id="type" class="type-name">
+                    <p id="content"></p> <br>
+                    <img src="" alt="" class="entry-image"></img> <br>
+                    <audio src="" class="entry-audio"></audio>
+                <div/>
             </li>`
         this.attachShadow({ mode: 'open'}); 
 
         //Add styling for bullet points 
         let style = document.createElement('style'); 
         style.textContent = `
+
+        div {
+            list-style-type: none;
+            border-style: solid;
+            border-width: 1pt;
+            border-color: #6a828d;
+            border-radius: 10px;
+            box-shadow: 1px 1px 3px #6a828d;
+            margin: 0.5em;
+        }
+
+        p {
+            border: none;
+            background-color: transparent;
+            text-align: left;
+            padding: 0.6em;
+            margin: 0.5em;
+        }
+
+        li:hover {
+            background-color: #f9f9f8;
+        }
+
         .task{ 
             list-style-type: "☐"; 
         }
