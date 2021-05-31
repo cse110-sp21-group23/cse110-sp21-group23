@@ -3,7 +3,6 @@ import axios from './axios'
 import { setEmail, setToken } from '../utils/localStorage'
 import { getJournals } from './journal'
 
-
 export const register = async (email, password) => {
     try {
         const res = await axios.post(
