@@ -1,5 +1,7 @@
 import axios from './axios'
-import { setToken, getJournal } from '../utils/localStorage'
+// test
+import { setEmail, setToken } from '../utils/localStorage'
+import { setToken, getJournals } from '../utils/localStorage'
 
 
 export const register = async (email, password) => {
@@ -26,6 +28,8 @@ export const login = async (email, password) => {
                 "password": password
             },
         )
+        
+        setEmail(email);
         setToken(res.data.token)
 
         const journals = await getJournals(); 
@@ -36,3 +40,4 @@ export const login = async (email, password) => {
         throw err.response.data
     }
 }
+
