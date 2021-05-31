@@ -1,3 +1,5 @@
+import {setDate} from "../utils/localStorage"
+import Calendar from './calendar'
 // July 9, 2021
 const dates = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
     "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
@@ -47,19 +49,37 @@ export default class DatePicker extends HTMLElement {
                 align-items: center;
                 justify-content: center;
             }
+
+            #date {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
         `
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.shadowRoot.appendChild(style);
+        let calendar = document.createElement('calendar-picker');
 
-        this.shadowRoot.getElementById("date").innerText = dateText;
+        this.shadowRoot.getElementById("date").append(calendar)
+
+        //Store the date into local storage 
+        setDate(myDate); 
 
         this.shadowRoot.getElementById("next").addEventListener('click', (e) => {
             this.next();
-        })
+            setDate(myDate); 
+        });
 
         this.shadowRoot.getElementById("prev").addEventListener('click', (e) => {
             this.prev();
+            setDate(myDate); 
+        });
+
+        document.addEventListener('changeDay', e => {
+            myDate = e.detail
+            setDate(e.detail)
         })
 
     }
@@ -79,8 +99,7 @@ export default class DatePicker extends HTMLElement {
         month = myDate.getMonth();
         day = myDate.getDay();
         date = myDate.getDate();
-        let dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year;
-        this.shadowRoot.getElementById("date").innerHTML = dateText;
+        this.shadowRoot.querySelector('calendar-picker').date = myDate
     }
 
     prev() {
@@ -89,9 +108,13 @@ export default class DatePicker extends HTMLElement {
         month = myDate.getMonth();
         day = myDate.getDay();
         date = myDate.getDate();
-        let dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year
-        this.shadowRoot.getElementById("date").innerHTML = dateText;
+        this.shadowRoot.querySelector('calendar-picker').date = myDate
     }
+    
+    get date() { 
+        return myDate; 
+    }
+
 }
 
 window.customElements.define('date-picker', DatePicker);
