@@ -1,8 +1,14 @@
-import {addBullet} from "../../api/journal"
+import {addBullet, updateSorting} from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 import {getBulletsByDay} from '../../api/journal'
 
 export default class EntryCreator extends HTMLElement{ 
+
+    //Stores bullets in pairs of their id and priority
+    bulletList= []; 
+    //Stores bullets by id's 
+    idList = []; 
+
     constructor(){ 
         super(); 
         //Create template and insert html
@@ -111,17 +117,12 @@ export default class EntryCreator extends HTMLElement{
      */
     createEntry() { 
         let entry ={ 
+            journalId: null,
+            body: null, 
+            type: null,
+            priority: 1,
+            mood: 1,
             date: null, 
-            id: null, 
-            priority: null, 
-            mood: null, 
-            type: null, 
-            content: null, 
-            image: { 
-                src: null, 
-                alt: null
-            },
-            audio:undefined 
         }; 
 
         //Get the type of bullet it'll be 
@@ -134,13 +135,16 @@ export default class EntryCreator extends HTMLElement{
 
         //Get the text they wrote 
         let text = this.shadowRoot.querySelector("#entryBox").value; 
-        entry.content = text; 
+        entry.body = text; 
 
         //Populate image fields with those inputted into the form 
         let inputImage = this.shadowRoot.querySelector("#image-input")
         if (inputImage.value != '') { 
-            entry.image.src = URL.createObjectURL(inputImage.files[0]); 
-            entry.image.alt = inputImage.value.split("\\").pop(); 
+            let img = { 
+                src: URL.createObjectURL(inputImage.files[0]), 
+                alt: inputImage.value.split("\\").pop()
+            }; 
+            entry.image = img; 
         }
 
         //Get audio from file input 
@@ -148,13 +152,21 @@ export default class EntryCreator extends HTMLElement{
         if (inputAudio.value != '') { 
             entry.audio = URL.createObjectURL(inputAudio.files[0]); 
         } 
+        entry.date = formatDate(getDate()); 
+        entry.journalId = getJournal(); 
 
+        //Store the entry in the backend and internal list in sorted order
+        let id = this.storeBullet(entry).then((value) => { 
+            return value; 
+        }); 
+        entry.id = id; 
+
+        //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
         return entry; 
     }
 
     /**
-     * Function which renders all bullets from the backend for the journalID and 
-     * date stored in local storage
+     * Function which renders all bullets from the backend in the order they are stored 
      */
     renderBullets() { 
         //Grab journal id from local storage 
@@ -169,41 +181,78 @@ export default class EntryCreator extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = ""; 
 
+            //Clear the internal list of bullets 
+            this.bulletOrder = []; 
+
             //No bullets for that day, return
             if (value.length == 0){ 
                 return; 
-            }
+            };
 
             //Create entry components for each and populate entry-creator
             value.forEach((element) => { 
+                let storage = { 
+                    id: element.id, 
+                    priority: element.priority 
+                }
+
+                //Create the new internal list of bullets
+                this.bulletList.push(storage); 
+                this.idList.push(element.id); 
 
                 //Make an entry component 
                 let entryComponent = document.createElement("entry-comp");
-                let entry = { 
-                    id: element.id, 
-                    priority: element.priority, 
-                    mood: element.mood, 
-                    type: element.type, 
-                    content: element.body, 
-                    date: element.date
-                }
 
                 //Append the component to the page 
-                entryComponent.entry = entry; 
+                entryComponent.entry = element; 
                 textBox.appendChild(entryComponent); 
             });
         });
     }
 
     /**
-     * Function which stores passed in bullet into the backend 
+     * Function which stores passed in bullet into the backend. Also updates the ordering of the 
+     * bullets in the backend 
      * @param {Object} entry - The bullet object formatted in entry / entry-creator fashion
      * which will be reformatted to be stored in backend format 
+     * @return {int} - Will return the id of the bullet that is given by the server 
      */
     storeBullet(entry) { 
-        let bullet = { 
-            journalId: entry
+        let bulletToStore = { 
+            "journalId": entry.journalId, 
+            "body": entry.body, 
+            "type": entry.type, 
+            "priority": entry.priority, 
+            "mood": entry.mood, 
+            "date": entry.date
         };
+
+        //Store 
+        let id = addBullet(bulletToStore).then((value) => { 
+            return value; 
+        }); 
+
+        //Update sorting -- linearly O(n) time 
+        for (let index = 0; index <= this.bulletList.length; index++){ 
+            //Iterated through all elements, so insert at end 
+            if (index == this.bulletList.length){ 
+                this.bulletList.push({id: bulletToStore.id, priority: bulletToStore.priority}); 
+                this.idList.push(bulletToStore.id); 
+
+                break; 
+            }
+            //If greater priortiy, insert at that index. Update both lists 
+            if (this.bulletList[index].priority < bulletToStore.priority){ 
+                this.bulletList.splice(index, 0, {id: bulletToStore.id, priority: bulletToStore.priority});
+                this.idList.splice(index, 0, bulletToStore.id); 
+                break;
+            }
+        }
+
+        //Update sorting in backend 
+        updateSorting(getJournal(), new Date(getDate()), this.idList); 
+
+        return id; 
     }
   
     connectedCallback(){ 
@@ -213,7 +262,9 @@ export default class EntryCreator extends HTMLElement{
     /**
      * Function which renders the entryComponent on the page.
      */
-    render(){ 
+    render(){
+        //Render the bullets for the first day it's instantiated in 
+        this.renderBullets(); 
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
@@ -234,12 +285,115 @@ export default class EntryCreator extends HTMLElement{
             //Add the entry component to the text box        
             textBox.appendChild(entryComponent); 
             form.reset(); 
-
-            //Add bullet to backend 
-            this.storeBullet(entry); 
         });    
     }
+
+    /**
+     * @param {Array} - The array of bullest to be stored as the order for the bullets in the entry container
+     */
+    set bulletOrder(list){
+        this.bulletList = list; 
+    }
+    /**
+     * @returns {Array} - Returns an array of the bullets in order 
+     */
+    get bulletOrder(){ 
+        return this.bulletList; 
+    }
+    /**
+     * Function which swaps the positions of the two bullets passed in within the 
+     * bullets array 
+     * @param {Object} dragged - Bullet that was dragged
+     * @param {Object} droppedOn - Bullet that was dragged on top of 
+     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
+     * dropped-on element was above. 
+     */
+    swapBullets(dragged, droppedOn, direction){ 
+        let index1 = this.bulletList.findIndex((element) => element.id == dragged.id); 
+        let index2 = this.bulletList.findIndex((element) => element.id == droppedOn.id); 
+
+        //Remove dragged element 
+        this.bulletList.splice(index1, 1); 
+
+        //Dragged element was above 
+        if (direction){ 
+            //Case we're dragging to last element 
+            if (index2 + 1 == this.bulletList.length){ 
+                this.bulletList.length.push(dragged); 
+            }
+            else{
+                this.bulletList.splice(index2 + 1, 0, dragged);
+            } 
+        }
+        //Dragged element was below 
+        else{ 
+            this.bulletList.splice(index2, 0, dragged); 
+        }
+    }
+
+    /**
+     * @param {Array} - The array of bullets to be stored by their id's. 
+     */
+    set idOrder(list){
+        this.idList= list; 
+    }
+    /**
+     * @returns {Array} - Returns an array of the bullets in order by id
+     */
+    get idOrder(){ 
+        return this.idList; 
+    }
+    /**
+     * Helper function which swaps the positions of the two ids passed in within 
+     * the id array 
+     * @param {Object} dragged - First bullet to be swapped
+     * @param {Object} droppedOn - Second bullet to be swapped
+     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
+     * dropped-on element was above. 
+     */
+    swapIds(dragged, droppedOn, direction){ 
+        let index1 = this.idList.findIndex((element) => element == dragged); 
+        let index2 = this.idList.findIndex((element) => element == droppedOn); 
+        //Remove dragged element 
+        this.idList.splice(index1, 1); 
+
+        //Dragged element was above 
+        if (direction){ 
+            //Case we're dragging to last element 
+            if (index2 + 1 == this.idList.length){ 
+                this.idList.length.push(dragged); 
+            }
+            else{
+                this.idList.splice(index2 + 1, 0, dragged);
+            } 
+        }
+        //Dragged element was below 
+        else{ 
+            this.idList.splice(index2, 0, dragged); 
+        }
+    }
 }
+
+
+/**
+ * Helper function to format the dates correctly 
+ * @param {Date} date 
+ * @returns a string with the date formatted correctly 
+ */
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 
 //Make the custom element 
 customElements.define('entry-creator', EntryCreator); 

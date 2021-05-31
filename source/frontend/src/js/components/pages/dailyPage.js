@@ -1,14 +1,13 @@
 import EntryCreator from '../EntryCreatorComponent/entry-creator'
 import Entry from '../EntryCreatorComponent/entry'
 import {getBulletsByDay, getJournals} from '../../api/journal'
-import {getJournal, setJournal, getDate} from '../../utils/localStorage'
+import {getJournal, setJournal} from '../../utils/localStorage'
 import DatePicker from '../date-picker'
 
 export class DailyPage extends HTMLElement {
     connectedCallback() {
         this.render();
     }
-
     render() {
 
         const template = document.createElement("template");
@@ -36,18 +35,18 @@ export class DailyPage extends HTMLElement {
 
         getBulletsByDay(getJournal(), new Date('2021 04 26')).then((value) => { 
             console.log(value); 
-        })
+        });
 
         //On click of arrows on date picker, render the entries from that date 
         this.shadowRoot.querySelector('date-picker').shadowRoot.querySelector('#next').addEventListener('click', ()=>{
             ec.renderBullets(); 
+            console.log(ec.bulletOrder); 
         });
 
         //On click of arrows on date picker, render the entries from that data 
         this.shadowRoot.querySelector('date-picker').shadowRoot.querySelector('#prev').addEventListener('click', ()=>{
             ec.renderBullets(); 
         });
-
     }
 }
 
