@@ -3,7 +3,7 @@ import { LoginPage } from './components/pages/login'
 import { DailyPage } from "./components/pages/dailyPage"
 
 export const routes = [
-    {title: 'index', path: '', component: DefaultPage},
-    {title: "login", path: 'login', component: LoginPage},
-    {title: 'daily', path: 'day', component: DailyPage}
+    {title: 'login', path: '', component: LoginPage},
+    {title: "testing", path: 'test', component: DefaultPage},
+    {title: 'daily', path: 'daily', component: DailyPage}
 ]

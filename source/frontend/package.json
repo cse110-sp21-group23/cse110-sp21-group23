@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "dev": "webpack-dev-server --config webpack/webpack.config.js --open",
     "build": "./node_modules/webpack/bin/webpack.js --config webpack/webpack.prod.config.js && npm run copy-files",
     "copy-files": "cp src/index.html dist",
@@ -19,5 +19,17 @@
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1",
     "webpack-merge": "^5.7.3"
+  },
+  "devDependencies": {
+    "jest": "^27.0.3",
+    "jest-cli": "^27.0.3",
+    "jest-puppeteer": "^5.0.4",
+    "puppeteer": "^9.1.1",
+    "puppeteer-core": "^9.1.1",
+    "webpack-dev-middleware": "^4.3.0"
+  },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "verbose": true
   }
 }
