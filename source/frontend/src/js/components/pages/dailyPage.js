@@ -1,5 +1,5 @@
-import EntryCreator from '../EntryCreatorComponent/entry-creator'
-import Entry from '../EntryCreatorComponent/entry'
+import EntryCreator from '../EntryCreatorDay/entry-creator'
+import Entry from '../EntryCreatorDay/entry'
 import {getBulletsByDay, getJournals} from '../../api/journal'
 import {getJournal, setJournal} from '../../utils/localStorage'
 import DatePicker from '../date-picker'

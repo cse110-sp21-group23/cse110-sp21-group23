@@ -122,6 +122,15 @@ export default class WeeklyKanban extends HTMLElement {
     }
 
     render() {
-  }
+    }
+
+    /**
+     * Will render the day for each of the boxes. 
+     * @param {Array} dateArray - Array of date objects to be used to set the html of each 
+     * day in the weekly view 
+     */
+    setDates(dateArray){ 
+        
+    }
 }
 customElements.define('weekly-kanban', WeeklyKanban);

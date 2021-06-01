@@ -6,5 +6,6 @@ import { WeeklyPage } from "./components/pages/weeklyPage"
 export const routes = [
     {title: 'login', path: '', component: LoginPage},
     {title: "testing", path: 'test', component: DefaultPage},
-    {title: 'daily', path: 'daily', component: DailyPage}
+    {title: 'daily', path: 'daily', component: DailyPage},
+    {title: 'weekly', path: 'weekly', component: WeeklyPage}
 ]
