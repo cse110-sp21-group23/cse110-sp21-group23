@@ -1,4 +1,4 @@
-import {getBulletsByDay, addBullet, updateSorting} from '../../api/journal'
+import {getBulletsByDay, addBullet, updateSorting, deleteBullet} from '../../api/journal'
 import {getJournal} from "../../utils/localStorage"
 
 export default class EntryCreatorWeek extends HTMLElement{
@@ -172,7 +172,6 @@ export default class EntryCreatorWeek extends HTMLElement{
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId,new Date(date)).then((value) =>{
-
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = ""; 
@@ -203,7 +202,9 @@ export default class EntryCreatorWeek extends HTMLElement{
                 entryComponent.entry = element; 
                 textBox.appendChild(entryComponent); 
             });
+            console.log(this.bulletList); 
         });
+
     }
 
     /**
@@ -302,10 +303,8 @@ export default class EntryCreatorWeek extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapBullets(dragged, droppedOn, direction){ 
-        let index1 = this.bulletList.findIndex((element) => element.id == dragged.id); 
-        let index2 = this.bulletList.findIndex((element) => element.id == droppedOn.id); 
-
+    swapBullets(index1, index2, direction){ 
+        let dragged = this.bulletList[index1]; 
         //Remove dragged element 
         this.bulletList.splice(index1, 1); 
 
@@ -313,15 +312,15 @@ export default class EntryCreatorWeek extends HTMLElement{
         if (direction){ 
             //Case we're dragging to last element 
             if (index2 + 1 == this.bulletList.length){ 
-                this.bulletList.length.push(dragged); 
+                this.bulletList.push(dragged); 
             }
             else{
-                this.bulletList.splice(index2 + 1, 0, dragged);
+                this.bulletList.splice(index2, 0, dragged);
             } 
         }
         //Dragged element was below 
         else{ 
-            this.bulletList.splice(index2, 0, dragged); 
+            this.bulletList.splice(index2 , 0, dragged); 
         }
     }
 
@@ -345,9 +344,8 @@ export default class EntryCreatorWeek extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(dragged, droppedOn, direction){ 
-        let index1 = this.idList.findIndex((element) => element == dragged); 
-        let index2 = this.idList.findIndex((element) => element == droppedOn); 
+    swapIds(index1, index2, direction){  
+        let dragged = this.idList[index1]; 
         //Remove dragged element 
         this.idList.splice(index1, 1); 
 
@@ -358,12 +356,43 @@ export default class EntryCreatorWeek extends HTMLElement{
                 this.idList.length.push(dragged); 
             }
             else{
-                this.idList.splice(index2 + 1, 0, dragged);
+                this.idList.splice(index2, 0, dragged);
             } 
         }
         //Dragged element was below 
         else{ 
             this.idList.splice(index2, 0, dragged); 
+        }
+    }
+
+    /**
+     * Function inserts the dragged bullet into the new container (this one)
+     * @param {int} index2 - Index of the bullet in this container that the 
+     * dragged bullet was dropped on
+     * @param {Object} dBullet - the dragged bullet 
+     */
+    diffListIns(index2, dBullet){
+
+        //Add dBullet to backend 
+        let newId = addBullet(dBullet).then((value)=> { 
+            return value; 
+        }); 
+
+        //Case drag is dragged on last element in this list 
+        if (index2 + 1 == this.bulletList.length){ 
+            this.bulletList.push({
+                id: newId, 
+                priority: dBullet.priority
+            }); 
+            this.idList.push(newId); 
+        }
+        //Insert normally
+        else{ 
+            this.bulletList.splice(index2, 0, {
+                id: newId,
+                priority: dBullet.priority
+            }); 
+            this.idList.splice(index2, 0, newId); 
         }
     }
 }

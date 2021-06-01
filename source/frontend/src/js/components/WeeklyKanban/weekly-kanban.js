@@ -148,7 +148,6 @@ export default class WeeklyKanban extends HTMLElement {
             //Render all respective bullets 
             ecWeek.renderBullets(this.dayArray[index]); 
         }
-
         //Event listener to update day array on week change event 
         document.addEventListener('weekChange', () => { 
             this.dayArray = weekP.sendArray(); 

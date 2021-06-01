@@ -306,21 +306,19 @@ export default class EntryCreator extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapBullets(dragged, droppedOn, direction){ 
-        let index1 = this.bulletList.findIndex((element) => element.id == dragged.id); 
-        let index2 = this.bulletList.findIndex((element) => element.id == droppedOn.id); 
-
+    swapBullets(index1, index2, direction){ 
         //Remove dragged element 
+        let dragged = this.bulletList[index1]; 
         this.bulletList.splice(index1, 1); 
 
         //Dragged element was above 
         if (direction){ 
             //Case we're dragging to last element 
             if (index2 + 1 == this.bulletList.length){ 
-                this.bulletList.length.push(dragged); 
+                this.bulletList.push(dragged); 
             }
             else{
-                this.bulletList.splice(index2 + 1, 0, dragged);
+                this.bulletList.splice(index2, 0, dragged);
             } 
         }
         //Dragged element was below 
@@ -349,20 +347,19 @@ export default class EntryCreator extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(dragged, droppedOn, direction){ 
-        let index1 = this.idList.findIndex((element) => element == dragged); 
-        let index2 = this.idList.findIndex((element) => element == droppedOn); 
+    swapIds(index1, index2, direction){ 
         //Remove dragged element 
+        let dragged = this.idList[index1]; 
         this.idList.splice(index1, 1); 
 
         //Dragged element was above 
         if (direction){ 
             //Case we're dragging to last element 
             if (index2 + 1 == this.idList.length){ 
-                this.idList.length.push(dragged); 
+                this.idList.push(dragged); 
             }
             else{
-                this.idList.splice(index2 + 1, 0, dragged);
+                this.idList.splice(index2, 0, dragged);
             } 
         }
         //Dragged element was below 
