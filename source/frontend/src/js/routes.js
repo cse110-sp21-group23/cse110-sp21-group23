@@ -4,8 +4,7 @@ import { DailyPage } from "./components/pages/dailyPage"
 import { WeeklyPage } from "./components/pages/weeklyPage"
 
 export const routes = [
-    {title: 'index', path: '', component: DefaultPage},
-    {title: "login", path: 'login', component: LoginPage},
-    {title: 'daily', path: 'dailyPage', component: DailyPage},
-    {title: 'weekly', path: 'weeklyPage', component: WeeklyPage}
+    {title: 'login', path: '', component: LoginPage},
+    {title: "testing", path: 'test', component: DefaultPage},
+    {title: 'daily', path: 'daily', component: DailyPage}
 ]

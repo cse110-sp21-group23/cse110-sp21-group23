@@ -1,5 +1,6 @@
 import { login, register } from "../../api/user";
-
+import { store } from '../../store'
+import { loadRoute } from '../../actions'
 export class LoginPage extends HTMLElement {
 
     connectedCallback() {
@@ -275,11 +276,14 @@ function signinFunction() {
     var username = document.getElementById('username-input').value;
     var password = document.getElementById('password-input').value;
     login(username, password)
-        .then()
+        .then(data => {
+            store.dispatch(loadRoute({ path: 'daily' }))
+        }
+
+        )
         .catch(err => {
             console.log(err)
-        }
-        )
+        })
 }
 
 
@@ -292,7 +296,16 @@ function signupFunction() {
     var confirmpassword = document.getElementById('password-signup-confirm').value;
 
     if (password == confirmpassword) {
-        register(username, password);
+        register(username, password)
+            .then(() => {
+                login(username, password)
+                    .then(
+                        store.dispatch(loadRoute({ path: 'daily' }))
+                    )
+                    .catch(err => {
+                        console.log(err)
+                    })
+            });
     }
     else {
         console.log("Passwords do not match");

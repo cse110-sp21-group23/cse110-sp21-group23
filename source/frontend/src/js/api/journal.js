@@ -32,11 +32,11 @@ Bullet must look like this
 */
 export const addBullet = async (bullet) => {
     try {
-        await axios.post(
+        return (await axios.post(
             'journal/bullet',
             bullet,
             getHeader()
-        )
+        )).data
     } catch (err) {
         console.log(err)
         throw err
