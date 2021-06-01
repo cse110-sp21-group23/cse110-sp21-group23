@@ -106,8 +106,8 @@ class NavigationBar extends HTMLElement {
 
           <div class="sidebar">
                 <button id="hide"><</button>
-                <button class="sidebar-entry" data-page="day">Day</button>
-                <button class="sidebar-entry" data-page="week">Week</button>
+                <button class="sidebar-entry" data-page="daily">Day</button>
+                <button class="sidebar-entry" data-page="weekly">Week</button>
                 <hr id="splitline">
                 <button class="sidebar-entry">Mood Tracker</button>
                 <button class="sidebar-entry">Future Log</button>
