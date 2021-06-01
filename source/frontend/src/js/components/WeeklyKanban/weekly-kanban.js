@@ -143,6 +143,7 @@ export default class WeeklyKanban extends HTMLElement {
             //Append ecw to all days 
             let ecWeek = document.createElement('entry-creator-week');
             colContent[index].appendChild(ecWeek);  
+            this.ecArray[index] = ecWeek; 
 
             //Render all respective bullets 
             ecWeek.renderBullets(this.dayArray[index]); 
@@ -151,16 +152,18 @@ export default class WeeklyKanban extends HTMLElement {
         //Event listener to update day array on week change event 
         document.addEventListener('weekChange', () => { 
             this.dayArray = weekP.sendArray(); 
+            this.renderAllEc(); 
         })
     }
 
     /**
      * Will render the day for each of the boxes. 
-     * @param {Array} dateArray - Array of date objects to be used to set the html of each 
-     * day in the weekly view 
      */
-    setDates(dateArray){ 
-
+    renderAllEc(){ 
+        let colContent = this.shadowRoot.querySelectorAll(".column-content"); 
+        for (let index = 0; index < colContent.length; index++){ 
+            this.ecArray[index].renderBullets(this.dayArray[index]); 
+        }
     }
 }
 customElements.define('weekly-kanban', WeeklyKanban);
