@@ -74,7 +74,6 @@ export default class EntryCreator extends HTMLElement{
             width: 60%; 
         }
         #textBox{
-            border: 1px solid; 
             margin-left: auto; 
             margin-right: auto; 
             margin-top: 30px; 

@@ -70,16 +70,26 @@ export default class DatePicker extends HTMLElement {
         this.shadowRoot.getElementById("next").addEventListener('click', (e) => {
             this.next();
             setDate(myDate); 
+            document.dispatchEvent(new CustomEvent("dateChange", {
+                detail: myDate
+            }))
         });
 
         this.shadowRoot.getElementById("prev").addEventListener('click', (e) => {
             this.prev();
             setDate(myDate); 
+            document.dispatchEvent(new CustomEvent("dateChange", {
+                detail: myDate
+            }))
         });
 
-        document.addEventListener('changeDay', e => {
+        document.addEventListener('calendarDateChanged', e => {
             myDate = e.detail
+            date = e.detail
             setDate(e.detail)
+            document.dispatchEvent(new CustomEvent("dateChange", {
+                detail: e.detail
+            }))
         })
 
     }

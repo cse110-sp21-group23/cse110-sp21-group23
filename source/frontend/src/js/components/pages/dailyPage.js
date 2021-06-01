@@ -37,16 +37,11 @@ export class DailyPage extends HTMLElement {
             console.log(value); 
         });
 
-        //On click of arrows on date picker, render the entries from that date 
-        this.shadowRoot.querySelector('date-picker').shadowRoot.querySelector('#next').addEventListener('click', ()=>{
+        // Listen to Date changes from date picker
+        document.addEventListener('dateChange', e => {
             ec.renderBullets(); 
-            console.log(ec.bulletOrder); 
-        });
+        })
 
-        //On click of arrows on date picker, render the entries from that data 
-        this.shadowRoot.querySelector('date-picker').shadowRoot.querySelector('#prev').addEventListener('click', ()=>{
-            ec.renderBullets(); 
-        });
     }
 }
 

@@ -20,11 +20,17 @@ export default class Entry extends HTMLElement{
 
         //Create the template and insert html 
         const template = document.createElement('template');
+
+        
+
         template.innerHTML = `
             <li id="type" draggable="true" class="type-name">
-                <p id="content"></p><br>
-                <img src="" alt="" class="entry-image"></img> <br>
-                <audio src="" class="entry-audio"></audio>
+                <div class="bullet-container">
+                    <p id="symbol"></p>
+                    <p id="content"></p><br>
+                    <img src="" alt="" class="entry-image"></img> <br>
+                    <audio src="" class="entry-audio"></audio>
+                </div>
             </li>
             <div id="myModal" class="modal">
             <div class="modal-content">
@@ -57,22 +63,39 @@ export default class Entry extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = 
         `
-        .task{ 
-            list-style-type: "☐"; 
+
+        .bullet-container {
+            border: none;
+            background-color: white;
+            text-align: left;
+            padding: 0.6em;
+            margin: 0.5em;
         }
-        .event{
-            list-style-type: "○";
+        
+        li {
+            list-style-type: none;
+            border-style: solid;
+            border-width: 1pt;
+            border-color: #6a828d;
+            border-radius: 10px;
+            box-shadow: 1px 1px 3px #6a828d;
+            margin: 0.5em;
         }
-        .note{
-            list-style-type: "\u2022"; 
+
+        li:hover {
+            background-color: #f9f9f8;
         }
+
+        li button:hover {
+            background-color: #f9f9f8;
+        }        
         
         p { 
             display: inline; 
             font-size: 20px;
         }
         img{ 
-            height: 300px; 
+            height: 0px; 
             width: auto; 
         }
         .modal {
@@ -149,8 +172,11 @@ export default class Entry extends HTMLElement{
         let shadow = this.shadowRoot; 
         let entryImage = this.shadowRoot.querySelector(".entry-image");
 
+
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
+        const symbol = entry.type == "task" ? "☐" : entry.type == "event" ? "○" : "\u2022"
+        shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
 
