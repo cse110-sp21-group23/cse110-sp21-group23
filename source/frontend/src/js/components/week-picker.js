@@ -61,6 +61,8 @@ export default class WeekPicker extends HTMLElement {
                 }
             }));
         }); 
+
+        this.sendArray(); 
     }
 
     /**
@@ -92,11 +94,18 @@ export default class WeekPicker extends HTMLElement {
     }
     
     /**
-     * Makes and returns an array of dates between dateStart and dateEnd 
-     * @returns {Array} - Returns the array of dates between dateStart and dateEnd 
+     * Makes and returns an array of date strings between dateStart and dateEnd 
+     * @returns {Array} - Returns the array of date strings between dateStart and dateEnd 
      */
     sendArray(){ 
-        
+        let array = []; 
+        let currDate = new Date(this.dateStart.toDateString());
+        while (currDate.toDateString() != this.dateEnd.toDateString()){ 
+            array.push(currDate.toDateString()); 
+            currDate.setDate(currDate.getDate() + 1); 
+        }
+        array.push(this.dateEnd.toDateString()); 
+        return array; 
     }
 }
 window.customElements.define('week-picker', WeekPicker);

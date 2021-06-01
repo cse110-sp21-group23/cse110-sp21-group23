@@ -1,8 +1,7 @@
-import {addBullet, updateSorting, getBulletsByDay} from "../../api/journal"
-import {getJournal, getDate} from '../../utils/localStorage'
+import {getBulletsByDay, addBullet, updateSorting} from '../../api/journal'
+import {getJournal} from "../../utils/localStorage"
 
-export default class EntryCreator extends HTMLElement{ 
-
+export default class EntryCreatorWeek extends HTMLElement{
     //Stores bullets in pairs of their id and priority
     bulletList= []; 
     //Stores bullets by id's 
@@ -164,16 +163,15 @@ export default class EntryCreator extends HTMLElement{
     }
 
     /**
-     * Function which renders all bullets from the backend in the order they are stored 
+     * Function which renders all bullets from the backend in the order they are stored for the passed in date
+     * @param {Date} date - The date in which you want to render bullets from 
      */
-    renderBullets() { 
+    renderBullets(date) { 
         //Grab journal id from local storage 
         let journalId = getJournal(); 
-        let theDate = getDate();
-
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+        getBulletsByDay(journalId,new Date(date)).then((value) =>{
 
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
@@ -261,8 +259,6 @@ export default class EntryCreator extends HTMLElement{
      * Function which renders the entryComponent on the page.
      */
     render(){
-        //Render the bullets for the first day it's instantiated in 
-        this.renderBullets(); 
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
@@ -372,13 +368,12 @@ export default class EntryCreator extends HTMLElement{
     }
 }
 
-
 /**
  * Helper function to format the dates correctly 
  * @param {Date} date 
  * @returns a string with the date formatted correctly 
  */
-function formatDate(date) {
+ function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -392,6 +387,5 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-
-//Make the custom element 
-customElements.define('entry-creator', EntryCreator); 
+//Make custom element 
+customElements.define('entry-creator-week', EntryCreatorWeek); 

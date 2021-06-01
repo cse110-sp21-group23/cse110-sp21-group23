@@ -1,4 +1,12 @@
+import EntryCreatorWeek from "../EntryCreatorWeek/entry-creator-week"
+import WeekPicker from "../week-picker"
+
 export default class WeeklyKanban extends HTMLElement {
+    //Array of all entry-creator-day's in the component's days 
+    ecArray = []; 
+    //Array of the days we're rendering
+    dayArray =[]; 
+
     constructor() {
         super();
 
@@ -43,6 +51,10 @@ export default class WeeklyKanban extends HTMLElement {
                 </div>
                 <div class="day sunday">
                     <p>Sunday</p>
+                    <div class="column-content"></div>
+                </div>
+                <div class="day monday">
+                    <p>Monday</p>
                     <div class="column-content"></div>
                 </div>
             </div>
@@ -122,6 +134,24 @@ export default class WeeklyKanban extends HTMLElement {
     }
 
     render() {
+        //Get weekpicker on page 
+        let weekP = document.querySelector("weekly-page").shadowRoot.querySelector("week-picker");
+        this.dayArray = weekP.sendArray(); 
+
+        let colContent= this.shadowRoot.querySelectorAll(".column-content"); 
+        for (let index = 0; index < colContent.length; index++){ 
+            //Append ecw to all days 
+            let ecWeek = document.createElement('entry-creator-week');
+            colContent[index].appendChild(ecWeek);  
+
+            //Render all respective bullets 
+            ecWeek.renderBullets(this.dayArray[index]); 
+        }
+
+        //Event listener to update day array on week change event 
+        document.addEventListener('weekChange', () => { 
+            this.dayArray = weekP.sendArray(); 
+        })
     }
 
     /**
@@ -130,7 +160,7 @@ export default class WeeklyKanban extends HTMLElement {
      * day in the weekly view 
      */
     setDates(dateArray){ 
-        
+
     }
 }
 customElements.define('weekly-kanban', WeeklyKanban);
