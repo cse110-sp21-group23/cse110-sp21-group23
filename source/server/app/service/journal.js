@@ -51,9 +51,8 @@ module.exports = {
     getBulletByDay: async (journalId, date) => {
         try {
             const start = new Date(new Date(date).toDateString())
-            start.setDate(start.getDate() + 1)
+            start.setDate(start.getDate())
             const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
-            end.setDate(end.getDate() + 1)
             const day = await journalDB.getDayByInterval(journalId, start, end)
             if (day.length == 0) {
                 return []
