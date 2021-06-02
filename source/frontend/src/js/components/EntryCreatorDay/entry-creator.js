@@ -2,9 +2,6 @@ import {addBullet, updateSorting, getBulletsByDay} from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 
 export default class EntryCreator extends HTMLElement{ 
-
-    //Stores bullets in pairs of their id and priority
-    bulletList= []; 
     //Stores bullets by id's 
     idList = []; 
 
@@ -113,7 +110,7 @@ export default class EntryCreator extends HTMLElement{
      * entry. This can includes text, type of entry, and potentially images or audio. This 
      * will presumably be used to create an Entry web component. 
      */
-    createEntry() { 
+    async createEntry() { 
         let entry ={ 
             journalId: null,
             body: null, 
@@ -151,13 +148,24 @@ export default class EntryCreator extends HTMLElement{
             entry.audio = URL.createObjectURL(inputAudio.files[0]); 
         } 
         entry.date = formatDate(getDate()); 
+        console.log(entry.date); 
         entry.journalId = getJournal(); 
 
-        //Store the entry in the backend and internal list in sorted order
-        let id = this.storeBullet(entry).then((value) => { 
+        //Append the entry to the backend and internal list at the end 
+        await addBullet(entry).then((value) => { 
+            //Always append bullet to end 
+            this.idList.push(value.id); 
+            console.log(this.idList); 
+            console.log(this.idList.length); 
+
+            entry.id = value.id; 
+
+            //Update sorting in backend only after idList has been updated
+            updateSorting(getJournal(), new Date(getDate()), this.idList); 
             return value; 
         }); 
-        entry.id = id; 
+        console.log(entry.id); 
+
 
         //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
         return entry; 
@@ -174,13 +182,15 @@ export default class EntryCreator extends HTMLElement{
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+            console.log(value); 
+            console.log(new Date(theDate)); 
 
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = ""; 
 
             //Clear the internal list of bullets 
-            this.bulletOrder = []; 
+            this.idList = []; 
 
             //No bullets for that day, return
             if (value.length == 0){ 
@@ -189,13 +199,6 @@ export default class EntryCreator extends HTMLElement{
 
             //Create entry components for each and populate entry-creator
             value.forEach((element) => { 
-                let storage = { 
-                    id: element.id, 
-                    priority: element.priority 
-                }
-
-                //Create the new internal list of bullets
-                this.bulletList.push(storage); 
                 this.idList.push(element.id); 
 
                 //Make an entry component 
@@ -206,51 +209,6 @@ export default class EntryCreator extends HTMLElement{
                 textBox.appendChild(entryComponent); 
             });
         });
-    }
-
-    /**
-     * Function which stores passed in bullet into the backend. Also updates the ordering of the 
-     * bullets in the backend 
-     * @param {Object} entry - The bullet object formatted in entry / entry-creator fashion
-     * which will be reformatted to be stored in backend format 
-     * @return {int} - Will return the id of the bullet that is given by the server 
-     */
-    storeBullet(entry) { 
-        let bulletToStore = { 
-            "journalId": entry.journalId, 
-            "body": entry.body, 
-            "type": entry.type, 
-            "priority": entry.priority, 
-            "mood": entry.mood, 
-            "date": entry.date
-        };
-
-        //Store 
-        let id = addBullet(bulletToStore).then((value) => { 
-            return value; 
-        }); 
-
-        //Update sorting -- linearly O(n) time 
-        for (let index = 0; index <= this.bulletList.length; index++){ 
-            //Iterated through all elements, so insert at end 
-            if (index == this.bulletList.length){ 
-                this.bulletList.push({id: bulletToStore.id, priority: bulletToStore.priority}); 
-                this.idList.push(bulletToStore.id); 
-
-                break; 
-            }
-            //If greater priortiy, insert at that index. Update both lists 
-            if (this.bulletList[index].priority < bulletToStore.priority){ 
-                this.bulletList.splice(index, 0, {id: bulletToStore.id, priority: bulletToStore.priority});
-                this.idList.splice(index, 0, bulletToStore.id); 
-                break;
-            }
-        }
-
-        //Update sorting in backend 
-        updateSorting(getJournal(), new Date(getDate()), this.idList); 
-
-        return id; 
     }
   
     connectedCallback(){ 
@@ -267,7 +225,7 @@ export default class EntryCreator extends HTMLElement{
         const form = this.shadowRoot.getElementById("entryCreator");
 
         //Attach submit event listener to ec form 
-        form.addEventListener('submit', (event)=>{
+        form.addEventListener('submit', async (event)=>{
             event.preventDefault(); 
 
             //Obtain the text box in component
@@ -277,54 +235,13 @@ export default class EntryCreator extends HTMLElement{
             let entryComponent = document.createElement("entry-comp");
             
             //Create entry object using entry-creator and use to set entry-component
-            let entry = this.createEntry(); 
+            let entry = await this.createEntry(); 
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
             textBox.appendChild(entryComponent); 
             form.reset(); 
         });    
-    }
-
-    /**
-     * @param {Array} - The array of bullest to be stored as the order for the bullets in the entry container
-     */
-    set bulletOrder(list){
-        this.bulletList = list; 
-    }
-    /**
-     * @returns {Array} - Returns an array of the bullets in order 
-     */
-    get bulletOrder(){ 
-        return this.bulletList; 
-    }
-    /**
-     * Function which swaps the positions of the two bullets passed in within the 
-     * bullets array 
-     * @param {Object} dragged - Bullet that was dragged
-     * @param {Object} droppedOn - Bullet that was dragged on top of 
-     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
-     * dropped-on element was above. 
-     */
-    swapBullets(index1, index2, direction){ 
-        //Remove dragged element 
-        let dragged = this.bulletList[index1]; 
-        this.bulletList.splice(index1, 1); 
-
-        //Dragged element was above 
-        if (direction){ 
-            //Case we're dragging to last element 
-            if (index2 + 1 == this.bulletList.length){ 
-                this.bulletList.push(dragged); 
-            }
-            else{
-                this.bulletList.splice(index2, 0, dragged);
-            } 
-        }
-        //Dragged element was below 
-        else{ 
-            this.bulletList.splice(index2, 0, dragged); 
-        }
     }
 
     /**

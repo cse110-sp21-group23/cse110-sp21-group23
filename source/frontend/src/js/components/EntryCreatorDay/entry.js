@@ -1,5 +1,5 @@
 import EntryCreator from "./entry-creator"
-import {updateSorting, deleteBullet, addBullet} from "../../api/journal"
+import {updateSorting, deleteBullet, addBullet, editBullet} from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -246,8 +246,8 @@ export default class Entry extends HTMLElement{
             let parent; 
 
             //Get indices of dragged and dropped on entries 
-            let dragIndex = dragEc.bulletOrder.findIndex((element) => element.id == dragSrcEl.entry.id);
-            let dOnIndex = draggedOnEc.bulletOrder.findIndex((element) => element.id == event.target.entry.id);
+            let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
             //Set direction
             let up2Down = dragIndex < dOnIndex;  
 
@@ -255,9 +255,9 @@ export default class Entry extends HTMLElement{
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
-                //Swap positions of elements in both container lists 
-                dragEc.swapBullets(dragIndex, dOnIndex, up2Down); 
+                //Swap positions of elements in id lists
                 dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+    
 
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
@@ -284,20 +284,27 @@ export default class Entry extends HTMLElement{
                 parent = dragSrcEl.parentNode;
                 console.log(dragSrcEl.entry.id); 
 
-                //TODO get this to WORK // 
-                //Remove draggedB from its ec container lists and server
-                deleteBullet(dragSrcEl.entry.id).then(
-                    dragEc.bulletOrder.splice(dragIndex, 1),
-                    dragEc.idOrder.splice(dragIndex, 1)
-                )
+                //Set date on dragSrcEl to date it was dragged to in server
+                let movedBullet = dragSrcEl.entry; 
+                console.log("moved" + movedBullet); 
+                console.log("dragged" + dragSrcEl.entry); 
+                movedBullet.date = draggedOnEc.date;  
+                console.log("Date of ec dOn: " + draggedOnEc.date); 
+                console.log("moved" + movedBullet); 
+                console.log("dragged" + dragSrcEl.entry); 
+                // editBullet(movedBullet).then(
+                //     console.log("movedbullet")
+                // )
 
+                //Remove draggedB from its ec id list
+                dragEc.idOrder.splice(dragIndex, 1)
 
                 //Insert draggedB into new list 
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
 
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
-                updateSorting(getJournal(), new Date(getDate()), draggedOnEc.idOrder);
+                // updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+                // updateSorting(getJournal(), new Date(getDate()), draggedOnEc.idOrder);
 
                 //Set UI      
                 parent.removeChild(dragSrcEl);            

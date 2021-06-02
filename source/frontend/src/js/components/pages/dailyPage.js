@@ -1,6 +1,6 @@
 import EntryCreator from '../EntryCreatorDay/entry-creator'
 import Entry from '../EntryCreatorDay/entry'
-import {getBulletsByDay, getJournals} from '../../api/journal'
+import {getBulletsByDay, getJournals, addBullet} from '../../api/journal'
 import {getJournal, setJournal} from '../../utils/localStorage'
 import DatePicker from '../date-picker'
 
@@ -9,6 +9,7 @@ export class DailyPage extends HTMLElement {
         this.render();
     }
     render() {
+
 
         const template = document.createElement("template");
         this.attachShadow({ mode: 'open' });
@@ -33,9 +34,22 @@ export class DailyPage extends HTMLElement {
             setJournal(value[0].id);
         });
 
-        getBulletsByDay(getJournal(), new Date('2021 04 26')).then((value) => { 
-            console.log(value); 
-        });
+        // getBulletsByDay(getJournal(), new Date('2021 03 30')).then((value) => { 
+        //     console.log(value); 
+        // });
+
+        // let bullet =    {
+        //     "journalId": 7, 
+        //     "body": "23", 
+        //     "type": "task", 
+        //     "priority": 2, 
+        //     "mood": 1, 
+        //     "date": "2021-03-30"
+        // }
+        // addBullet(bullet).then(
+        //     console.log("added")
+        // )
+
 
         // Listen to Date changes from date picker
         document.addEventListener('dateChange', e => {

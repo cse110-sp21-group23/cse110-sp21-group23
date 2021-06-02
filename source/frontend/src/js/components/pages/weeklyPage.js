@@ -12,8 +12,9 @@ export class WeeklyPage extends HTMLElement{
         this.attachShadow({mode: 'open'});
 
         template.innerHTML = `
+        <week-picker></week-picker>
         <div id="weekly-kanban-div"> </div>
-        <week-picker></week-picker>`; 
+        `; 
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 

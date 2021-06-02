@@ -137,6 +137,7 @@ export default class WeeklyKanban extends HTMLElement {
         //Get weekpicker on page 
         let weekP = document.querySelector("weekly-page").shadowRoot.querySelector("week-picker");
         this.dayArray = weekP.sendArray(); 
+        console.log(this.dayArray); 
 
         let colContent= this.shadowRoot.querySelectorAll(".column-content"); 
         for (let index = 0; index < colContent.length; index++){ 
@@ -147,6 +148,9 @@ export default class WeeklyKanban extends HTMLElement {
 
             //Render all respective bullets 
             ecWeek.renderBullets(this.dayArray[index]); 
+
+            //Set internal date 
+            ecWeek.date = this.dayArray[index]; 
         }
         //Event listener to update day array on week change event 
         document.addEventListener('weekChange', () => { 
