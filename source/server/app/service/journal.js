@@ -112,7 +112,12 @@ module.exports = {
 
 const cleanBulletDate = bullet => {
     const newDate = new Date(bullet.date);
-    newDate.setDate(newDate.getDate() + 1)
+    newDate.setDate(newDate.getDate() + 1);
+    
+    console.log("ori: ", bullet.date)
+    console.log("newDate: ", newDate)
+    console.log("newDate.toDateString(): ", newDate.toDateString())
+    console.log("new new date: ", new Date(newDate.toDateString()))
     return {
         ...bullet,
         date: new Date(newDate.toDateString())
