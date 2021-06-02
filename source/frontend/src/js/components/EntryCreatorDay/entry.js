@@ -1,5 +1,5 @@
 import EntryCreator from "./entry-creator"
-import {updateSorting} from "../../api/journal"
+import {updateSorting, deleteBullet, addBullet, editBullet} from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -237,57 +237,89 @@ export default class Entry extends HTMLElement{
             event.stopPropagation(); // Stops some browsers from redirecting.
         }
 
-        //Get container 
-        let ec = document.querySelector("daily-Page").shadowRoot.querySelector("entry-creator"); 
-
-        //Get roots of element being dragged and element begin dropped on 
-        let droppedRoot = dragSrcEl.getRootNode();
-        let eventRoot = event.target.getRootNode(); 
+        //Get containers
+        let dragEc = dragSrcEl.getRootNode().host;
+        let draggedOnEc = event.target.getRootNode().host; 
 
         // Don't do anything if dropping the same column we're dragging.
         if (!(dragSrcEl.isSameNode(event.target))) {
             let parent; 
-            let up2Down = dragSrcEl.getBoundingClientRect().top > event.target.getBoundingClientRect().top; 
+
+            //Get indices of dragged and dropped on entries 
+            let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+            //Set direction
+            let up2Down = dragIndex < dOnIndex;  
 
             //If they have the same shadowroot
-            if (droppedRoot.isSameNode(eventRoot)) { 
-                parent = event.target.parentNode; 
+            if (dragEc.isSameNode(draggedOnEc)) { 
+                parent = event.target.parentNode;
 
-                //Swap positions of elements in both container lists 
-                ec.swapBullets({id: dragSrcEl.entry.id, priority: dragSrcEl.entry.priority}, {id: event.target.entry.id, priority: event.target.entry.priority}); 
-                ec.swapIds(dragSrcEl.entry.id, event.target.entry.id);
+                //Swap positions of elements in id lists
+                dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+    
 
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), ec.idOrder); 
+                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+
+                //Remove the entry we're dragging from textbox UI
+                parent.removeChild(dragSrcEl);
+
+                //Recreate the element with stored data in DataTransfer object in UI
+                let dropElement = document.createElement('entry-comp');
+                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                dropElement.entry = entry; 
+
+                //Dragged object was above the one it's dropped on
+                if (up2Down){ 
+                    event.target.insertAdjacentElement('afterend', dropElement);
+                }
+                //Dragged object was below the one it's dropped on
+                else {
+                    event.target.insertAdjacentElement('beforebegin', dropElement);
+                }
             }
             //Don't have the same shadow root
             else { 
-                parent = dragSrcEl.parentNode; 
-            }
+                parent = dragSrcEl.parentNode;
+                console.log(dragSrcEl.entry.id); 
 
-            //Dragged object was above the one it's dropped on
-            if (up2Down){ 
-                //Remove the entry we're dragging from textbox
-                parent.removeChild(dragSrcEl);
+                //Set date on dragSrcEl to date it was dragged to in server
+                let movedBullet = dragSrcEl.entry; 
+                console.log("moved" + movedBullet); 
+                console.log("dragged" + dragSrcEl.entry); 
+                movedBullet.date = draggedOnEc.date;  
+                console.log("Date of ec dOn: " + draggedOnEc.date); 
+                console.log("moved" + movedBullet); 
+                console.log("dragged" + dragSrcEl.entry); 
+                // editBullet(movedBullet).then(
+                //     console.log("movedbullet")
+                // )
 
+                //Remove draggedB from its ec id list
+                dragEc.idOrder.splice(dragIndex, 1)
+
+                //Insert draggedB into new list 
+                draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
+
+                //Update sorting in backend 
+                // updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+                // updateSorting(getJournal(), new Date(getDate()), draggedOnEc.idOrder);
+
+                //Set UI      
+                parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = document.createElement('entry-comp');
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
-
-                event.target.insertAdjacentElement('beforebegin', dropElement);
-            }
-            //Dragged object was below the one it's dropped on
-            else {
-                //Remove the entry we're dragging from textbox
-                event.target.parentNode.removeChild(dragSrcEl);
-
-                //Recreate the element with stored data in DataTransfer object
-                let dropElement = document.createElement('entry-comp');
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
-                dropElement.entry = entry; 
-
-                event.target.insertAdjacentElement('afterend', dropElement);
+    
+                //If dragged to bottom, insert at bottom 
+                if (dOnIndex + 1 == draggedOnEc.bulletOrder.length - 1){ 
+                    event.target.insertAdjacentElement('afterend', dropElement); 
+                }
+                else{ 
+                    event.target.insertAdjacentElement('beforebegin', dropElement); 
+                }
             }
         }
         event.target.classList.remove('over');

@@ -1,13 +1,13 @@
-import {addBullet, updateSorting} from "../../api/journal"
-import {getJournal, getDate} from '../../utils/localStorage'
-import {getBulletsByDay} from '../../api/journal'
+import {getBulletsByDay, addBullet, updateSorting, deleteBullet} from '../../api/journal'
+import {getJournal} from "../../utils/localStorage"
 
-export default class EntryCreator extends HTMLElement{ 
-
+export default class EntryCreatorWeek extends HTMLElement{
     //Stores bullets in pairs of their id and priority
     bulletList= []; 
     //Stores bullets by id's 
     idList = []; 
+    //Date of this particular entry creator 
+    currDate; 
 
     constructor(){ 
         super(); 
@@ -151,7 +151,7 @@ export default class EntryCreator extends HTMLElement{
         if (inputAudio.value != '') { 
             entry.audio = URL.createObjectURL(inputAudio.files[0]); 
         } 
-        entry.date = formatDate(getDate()); 
+        entry.date = formatDate(this.currDate); 
         entry.journalId = getJournal(); 
 
         //Store the entry in the backend and internal list in sorted order
@@ -165,23 +165,23 @@ export default class EntryCreator extends HTMLElement{
     }
 
     /**
-     * Function which renders all bullets from the backend in the order they are stored 
+     * Function which renders all bullets from the backend in the order they are stored for the passed in date
+     * @param {Date} date - The date in which you want to render bullets from 
      */
-    renderBullets() { 
+    renderBullets(date) { 
         //Grab journal id from local storage 
         let journalId = getJournal(); 
-        let theDate = getDate();
-
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
-
+        getBulletsByDay(journalId,new Date(date)).then((value) =>{
+            console.log(value); 
+            console.log(date); 
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = ""; 
 
             //Clear the internal list of bullets 
-            this.bulletOrder = []; 
+            this.idList = []; 
 
             //No bullets for that day, return
             if (value.length == 0){ 
@@ -190,13 +190,6 @@ export default class EntryCreator extends HTMLElement{
 
             //Create entry components for each and populate entry-creator
             value.forEach((element) => { 
-                let storage = { 
-                    id: element.id, 
-                    priority: element.priority 
-                }
-
-                //Create the new internal list of bullets
-                this.bulletList.push(storage); 
                 this.idList.push(element.id); 
 
                 //Make an entry component 
@@ -207,6 +200,7 @@ export default class EntryCreator extends HTMLElement{
                 textBox.appendChild(entryComponent); 
             });
         });
+
     }
 
     /**
@@ -232,24 +226,16 @@ export default class EntryCreator extends HTMLElement{
         }); 
 
         //Update sorting -- linearly O(n) time 
-        for (let index = 0; index <= this.bulletList.length; index++){ 
+        for (let index = 0; index <= this.idList.length; index++){ 
             //Iterated through all elements, so insert at end 
             if (index == this.bulletList.length){ 
-                this.bulletList.push({id: bulletToStore.id, priority: bulletToStore.priority}); 
                 this.idList.push(bulletToStore.id); 
-
                 break; 
-            }
-            //If greater priortiy, insert at that index. Update both lists 
-            if (this.bulletList[index].priority < bulletToStore.priority){ 
-                this.bulletList.splice(index, 0, {id: bulletToStore.id, priority: bulletToStore.priority});
-                this.idList.splice(index, 0, bulletToStore.id); 
-                break;
             }
         }
 
         //Update sorting in backend 
-        updateSorting(getJournal(), new Date(getDate()), this.idList); 
+        updateSorting(getJournal(), new Date(this.currDate), this.idList); 
 
         return id; 
     }
@@ -262,8 +248,6 @@ export default class EntryCreator extends HTMLElement{
      * Function which renders the entryComponent on the page.
      */
     render(){
-        //Render the bullets for the first day it's instantiated in 
-        this.renderBullets(); 
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
@@ -288,49 +272,6 @@ export default class EntryCreator extends HTMLElement{
     }
 
     /**
-     * @param {Array} - The array of bullest to be stored as the order for the bullets in the entry container
-     */
-    set bulletOrder(list){
-        this.bulletList = list; 
-    }
-    /**
-     * @returns {Array} - Returns an array of the bullets in order 
-     */
-    get bulletOrder(){ 
-        return this.bulletList; 
-    }
-    /**
-     * Function which swaps the positions of the two bullets passed in within the 
-     * bullets array 
-     * @param {Object} dragged - Bullet that was dragged
-     * @param {Object} droppedOn - Bullet that was dragged on top of 
-     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
-     * dropped-on element was above. 
-     */
-    swapBullets(dragged, droppedOn, direction){ 
-        let index1 = this.bulletList.findIndex((element) => element.id == dragged.id); 
-        let index2 = this.bulletList.findIndex((element) => element.id == droppedOn.id); 
-
-        //Remove dragged element 
-        this.bulletList.splice(index1, 1); 
-
-        //Dragged element was above 
-        if (direction){ 
-            //Case we're dragging to last element 
-            if (index2 + 1 == this.bulletList.length){ 
-                this.bulletList.length.push(dragged); 
-            }
-            else{
-                this.bulletList.splice(index2 + 1, 0, dragged);
-            } 
-        }
-        //Dragged element was below 
-        else{ 
-            this.bulletList.splice(index2, 0, dragged); 
-        }
-    }
-
-    /**
      * @param {Array} - The array of bullets to be stored by their id's. 
      */
     set idOrder(list){
@@ -350,9 +291,8 @@ export default class EntryCreator extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(dragged, droppedOn, direction){ 
-        let index1 = this.idList.findIndex((element) => element == dragged); 
-        let index2 = this.idList.findIndex((element) => element == droppedOn); 
+    swapIds(index1, index2, direction){  
+        let dragged = this.idList[index1]; 
         //Remove dragged element 
         this.idList.splice(index1, 1); 
 
@@ -360,10 +300,10 @@ export default class EntryCreator extends HTMLElement{
         if (direction){ 
             //Case we're dragging to last element 
             if (index2 + 1 == this.idList.length){ 
-                this.idList.length.push(dragged); 
+                this.idList.push(dragged); 
             }
             else{
-                this.idList.splice(index2 + 1, 0, dragged);
+                this.idList.splice(index2, 0, dragged);
             } 
         }
         //Dragged element was below 
@@ -371,15 +311,45 @@ export default class EntryCreator extends HTMLElement{
             this.idList.splice(index2, 0, dragged); 
         }
     }
-}
 
+    /**
+     * Function inserts the dragged bullet into this container's idList
+     * @param {int} index2 - Index of the bullet in this container that the 
+     * dragged bullet was dropped on
+     * @param {Object} dBullet - the dragged bullet 
+     */
+    diffListIns(index2, dBullet){
+        //Case drag is dragged on last element in this list 
+        if (index2 + 1 == this.idList.length){  
+            this.idList.push(dBullet.id); 
+        }
+        //Insert normally
+        else{ 
+            this.idList.splice(index2, 0, dBullet.id); 
+        }
+    }
+
+    /**
+     * @param {String} date - The date of this ec creator as a string 
+     */
+    set date(date){ 
+        this.currDate = date; 
+    }
+
+    /**
+     * @return {String} - Returns a string of this entry creator's internal date
+     */
+    get date(){ 
+        return this.currDate; 
+    }
+}
 
 /**
  * Helper function to format the dates correctly 
  * @param {Date} date 
  * @returns a string with the date formatted correctly 
  */
-function formatDate(date) {
+ function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -393,6 +363,5 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-
-//Make the custom element 
-customElements.define('entry-creator', EntryCreator); 
+//Make custom element 
+customElements.define('entry-creator-week', EntryCreatorWeek); 
