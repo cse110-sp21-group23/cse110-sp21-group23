@@ -17,15 +17,15 @@ class NavigationBar extends HTMLElement {
               position: fixed;
               height: 100vh;
               width: 190px;
-              border-radius: 10px;
               z-index: 1;
-              top: 80px;
-              bottom: -10px;
-              left: -20px;
+              left: -10px;
               background-color: #C9CBB3;
-              padding-top: 1px;
-
-
+              -webkit-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
+              -moz-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
+              box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
+              -webkit-border-radius: 0px;
+              -moz-border-radius: 0px;
+              border-radius: 0px;
             }
             
             .sidebar-entry {
@@ -60,7 +60,7 @@ class NavigationBar extends HTMLElement {
                 text-decoration: none;
                 background-color: #C9CBB3;
                 margin: 0px 0px 10px 0px;
-                padding: 20px 0px 20px 15px;
+                padding: 20px 0px 20px 20px;
                 font-size: 20px;
                 color: #7C8578;
                 font-family: 'Lato', sans-serif;
@@ -84,7 +84,6 @@ class NavigationBar extends HTMLElement {
                 font-size: 20px;
                 color: #7C8578;
                 font-family: 'Lato', sans-serif;
-                text-align: center;
             }
 
             #hide:hover {

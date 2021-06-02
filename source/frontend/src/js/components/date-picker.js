@@ -34,9 +34,9 @@ export default class DatePicker extends HTMLElement {
         template.innerHTML = `
 
             <div class="full-date">
-                <i class='fas fa-angle-left fa-pull-left' id="prev"> &lt;</i>
+                <i class='fas-fa-angle-left-fa-pull-left' id="prev"> &lt;</i>
                 <div id="date"></div>
-                <i class='fas fa-angle-right' id="next"> &gt; </i>
+                <i class='fas-fa-angle-right' id="next"> &gt; </i>
             </div>
 
         `
@@ -48,6 +48,14 @@ export default class DatePicker extends HTMLElement {
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
+                margin-top: 2.0rem;
+                margin-bottom: 1.4rem;
+            }
+            .fas-fa-angle-left-fa-pull-left {
+                transform: translateX(-250%);
+            }
+            .fas-fa-angle-right{
+                transform: translateX(250%);
             }
 
             #date {
