@@ -1,7 +1,7 @@
 import { login, register } from '../../api/user'
 import { getJournals, getBulletsByDay, addBullet, deleteBullet, editBullet, updateSorting } from '../../api/journal'
 
-import WeeklyComponent from '../weekComponent'
+
 export class DefaultPage extends HTMLElement {
 
     connectedCallback() {
@@ -15,8 +15,10 @@ export class DefaultPage extends HTMLElement {
         template.innerHTML = (`
             <div id="defaultPageDiv">
                 <h1>yeet</h1>
-                <button name="toDailyPage"></button> 
+                <button id="daily" name="toDailyPage"></button> 
                 <label for="toDailyPage"> Go to daily page </label> 
+                <button id="weekly" name="toWeeklyPage"></button> 
+                <label for="toWeeklyPage"> Go to weekly page </label> 
             </div>
         `)
 
@@ -30,8 +32,13 @@ export class DefaultPage extends HTMLElement {
             
         })
         //Event handler to get to daily page
-        this.shadowRoot.querySelector('button').addEventListener('click', () => {
+        this.shadowRoot.getElementById('daily').addEventListener('click', () => {
             window.location = "dailyPage"
+        });
+
+        //Event handler to get to weekly page
+        this.shadowRoot.getElementById('weekly').addEventListener('click', () => {
+            window.location = "weeklyPage"
         });
     }
 }
