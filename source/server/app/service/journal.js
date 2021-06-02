@@ -50,8 +50,7 @@ module.exports = {
 
     getBulletByDay: async (journalId, date) => {
         try {
-            const start = new Date(new Date(date).toDateString())
-            start.setDate(start.getDate())
+            const start = new Date(date)
             const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
             const day = await journalDB.getDayByInterval(journalId, start, end)
             if (day.length == 0) {
@@ -90,8 +89,7 @@ module.exports = {
 
     updateSorting: async (journalId, date, arr) => {
         try {
-            const start = new Date(new Date(date).toDateString())
-            start.setDate(start.getDate() + 1)
+            const start = new Date(date)
             const end = new Date(start.getTime() + 24 * 60 * 60 * 1000)
             const days = await journalDB.getDayByInterval(journalId, start, end)
             let dayId
@@ -111,6 +109,7 @@ module.exports = {
 
 const cleanBulletDate = bullet => {
     const newDate = new Date(bullet.date);
+    //newDate.setDate(newDate.getDate() + 1)
     return {
         ...bullet,
         date: newDate
