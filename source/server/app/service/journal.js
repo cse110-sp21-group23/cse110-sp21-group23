@@ -83,7 +83,7 @@ module.exports = {
     
     deleteBullet: async id => {
         try {
-            await journalDB.delete(id)
+            await journalDB.deleteBullet(id)
         } catch (err) {
             throw err
         }
