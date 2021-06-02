@@ -3,6 +3,7 @@ import Entry from '../EntryCreatorComponent/entry'
 import {getBulletsByDay, getJournals} from '../../api/journal'
 import {getJournal, setJournal} from '../../utils/localStorage'
 import DatePicker from '../date-picker'
+import TopNav from '../topNavBar/topNav'
 
 export class DailyPage extends HTMLElement {
     connectedCallback() {
@@ -14,12 +15,21 @@ export class DailyPage extends HTMLElement {
         this.attachShadow({ mode: 'open' });
 
         template.innerHTML = `
+        <style>
+        body {
+
+        }
+        </style>
+
+        <body>
             <div id="datePickerDiv"></div>
             <div id="entryCreatorDiv"> </div>
+        </body>
         `;
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        //const topNav = document.createElement('top-Nav');
         //Attach entry creator and datepicker to template div 
         const ec = document.createElement('entry-creator');
 
