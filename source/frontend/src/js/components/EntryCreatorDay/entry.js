@@ -286,27 +286,24 @@ export default class Entry extends HTMLElement{
 
                 //Set date on dragSrcEl to date it was dragged to in server
                 let movedBullet = dragSrcEl.entry; 
-                console.log("moved" + movedBullet); 
-                console.log("dragged" + dragSrcEl.entry); 
                 movedBullet.date = draggedOnEc.date;  
-                console.log("Date of ec dOn: " + draggedOnEc.date); 
-                console.log("moved" + movedBullet); 
-                console.log("dragged" + dragSrcEl.entry); 
-                // editBullet(movedBullet).then(
-                //     console.log("movedbullet")
-                // )
+
+                //Update bullet date in server
+                editBullet(movedBullet).then(
+                    console.log("movedbullet")
+                )
 
                 //Remove draggedB from its ec id list
                 dragEc.idOrder.splice(dragIndex, 1)
 
-                //Insert draggedB into new list 
+                //Insert draggedB draggedOn's ec id list 
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
 
                 //Update sorting in backend 
-                // updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
-                // updateSorting(getJournal(), new Date(getDate()), draggedOnEc.idOrder);
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
+                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
 
-                //Set UI      
+                //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = document.createElement('entry-comp');
@@ -314,7 +311,7 @@ export default class Entry extends HTMLElement{
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.bulletOrder.length - 1){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 

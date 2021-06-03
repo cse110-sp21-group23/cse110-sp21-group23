@@ -2,8 +2,6 @@ import {getBulletsByDay, addBullet, updateSorting, deleteBullet} from '../../api
 import {getJournal} from "../../utils/localStorage"
 
 export default class EntryCreatorWeek extends HTMLElement{
-    //Stores bullets in pairs of their id and priority
-    bulletList= []; 
     //Stores bullets by id's 
     idList = []; 
     //Date of this particular entry creator 
@@ -165,8 +163,6 @@ export default class EntryCreatorWeek extends HTMLElement{
             updateSorting(getJournal(), new Date(this.currDate), this.idList); 
             return value; 
         });
-
-        //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
         return entry; 
     }
 
