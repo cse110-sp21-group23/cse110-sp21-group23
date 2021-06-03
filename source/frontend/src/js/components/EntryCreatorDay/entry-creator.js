@@ -205,7 +205,7 @@ export default class EntryCreator extends HTMLElement {
         let journalId = getJournal();
         let theDate = getDate();
 
-
+        console.log(theDate); 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate)).then((value) => {
             console.log(value);
