@@ -148,17 +148,18 @@ export default class EntryCreator extends HTMLElement{
             entry.audio = URL.createObjectURL(inputAudio.files[0]); 
         } 
         entry.date = formatDate(getDate()); 
-        console.log(entry.date); 
+        console.log("Entry date: " +entry.date); 
         entry.journalId = getJournal(); 
+        console.log(this.idList); 
 
         //Append the entry to the backend and internal list at the end 
         await addBullet(entry).then((value) => { 
+            console.log(entry.date); 
             //Always append bullet to end 
             this.idList.push(value.id); 
-            console.log(this.idList); 
-            console.log(this.idList.length); 
 
             entry.id = value.id; 
+            console.log(new Date(getDate()));
 
             //Update sorting in backend only after idList has been updated
             updateSorting(getJournal(), new Date(getDate()), this.idList); 
@@ -179,7 +180,7 @@ export default class EntryCreator extends HTMLElement{
         let journalId = getJournal(); 
         let theDate = getDate();
 
-
+        console.log(theDate); 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
             console.log(value); 

@@ -114,7 +114,7 @@ export default class EntryCreatorWeek extends HTMLElement{
      * entry. This can includes text, type of entry, and potentially images or audio. This 
      * will presumably be used to create an Entry web component. 
      */
-    createEntry() { 
+    async createEntry() { 
         let entry ={ 
             journalId: null,
             body: null, 
@@ -154,11 +154,17 @@ export default class EntryCreatorWeek extends HTMLElement{
         entry.date = formatDate(this.currDate); 
         entry.journalId = getJournal(); 
 
-        //Store the entry in the backend and internal list in sorted order
-        let id = this.storeBullet(entry).then((value) => { 
+        //Append the entry in the backend and to the internal list
+        await addBullet(entry).then((value) => { 
+            //Append bullet to internal list 
+            this.idList.push(value.id); 
+
+            entry.id = value.id; 
+            
+            //Update sorting in backend only after idList has been updated 
+            updateSorting(getJournal(), new Date(this.currDate), this.idList); 
             return value; 
-        }); 
-        entry.id = id; 
+        });
 
         //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
         return entry; 
@@ -200,46 +206,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 textBox.appendChild(entryComponent); 
             });
         });
-
     }
-
-    /**
-     * Function which stores passed in bullet into the backend. Also updates the ordering of the 
-     * bullets in the backend 
-     * @param {Object} entry - The bullet object formatted in entry / entry-creator fashion
-     * which will be reformatted to be stored in backend format 
-     * @return {int} - Will return the id of the bullet that is given by the server 
-     */
-    storeBullet(entry) { 
-        let bulletToStore = { 
-            "journalId": entry.journalId, 
-            "body": entry.body, 
-            "type": entry.type, 
-            "priority": entry.priority, 
-            "mood": entry.mood, 
-            "date": entry.date
-        };
-
-        //Store 
-        let id = addBullet(bulletToStore).then((value) => { 
-            return value; 
-        }); 
-
-        //Update sorting -- linearly O(n) time 
-        for (let index = 0; index <= this.idList.length; index++){ 
-            //Iterated through all elements, so insert at end 
-            if (index == this.bulletList.length){ 
-                this.idList.push(bulletToStore.id); 
-                break; 
-            }
-        }
-
-        //Update sorting in backend 
-        updateSorting(getJournal(), new Date(this.currDate), this.idList); 
-
-        return id; 
-    }
-  
     connectedCallback(){ 
         this.render(); 
     }
@@ -252,7 +219,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         const form = this.shadowRoot.getElementById("entryCreator");
 
         //Attach submit event listener to ec form 
-        form.addEventListener('submit', (event)=>{
+        form.addEventListener('submit', async (event)=>{
             event.preventDefault(); 
 
             //Obtain the text box in component
@@ -262,7 +229,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             let entryComponent = document.createElement("entry-comp");
             
             //Create entry object using entry-creator and use to set entry-component
-            let entry = this.createEntry(); 
+            let entry = await this.createEntry(); 
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
