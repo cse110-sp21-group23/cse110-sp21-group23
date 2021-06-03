@@ -4,7 +4,7 @@ import {getJournal, getDate} from '../../utils/localStorage'
 export default class EntryCreator extends HTMLElement{ 
     //Stores bullets by id's 
     idList = []; 
-
+    
     constructor(){ 
         super(); 
         //Create template and insert html
