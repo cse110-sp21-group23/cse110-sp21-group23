@@ -1,5 +1,5 @@
-import EntryCreator from "./entry-creator"
-import {updateSorting, deleteBullet, addBullet, editBullet} from "../../api/journal"
+
+import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -129,18 +129,20 @@ export default class Entry extends HTMLElement{
         
         /* Modal Content/Box */
         .modal-content {
-            background-color: #fefefe;
+            border-radius: 10px;
+            background-color: #C9CBB3;
             margin: 15% auto; /* 15% from the top and centered */
             padding: 30px;
             border: 5px solid #888;
-            width: 90%; /* Could be more or less, depending on screen size */
-            height: 25%;
+            width: 75%; /* Could be more or less, depending on screen size */
+            height: 30%;
         }
         #modal-words {
             padding: 10px; 
             width: 50vw; 
             box-sizing: border-box; 
             font-size: 15pt;
+            border-radius: 10px;
         }
         [contenteditable] {
             outline: 2px solid;
@@ -161,15 +163,27 @@ export default class Entry extends HTMLElement{
         }
         
         #editButton {
+            border-radius: 10px;
             margin-top:20px;
             padding: 10px;
+            width: 90px;
+            height: 90px;
+            font-size: 16px;
         }
         #doneButton {
+            border-radius: 10px;
             margin-top:20px;
             padding: 10px;
+            width: 90px;
+            height: 90px;
+            font-size: 16px;
         }
         .modal-title {
             text-align: center;
+            font-size: 20px;
+            text-decoration: underline;
+            position: relative;
+            height: 10px;
         }`;
 
         //Attach shadow 
@@ -187,7 +201,6 @@ export default class Entry extends HTMLElement{
         this.internalEntry = entry; 
         let shadow = this.shadowRoot; 
         let entryImage = this.shadowRoot.querySelector(".entry-image");
-
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
@@ -362,6 +375,60 @@ export default class Entry extends HTMLElement{
         this.render(); 
     }
     
+
+    /*           
+     edit.addEventListener("click", async(event) => {
+        console.log("hey");
+        event.preventDefault();
+        //changes entry's content and bullet type
+        shadow.getElementById("content").textContent = shadow.getElementById("modal-words").value;
+        bulletChange.body = shadow.getElementById("modal-words").value;
+        let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
+        for (const choice of choices) { 
+            if (choice.checked){ 
+                console.log("choice = " + choice.value);
+                entry.className = choice.value;
+                choice.checked = false;
+                bulletChange.type = choice.value;
+            }
+        }
+        let symbol = "";
+        if(symbol == "") {
+            symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
+        }
+        shadow.getElementById("symbol").textContent = symbol;
+        //closes modal and fixes finish bullet button text
+        await editBullet(bulletChange);
+        modal.style.display = "none";
+    });
+    */
+
+    async bulletEdit(event, bulletChange) {
+        const shadow = this.shadowRoot;
+        event.preventDefault();
+        console.log("hey");
+        //changes entry's content and bullet type
+        shadow.getElementById("content").textContent = shadow.getElementById("modal-words").value;
+        bulletChange.body = shadow.getElementById("modal-words").value;
+        let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
+        for (const choice of choices) { 
+            if (choice.checked){ 
+                console.log("choice = " + choice.value);
+                entry.className = choice.value;
+                choice.checked = false;
+                bulletChange.type = choice.value;
+            }
+        }
+        let symbol = "";
+        if(symbol == "") {
+            symbol = this.shadowRoot.querySelector("#type").className == "task" ? "☐" : this.shadowRoot.querySelector("#type").className == "event" ? "○" : "\u2022"
+        }
+        shadow.getElementById("symbol").textContent = symbol;
+        //closes modal and fixes finish bullet button text
+        await editBullet(bulletChange);
+        //shadow.getElementById("modal").style.display = "none";
+    }
+
     render(){ 
 
         const shadow = this.shadowRoot;
@@ -372,7 +439,7 @@ export default class Entry extends HTMLElement{
 
         //Entry part
         let entry = this.shadowRoot.querySelector("#type");
-        var content = entry.children;
+        var content = entry.children;   
 
         //Delete listener 
         let delButton = this.shadowRoot.querySelector("#deleteButton"); 
@@ -409,70 +476,121 @@ export default class Entry extends HTMLElement{
         } 
 
         //on doubleclick on entry for edit cause single click is drag&drop
-        entry.addEventListener("dblclick", () => {
-            //shows modal
-            modal.style.display = "block";
+        entry.addEventListener("dblclick", async () => {
 
             //changes modal textbox to match entry's content
-            shadow.getElementById("modal-words").value = content[0].textContent;
+            shadow.getElementById("modal-words").value = shadow.getElementById("content").textContent;
+            let journalId = getJournal(); 
+            let theDate = getDate();
             
-            //edit button from modal
-            var edit = shadow.getElementById("editButton");
-            
-            //Can't use addEventListener, it gets upset
-            edit.onclick = function(event) {
-                event.preventDefault();
-
-                //changes entry's content and bullet type
-                content[0].textContent = shadow.getElementById("modal-words").value;
-                let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
-                for (const choice of choices) { 
-                    if (choice.checked){ 
-                        console.log("choice = " + choice.value);
-                        entry.className = choice.value;
-                        choice.checked = false;
+            let bulletChange;
+            //Get bullets for that day from the backend and populate bulletArray
+            await getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+                console.log(shadow.getElementById("content").innerHTML);
+                console.log(shadow.getElementById("content").textContent);
+                for(let i = 0; i < value.length; i++) {
+                    if(value[i].body == shadow.getElementById("content").textContent ||
+                      value[i].body == shadow.getElementById("content").innerHTML    &&
+                      value[i].type == this.shadowRoot.querySelector("#type").className) {
+                        console.log(value[i]);
+                        bulletChange = value[i];
                     }
                 }
-                
-                //closes modal and fixes finish bullet button text
-                modal.style.display = "none";
-                strike.firstChild.nodeValue = "Finish Bullet";
-            }
-            
+            });
             //Makes sure finish bullet button says the right text
-            if(content[0].innerHTML.startsWith("<del>")) {
+            
+
+            if(bulletChange.is_done == null) {
+                bulletChange.is_done = false;
+            }
+            console.log(bulletChange.is_done);
+            if(bulletChange.is_done == true) {
                 strike.firstChild.nodeValue = "Unfinish Bullet";
             }
             else {
                 strike.firstChild.nodeValue = "Finish Bullet";
             }
 
-            //adds strikethrough through entry
-            strike.onclick = function(event) {
+            //shows modal
+            modal.style.display = "block";
+            //edit button from modal
+            var edit = shadow.getElementById("editButton");
+            edit.onclick = async (event) => {
+            //edit.addEventListener("click", async(event) => {
+                console.log("hey");
                 event.preventDefault();
-                
+                //changes entry's content and bullet type
+                shadow.getElementById("content").textContent = shadow.getElementById("modal-words").value;
+                bulletChange.body = shadow.getElementById("modal-words").value;
+                let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
+                for (const choice of choices) { 
+                    if (choice.checked){ 
+                        console.log("choice = " + choice.value);
+                        entry.className = choice.value;
+                        choice.checked = false;
+                        bulletChange.type = choice.value;
+                    }
+                }
+                let symbol = "";
+                if(symbol == "") {
+                    symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
+                }
+                shadow.getElementById("symbol").textContent = symbol;
+                //closes modal and fixes finish bullet button text
+                await editBullet(bulletChange);
+                modal.style.display = "none";
+            };
+            
+            
+            //adds strikethrough through entry
+            strike.onclick = async (event) => {
+                //strike.addEventListener("click", async (event) => {
+                event.preventDefault();
+
                 //holds strikethrough text
                 var strikeT;
-    
+
+                //makes sure bulletChange has a value
+                if(bulletChange.is_done == null) {
+                    bulletChange.is_done = false;
+                }
+
                 //removes strikethrough and changes strike button txt
-                if(content[0].innerHTML.startsWith("<del>")) {
-                    strikeT = content[0].innerHTML.replace("<del>",'');
-                    strikeT = strikeT.replace("</del>", '');
+                if(bulletChange.is_done == true) {
+
+                    //remove strikethrough text
+                    strikeT = shadow.getElementById("content").innerHTML.replace("<strike>",'');
+                    strikeT = strikeT.replace("</strike>",'');
+
+                    //updates button txt
                     strike.firstChild.nodeValue = "Finish Bullet";
+
+                    //updates relevant bullet parts
+                    bulletChange.isDone = false;
+                    bulletChange.body = strikeT;
+
+                    //updates onscreen text
+                    shadow.getElementById("content").innerHTML = strikeT;
                 }
-                //inserts strikethrough and changes strike button txt
                 else {
-                    strikeT = "<del>" + content[0].innerHTML + "</del>";
+                    //adds strikethrough text
+                    strikeT = "<strike>" + shadow.getElementById("content").innerHTML + "</strike>";
                     strike.firstChild.nodeValue = "Unfinish Bullet";
+
+                    //updates relevant bullet parts
+                    bulletChange.body = strikeT;
+                    bulletChange.isDone = true;
+                    //updates onscreen text
+                    shadow.getElementById("content").innerHTML = strikeT;
                 }
-    
-                //changes entry content and closes modal
-                content[0].innerHTML = strikeT;
+
+                //closes modal and updates bullet
                 modal.style.display = "none";
-            }
-        });      
-    }
-}
+                await editBullet(bulletChange);
+            };    //end strikethrough function
+        }); //end edit bullet event listener 
+    } //end render
+} //end class
 
 //Define the custom element 
 customElements.define('entry-comp', Entry); 
