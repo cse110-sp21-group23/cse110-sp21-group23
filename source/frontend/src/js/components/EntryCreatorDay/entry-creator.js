@@ -62,12 +62,14 @@ export default class EntryCreator extends HTMLElement{
         style.textContent = `
         #wrapper{ 
             border: 1px solid; 
+            border-radius: 20px;
             margin-left: auto; 
             margin-right: auto; 
             display: flex; 
             flex-direction: column; 
             align-items: flex-start; 
             width: 60%; 
+            background: #C0C0C0;
         }
         #textBox{
             margin-left: auto; 
