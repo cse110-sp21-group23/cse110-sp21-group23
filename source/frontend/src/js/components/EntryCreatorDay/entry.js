@@ -26,10 +26,15 @@ export default class Entry extends HTMLElement{
         template.innerHTML = `
             <li id="type" draggable="true" class="type-name">
                 <div class="bullet-container">
-                    <p id="symbol"></p>
-                    <p id="content"></p><br>
-                    <img src="" alt="" class="entry-image"></img> <br>
-                    <audio src="" class="entry-audio"></audio>
+                    <div class="content-container">
+                        <div class="text-wrap">
+                            <p id="symbol"></p>
+                            <p id="content"></p><br>
+                        </div> 
+                        <img src="" alt="" class="entry-image"></img> <br>
+                        <audio src="" class="entry-audio"></audio>
+                        <button id="deleteButton">X Symbol Here </button> 
+                    </div> 
                 </div>
             </li>
             <div id="myModal" class="modal">
@@ -72,6 +77,11 @@ export default class Entry extends HTMLElement{
             margin: 0.5em;
         }
         
+        .content-container { 
+            display: flex;  
+            align-items: center; 
+            justify-content: space-between; 
+        }
         li {
             list-style-type: none;
             border-style: solid;
@@ -79,7 +89,7 @@ export default class Entry extends HTMLElement{
             border-color: #6a828d;
             border-radius: 10px;
             box-shadow: 1px 1px 3px #6a828d;
-            margin: 0.5em;
+            margin: 0.7em; 
         }
 
         li:hover {
@@ -93,11 +103,17 @@ export default class Entry extends HTMLElement{
         p { 
             display: inline; 
             font-size: 20px;
+            
         }
+
+        #deleteButton { 
+        }
+
         img{ 
             height: 0px; 
             width: auto; 
         }
+
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -357,6 +373,32 @@ export default class Entry extends HTMLElement{
         //Entry part
         let entry = this.shadowRoot.querySelector("#type");
         var content = entry.children;
+
+        //Delete listener 
+        let delButton = this.shadowRoot.querySelector("#deleteButton"); 
+        delButton.addEventListener('click', ()=> { 
+            //Delete the bullet in the server 
+            deleteBullet(this.internalEntry.id).then(()=> { 
+                let ec = this.getRootNode().host; 
+                //Update ec id list 
+                let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
+                ec.idOrder.splice(index,1);  
+                
+                let date; 
+                //daily 
+                if (ec.currDate == undefined){ 
+                    date = getDate(); 
+                }
+                //weekly
+                else { 
+                    date = ec.currDate; 
+                }
+
+                //Update list in backend
+                updateSorting(getJournal(), new Date(date), ec.idOrder); 
+                this.remove(); 
+             }); 
+        })
 
         //Strikethrough button
         var strike = shadow.getElementById("doneButton");

@@ -1,81 +1,60 @@
-import {getBulletsByDay, addBullet, updateSorting, deleteBullet} from '../../api/journal'
-import {getJournal} from "../../utils/localStorage"
+import { getBulletsByDay, addBullet, updateSorting, deleteBullet } from '../../api/journal'
+import { getJournal } from "../../utils/localStorage"
 
 export default class EntryCreatorWeek extends HTMLElement{
     //Stores bullets by id's 
-    idList = []; 
+    idList = [];
     //Date of this particular entry creator 
-    currDate; 
+    currDate;
 
-    constructor(){ 
-        super(); 
+    constructor() {
+        super();
         //Create template and insert html
         //Grab the template 
         const template = document.createElement('template');
         template.innerHTML = `
-        <div id="wrapper">
-            <form id="entryCreator">
-                <ul>
-                <!--Determine type of bullet point it'll be-->
-                    <li>
-                    <div id="radio1">
-                        <input type="radio" name="entryType" id="task" value="task" required>
-                        <label for="task">Task</label>
-                        <input type="radio" name="entryType" id="event" value="event"> 
-                        <label for="event">Event </label>
-                        <input type="radio" name="entryType" id="note" value="note"> 
-                        <label for="note">Note </label> 
-                    </div>
-                    </li>
-                    <!--Image input-->
-                    <li>
-                    <label for="image-input">Insert Image</label>
-                    <input type="file" name="image" id="image-input" accept="image/*"> <br>
-                    </li>
-                    
-                    <!--Audio input-->
-                    <li>
-                    <label for="audio-input">Insert Audio</label>
-                    <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
-                    </li>
-                    
-                    <!--Where they'll log their stuff-->
-                    <li>
-                    <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
-                    </li>
-                    
-            
-                    <!--Add button-->
-                    <li>
-                    <button type="submit" id="addButton"> Add </button> 
-                    </li>
-                </ul>
-            </form>
-        </div>
-        <div id="textBox"> 
-            <ul id="entryContainer">
-            </ul> 
-        </div>`
+            <div id="wrapper">
+                <div id="textBox"> 
+                    <form id="entryCreator">
+                        <div class="entry-input">
+                            <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+                            <button type="submit" id="addButton"> Add </button> 
+                        </div>
+                    </form>
+                    <ul id="entryContainer">
+                    </ul> 
+                </div>
+            </div>
+        `
 
-        this.attachShadow({ mode: "open"}); 
+        this.attachShadow({ mode: "open" });
 
         //Add styling (Temporary for proof of concept)
-        let style = document.createElement('style'); 
+        let style = document.createElement('style');
         style.textContent = `
         #wrapper{ 
-            border: 1px solid; 
-            margin-left: auto; 
-            margin-right: auto; 
             display: flex; 
             flex-direction: column; 
             align-items: flex-start; 
-            width: 60%; 
         }
+
+        #addButton {
+            margin: 10px auto 20px auto; 
+            padding: 10px;
+            margin-left: 20px;
+        }
+
+        .entry-input {
+            display: flex;
+            flex-direction: row;
+        }
+
         #textBox{
-            margin-left: auto; 
-            margin-right: auto; 
             margin-top: 30px; 
-            width: 60%; 
+            width: 100%; 
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
         }
         #entryCreator { 
             margin-top: 10px; 
@@ -92,7 +71,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         #entryBox { 
             margin: 10px auto 20px auto; 
             padding: 10px; 
-            width: 50vw; 
+            width: 80%; 
             box-sizing: border-box; 
             font-size: 15pt;
         }
@@ -102,8 +81,8 @@ export default class EntryCreatorWeek extends HTMLElement{
         }`;
 
         //Attach the template and style to this shadow root
-        this.shadowRoot.appendChild(template.content.cloneNode(true)); 
-        this.shadowRoot.appendChild(style); 
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.shadowRoot.appendChild(style);
     }
 
     /**
@@ -115,42 +94,43 @@ export default class EntryCreatorWeek extends HTMLElement{
     async createEntry() { 
         let entry ={ 
             journalId: null,
-            body: null, 
+            body: null,
             type: null,
             priority: 1,
             mood: 1,
-            date: null, 
-        }; 
+            date: null,
+        };
 
         //Get the type of bullet it'll be 
-        let choices = this.shadowRoot.querySelectorAll("input[name='entryType']"); 
-        for (const choice of choices) { 
-            if (choice.checked){ 
-                entry.type = choice.value; 
+        let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
+        for (const choice of choices) {
+            if (choice.checked) {
+                entry.type = choice.value;
             }
         }
 
         //Get the text they wrote 
-        let text = this.shadowRoot.querySelector("#entryBox").value; 
-        entry.body = text; 
+        let text = this.shadowRoot.querySelector("#entryBox").value;
+        entry.body = text;
 
         //Populate image fields with those inputted into the form 
-        let inputImage = this.shadowRoot.querySelector("#image-input")
-        if (inputImage.value != '') { 
-            let img = { 
-                src: URL.createObjectURL(inputImage.files[0]), 
-                alt: inputImage.value.split("\\").pop()
-            }; 
-            entry.image = img; 
-        }
+        // let inputImage = this.shadowRoot.querySelector("#image-input")
+        // if (inputImage.value != '') {
+        //     let img = {
+        //         src: URL.createObjectURL(inputImage.files[0]),
+        //         alt: inputImage.value.split("\\").pop()
+        //     };
+        //     entry.image = img;
+        // }
 
         //Get audio from file input 
-        let inputAudio = this.shadowRoot.querySelector("#audio-input");
-        if (inputAudio.value != '') { 
-            entry.audio = URL.createObjectURL(inputAudio.files[0]); 
-        } 
-        entry.date = formatDate(this.currDate); 
-        entry.journalId = getJournal(); 
+        // let inputAudio = this.shadowRoot.querySelector("#audio-input");
+        // if (inputAudio.value != '') {
+        //     entry.audio = URL.createObjectURL(inputAudio.files[0]);
+        // }
+        
+        entry.date = formatDate(this.currDate);
+        entry.journalId = getJournal();
 
         //Append the entry in the backend and to the internal list
         await addBullet(entry).then((value) => { 
@@ -170,36 +150,36 @@ export default class EntryCreatorWeek extends HTMLElement{
      * Function which renders all bullets from the backend in the order they are stored for the passed in date
      * @param {Date} date - The date in which you want to render bullets from 
      */
-    renderBullets(date) { 
+    renderBullets(date) {
         //Grab journal id from local storage 
-        let journalId = getJournal(); 
+        let journalId = getJournal();
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId,new Date(date)).then((value) =>{
-            console.log(value); 
-            console.log(date); 
+        getBulletsByDay(journalId, new Date(date)).then((value) => {
+            console.log(value);
+            console.log(date);
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
-            textBox.innerHTML = ""; 
+            textBox.innerHTML = "";
 
             //Clear the internal list of bullets 
-            this.idList = []; 
+            this.idList = [];
 
             //No bullets for that day, return
-            if (value.length == 0){ 
-                return; 
+            if (value.length == 0) {
+                return;
             };
 
             //Create entry components for each and populate entry-creator
-            value.forEach((element) => { 
-                this.idList.push(element.id); 
+            value.forEach((element) => {
+                this.idList.push(element.id);
 
                 //Make an entry component 
                 let entryComponent = document.createElement("entry-comp");
 
                 //Append the component to the page 
-                entryComponent.entry = element; 
-                textBox.appendChild(entryComponent); 
+                entryComponent.entry = element;
+                textBox.appendChild(entryComponent);
             });
         });
     }
@@ -210,41 +190,41 @@ export default class EntryCreatorWeek extends HTMLElement{
     /**
      * Function which renders the entryComponent on the page.
      */
-    render(){
+    render() {
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
         //Attach submit event listener to ec form 
-        form.addEventListener('submit', async (event)=>{
-            event.preventDefault(); 
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
             let entryComponent = document.createElement("entry-comp");
-            
+
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry(); 
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
-            textBox.appendChild(entryComponent); 
-            form.reset(); 
-        });    
+            textBox.appendChild(entryComponent);
+            form.reset();
+        });
     }
 
     /**
      * @param {Array} - The array of bullets to be stored by their id's. 
      */
-    set idOrder(list){
-        this.idList= list; 
+    set idOrder(list) {
+        this.idList = list;
     }
     /**
      * @returns {Array} - Returns an array of the bullets in order by id
      */
-    get idOrder(){ 
-        return this.idList; 
+    get idOrder() {
+        return this.idList;
     }
     /**
      * Helper function which swaps the positions of the two ids passed in within 
@@ -254,24 +234,24 @@ export default class EntryCreatorWeek extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(index1, index2, direction){  
-        let dragged = this.idList[index1]; 
+    swapIds(index1, index2, direction) {
+        let dragged = this.idList[index1];
         //Remove dragged element 
-        this.idList.splice(index1, 1); 
+        this.idList.splice(index1, 1);
 
         //Dragged element was above 
-        if (direction){ 
+        if (direction) {
             //Case we're dragging to last element 
-            if (index2 + 1 == this.idList.length){ 
-                this.idList.push(dragged); 
+            if (index2 + 1 == this.idList.length) {
+                this.idList.push(dragged);
             }
-            else{
+            else {
                 this.idList.splice(index2, 0, dragged);
-            } 
+            }
         }
         //Dragged element was below 
-        else{ 
-            this.idList.splice(index2, 0, dragged); 
+        else {
+            this.idList.splice(index2, 0, dragged);
         }
     }
 
@@ -281,29 +261,29 @@ export default class EntryCreatorWeek extends HTMLElement{
      * dragged bullet was dropped on
      * @param {Object} dBullet - the dragged bullet 
      */
-    diffListIns(index2, dBullet){
+    diffListIns(index2, dBullet) {
         //Case drag is dragged on last element in this list 
-        if (index2 + 1 == this.idList.length){  
-            this.idList.push(dBullet.id); 
+        if (index2 + 1 == this.idList.length) {
+            this.idList.push(dBullet.id);
         }
         //Insert normally
-        else{ 
-            this.idList.splice(index2, 0, dBullet.id); 
+        else {
+            this.idList.splice(index2, 0, dBullet.id);
         }
     }
 
     /**
      * @param {String} date - The date of this ec creator as a string 
      */
-    set date(date){ 
-        this.currDate = date; 
+    set date(date) {
+        this.currDate = date;
     }
 
     /**
      * @return {String} - Returns a string of this entry creator's internal date
      */
-    get date(){ 
-        return this.currDate; 
+    get date() {
+        return this.currDate;
     }
 }
 
@@ -312,19 +292,58 @@ export default class EntryCreatorWeek extends HTMLElement{
  * @param {Date} date 
  * @returns a string with the date formatted correctly 
  */
- function formatDate(date) {
+function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
 
-    if (month.length < 2) 
+    if (month.length < 2)
         month = '0' + month;
-    if (day.length < 2) 
+    if (day.length < 2)
         day = '0' + day;
 
     return [year, month, day].join('-');
 }
 
 //Make custom element 
-customElements.define('entry-creator-week', EntryCreatorWeek); 
+customElements.define('entry-creator-week', EntryCreatorWeek);
+
+{/* <form id="entryCreator">
+<ul>
+<!--Determine type of bullet point it'll be-->
+    <li>
+    <div id="radio1">
+        <input type="radio" name="entryType" id="task" value="task" required>
+        <label for="task">Task</label>
+        <input type="radio" name="entryType" id="event" value="event"> 
+        <label for="event">Event </label>
+        <input type="radio" name="entryType" id="note" value="note"> 
+        <label for="note">Note </label> 
+    </div>
+    </li>
+    <!--Image input-->
+    <li>
+    <label for="image-input">Insert Image</label>
+    <input type="file" name="image" id="image-input" accept="image/*"> <br>
+    </li>
+    
+    <!--Audio input-->
+    <li>
+    <label for="audio-input">Insert Audio</label>
+    <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
+    </li>
+    
+    <!--Where they'll log their stuff-->
+    <li>
+    <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+    </li>
+    
+
+    <!--Add button-->
+    <li>
+    <button type="submit" id="addButton"> Add </button> 
+    </li>
+</ul>
+</form>
+</div> */}
