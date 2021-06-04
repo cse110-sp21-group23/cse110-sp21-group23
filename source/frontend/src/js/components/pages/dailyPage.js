@@ -28,6 +28,14 @@ export class DailyPage extends HTMLElement {
         </body>
         `;
 
+        let style = document.createElement('style'); 
+        style.textContent = `
+        #datePickerDiv {
+            font-size: 50px;
+        }
+        `;
+
+        //Attach the template and style to this shadow root
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         //const topNav = document.createElement('top-Nav');
@@ -38,6 +46,7 @@ export class DailyPage extends HTMLElement {
 
         this.shadowRoot.querySelector('#datePickerDiv').append(datePicker);
         this.shadowRoot.querySelector('#entryCreatorDiv').append(ec);
+        this.shadowRoot.appendChild(style); 
 
         //Store the user's journal id into local storage
         getJournals().then((value) => { 
