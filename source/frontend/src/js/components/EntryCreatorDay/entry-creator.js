@@ -1,7 +1,7 @@
-import {addBullet, updateSorting, getBulletsByDay} from "../../api/journal"
-import {getJournal, getDate} from '../../utils/localStorage'
+import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
+import { getJournal, getDate } from '../../utils/localStorage'
 
-export default class EntryCreator extends HTMLElement{ 
+export default class EntryCreator extends HTMLElement {
     //Stores bullets by id's 
     idList = []; 
     
@@ -18,35 +18,41 @@ export default class EntryCreator extends HTMLElement{
                     <li>
                     <div id="radio1">
                         <input type="radio" name="entryType" id="task" value="task" required>
-                        <label for="task">Task</label>
+                        <label for="task">
+                            <span>Task</span>
+                        </label>
                         <input type="radio" name="entryType" id="event" value="event"> 
-                        <label for="event">Event </label>
+                        <label for="event">
+                            <span>Event</span>
+                        </label>
                         <input type="radio" name="entryType" id="note" value="note"> 
-                        <label for="note">Note </label> 
+                        <label for="note">
+                            <span>Note</span>
+                        </label> 
                     </div>
                     </li>
-                    <!--Image input-->
+                    
+                    <!--
                     <li>
                     <label for="image-input">Insert Image</label>
                     <input type="file" name="image" id="image-input" accept="image/*"> <br>
                     </li>
+                    -->
                     
-                    <!--Audio input-->
+                    <!--
                     <li>
                     <label for="audio-input">Insert Audio</label>
                     <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
                     </li>
-                    
-                    <!--Where they'll log their stuff-->
-                    <li>
-                    <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
-                    </li>
-                    
-            
-                    <!--Add button-->
-                    <li>
-                    <button type="submit" id="addButton"> Add </button> 
-                    </li>
+                    -->
+
+                    <div class="bottom-div">
+                        <!--Where they'll log their stuff-->
+                        <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+
+                        <!--Add button-->
+                        <button type="submit" id="addButton"> Add </button> 
+                    </div>
                 </ul>
             </form>
         </div>
@@ -55,11 +61,13 @@ export default class EntryCreator extends HTMLElement{
             </ul> 
         </div>`
 
-        this.attachShadow({ mode: "open"}); 
+        this.attachShadow({ mode: "open" });
 
         //Add styling (Temporary for proof of concept)
-        let style = document.createElement('style'); 
+        let style = document.createElement('style');
         style.textContent = `
+
+
         #wrapper{ 
             border: 1px solid; 
             margin-left: auto; 
@@ -68,7 +76,22 @@ export default class EntryCreator extends HTMLElement{
             flex-direction: column; 
             align-items: flex-start; 
             width: 60%; 
+            border-radius: 30px;
         }
+
+        #addButton {
+            margin: 10px auto 20px auto; 
+            padding: 10px;
+            margin-left: 20px;
+        }
+
+        .bottom-div {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            
+        }
+
         #textBox{
             margin-left: auto; 
             margin-right: auto; 
@@ -82,6 +105,8 @@ export default class EntryCreator extends HTMLElement{
         }
         #radio1 { 
             margin-bottom: 10px; 
+            display: flex;
+            flex-direction: row;
         }
         #image-input, #audio-input { 
             margin-top: 10px; 
@@ -100,8 +125,8 @@ export default class EntryCreator extends HTMLElement{
         }`;
 
         //Attach the template and style to this shadow root
-        this.shadowRoot.appendChild(template.content.cloneNode(true)); 
-        this.shadowRoot.appendChild(style); 
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.shadowRoot.appendChild(style);
     }
 
     /**
@@ -110,152 +135,152 @@ export default class EntryCreator extends HTMLElement{
      * entry. This can includes text, type of entry, and potentially images or audio. This 
      * will presumably be used to create an Entry web component. 
      */
-    async createEntry() { 
-        let entry ={ 
+    async createEntry() {
+        let entry = {
             journalId: null,
-            body: null, 
+            body: null,
             type: null,
             priority: 1,
             mood: 1,
-            date: null, 
-        }; 
+            date: null,
+        };
 
         //Get the type of bullet it'll be 
-        let choices = this.shadowRoot.querySelectorAll("input[name='entryType']"); 
-        for (const choice of choices) { 
-            if (choice.checked){ 
-                entry.type = choice.value; 
+        let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
+        for (const choice of choices) {
+            if (choice.checked) {
+                entry.type = choice.value;
             }
         }
 
         //Get the text they wrote 
-        let text = this.shadowRoot.querySelector("#entryBox").value; 
-        entry.body = text; 
+        let text = this.shadowRoot.querySelector("#entryBox").value;
+        entry.body = text;
 
         //Populate image fields with those inputted into the form 
-        let inputImage = this.shadowRoot.querySelector("#image-input")
-        if (inputImage.value != '') { 
-            let img = { 
-                src: URL.createObjectURL(inputImage.files[0]), 
-                alt: inputImage.value.split("\\").pop()
-            }; 
-            entry.image = img; 
-        }
-
+        // let inputImage = this.shadowRoot.querySelector("#image-input")
+        // if (inputImage.value != '') {
+        //     let img = {
+        //         src: URL.createObjectURL(inputImage.files[0]),
+        //         alt: inputImage.value.split("\\").pop()
+        //     };
+        //     entry.image = img;
+        // }
+        
         //Get audio from file input 
-        let inputAudio = this.shadowRoot.querySelector("#audio-input");
-        if (inputAudio.value != '') { 
-            entry.audio = URL.createObjectURL(inputAudio.files[0]); 
-        } 
-        entry.date = formatDate(getDate()); 
-        console.log("Entry date: " +entry.date); 
-        entry.journalId = getJournal(); 
-        console.log(this.idList); 
+        // let inputAudio = this.shadowRoot.querySelector("#audio-input");
+        // if (inputAudio.value != '') {
+        //     entry.audio = URL.createObjectURL(inputAudio.files[0]);
+        // }
+
+        entry.date = formatDate(getDate());
+        console.log(entry.date);
+        entry.journalId = getJournal();
 
         //Append the entry to the backend and internal list at the end 
-        await addBullet(entry).then((value) => { 
-            console.log(entry.date); 
+        await addBullet(entry).then((value) => {
             //Always append bullet to end 
-            this.idList.push(value.id); 
+            this.idList.push(value.id);
+            console.log(this.idList);
+            console.log(this.idList.length);
 
-            entry.id = value.id; 
-            console.log(new Date(getDate()));
+            entry.id = value.id;
 
             //Update sorting in backend only after idList has been updated
-            updateSorting(getJournal(), new Date(getDate()), this.idList); 
-            return value; 
-        }); 
-        console.log(entry.id); 
+            updateSorting(getJournal(), new Date(getDate()), this.idList);
+            return value;
+        });
+        console.log(entry.id);
 
 
         //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
-        return entry; 
+        return entry;
     }
 
     /**
      * Function which renders all bullets from the backend in the order they are stored 
      */
-    renderBullets() { 
+    renderBullets() {
         //Grab journal id from local storage 
-        let journalId = getJournal(); 
+        let journalId = getJournal();
         let theDate = getDate();
 
         console.log(theDate); 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
-            console.log(value); 
-            console.log(new Date(theDate)); 
+        getBulletsByDay(journalId, new Date(theDate)).then((value) => {
+            console.log(value);
+            console.log(new Date(theDate));
 
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
-            textBox.innerHTML = ""; 
+            textBox.innerHTML = "";
 
             //Clear the internal list of bullets 
-            this.idList = []; 
+            this.idList = [];
 
             //No bullets for that day, return
-            if (value.length == 0){ 
-                return; 
+            if (value.length == 0) {
+                return;
             };
 
             //Create entry components for each and populate entry-creator
-            value.forEach((element) => { 
-                this.idList.push(element.id); 
+            value.forEach((element) => {
+                this.idList.push(element.id);
 
                 //Make an entry component 
                 let entryComponent = document.createElement("entry-comp");
 
                 //Append the component to the page 
-                entryComponent.entry = element; 
-                textBox.appendChild(entryComponent); 
+                entryComponent.entry = element;
+                textBox.appendChild(entryComponent);
             });
         });
     }
-  
-    connectedCallback(){ 
-        this.render(); 
+
+    connectedCallback() {
+        this.render();
     }
 
     /**
      * Function which renders the entryComponent on the page.
      */
-    render(){
+    render() {
         //Render the bullets for the first day it's instantiated in 
-        this.renderBullets(); 
+        this.renderBullets();
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
         //Attach submit event listener to ec form 
-        form.addEventListener('submit', async (event)=>{
-            event.preventDefault(); 
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
             let entryComponent = document.createElement("entry-comp");
-            
+
             //Create entry object using entry-creator and use to set entry-component
-            let entry = await this.createEntry(); 
+            let entry = await this.createEntry();
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
-            textBox.appendChild(entryComponent); 
-            form.reset(); 
-        });    
+            textBox.appendChild(entryComponent);
+            form.reset();
+        });
     }
 
     /**
      * @param {Array} - The array of bullets to be stored by their id's. 
      */
-    set idOrder(list){
-        this.idList= list; 
+    set idOrder(list) {
+        this.idList = list;
     }
     /**
      * @returns {Array} - Returns an array of the bullets in order by id
      */
-    get idOrder(){ 
-        return this.idList; 
+    get idOrder() {
+        return this.idList;
     }
     /**
      * Helper function which swaps the positions of the two ids passed in within 
@@ -265,24 +290,24 @@ export default class EntryCreator extends HTMLElement{
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(index1, index2, direction){ 
+    swapIds(index1, index2, direction) {
         //Remove dragged element 
-        let dragged = this.idList[index1]; 
-        this.idList.splice(index1, 1); 
+        let dragged = this.idList[index1];
+        this.idList.splice(index1, 1);
 
         //Dragged element was above 
-        if (direction){ 
+        if (direction) {
             //Case we're dragging to last element 
-            if (index2 + 1 == this.idList.length){ 
-                this.idList.push(dragged); 
+            if (index2 + 1 == this.idList.length) {
+                this.idList.push(dragged);
             }
-            else{
+            else {
                 this.idList.splice(index2, 0, dragged);
-            } 
+            }
         }
         //Dragged element was below 
-        else{ 
-            this.idList.splice(index2, 0, dragged); 
+        else {
+            this.idList.splice(index2, 0, dragged);
         }
     }
 }
@@ -299,9 +324,9 @@ function formatDate(date) {
         day = '' + d.getDate(),
         year = d.getFullYear();
 
-    if (month.length < 2) 
+    if (month.length < 2)
         month = '0' + month;
-    if (day.length < 2) 
+    if (day.length < 2)
         day = '0' + day;
 
     return [year, month, day].join('-');
@@ -309,4 +334,4 @@ function formatDate(date) {
 
 
 //Make the custom element 
-customElements.define('entry-creator', EntryCreator); 
+customElements.define('entry-creator', EntryCreator);

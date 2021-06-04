@@ -92,11 +92,13 @@ export default class DatePicker extends HTMLElement {
         });
 
         document.addEventListener('calendarDateChanged', e => {
-            myDate = e.detail
-            date = e.detail
-            setDate(e.detail)
+            const newDate = e.detail
+            newDate.setDate(e.detail.getDate() + 1)
+            myDate = newDate
+            date = newDate
+            setDate(newDate)
             document.dispatchEvent(new CustomEvent("dateChange", {
-                detail: e.detail
+                detail: new Date(newDate)
             }))
         })
 
