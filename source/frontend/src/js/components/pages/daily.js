@@ -18,6 +18,10 @@ document.getElementById("date").innerText = dateText;
   document.getElementById("next").addEventListener("click", next);
   document.getElementById("prev").addEventListener("click", prev);
   
+  
+/**
+ * Function which will update the current date being used with the next consecutive date
+ */
 function next() {
    myDate =new Date(myDate.getFullYear(),myDate.getMonth(),myDate.getDate()+1);
    //myDate = new Date(myDate + 86400000);
@@ -32,6 +36,9 @@ function next() {
     
 }
 
+/**
+ * Function which will update the current date being used with the previous date available
+ */
 function prev() {
   myDate = new Date(myDate - 86400000);
   year = myDate.getFullYear(),

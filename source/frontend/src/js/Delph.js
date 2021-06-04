@@ -14,6 +14,11 @@ export class Delph {
     this.handleBackButton(config.store)
   }
 
+  
+  /**
+   * Function which will handle the implementation of the back button
+   * @param  {Object} store
+   */
   handleBackButton = (store) => {
     window.onpopstate = (event) => {
       let content = "";
@@ -24,6 +29,12 @@ export class Delph {
     }
   }
 
+  
+  /**
+   * Function which will render the new page
+   * @param  {Object} previousState
+   * @param  {Object} state
+   */
   render(previousState, state) {
     if (previousState.route.path != state.route.path) {
       if (state.route.path != "" && getToken() == null) {

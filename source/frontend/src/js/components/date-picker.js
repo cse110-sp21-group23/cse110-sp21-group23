@@ -111,6 +111,10 @@ export default class DatePicker extends HTMLElement {
         }
     }
 
+    
+    /**
+     * Function which will update the current date being used with the next consecutive date
+     */
     next() {
         myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
         year = myDate.getFullYear();
@@ -120,6 +124,9 @@ export default class DatePicker extends HTMLElement {
         this.shadowRoot.querySelector('calendar-picker').date = myDate
     }
 
+    /**
+     * Function which will update the current date being used with the previous date available
+     */
     prev() {
         myDate = new Date(myDate - 86400000);
         year = myDate.getFullYear();
@@ -129,6 +136,11 @@ export default class DatePicker extends HTMLElement {
         this.shadowRoot.querySelector('calendar-picker').date = myDate
     }
     
+    
+    /**
+     * Function which will return the current date
+     * @returns The current date
+     */
     get date() { 
         return myDate; 
     }

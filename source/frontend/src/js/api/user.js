@@ -3,6 +3,12 @@ import axios from './axios'
 import { setEmail, setToken } from '../utils/localStorage'
 import { getJournals } from './journal'
 
+/**
+ * Function which will register a new account given that the credentials given are valid
+ * @param  {string} email     - account email
+ * @param  {string} password  - account password
+ * @returns a string signaling successful account creation 
+ */
 export const register = async (email, password) => {
     try {
         const res = await axios.post(
@@ -18,6 +24,12 @@ export const register = async (email, password) => {
     }
 }
 
+/**
+ * Function which will log in to an account given the correct credentials
+ * @param  {string} email    - account email
+ * @param  {string} password - account password
+ * @returns The bullet journal associated with the login credentials
+ */
 export const login = async (email, password) => {
     try {
         const res = await axios.post(

@@ -185,10 +185,20 @@ class NavigationBar extends HTMLElement {
 
     }
   
+    
+    /**
+     * Function which will return the custom attribute from the NavigationBar class
+     * @returns The custom attribute from the NavigationBar class
+     */
     get custom() {
       return this.getAttribute('custom');
     }
 
+    
+    /**
+     * Function which sets the custom attribute from the NavigationBar class
+     * @param  {} custom
+     */
     set custom(custom) {
         custom.forEach(element => {
             let newLog = document.createElement('button');
