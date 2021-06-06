@@ -14,6 +14,7 @@
     text-align: left;
     padding: 0.6em;
     margin: 0.5em;
+    border-radius: 10px;
 }
 
 .bullet-list li:hover {
@@ -26,4 +27,5 @@
 
 .bullet-container {
     width: 50%;
+    border-radius: 10px;
 }

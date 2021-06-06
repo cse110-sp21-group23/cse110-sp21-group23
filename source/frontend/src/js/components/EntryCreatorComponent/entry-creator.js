@@ -65,24 +65,28 @@ export default class EntryCreator extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = `
         #wrapper{ 
-            border: 1px solid; 
+            border: 1px solid;
+            border-radius: 10px;
+            border-color: #6a828d;
             margin-left: auto; 
             margin-right: auto; 
             display: flex; 
             flex-direction: column; 
-            align-items: flex-start; 
+            align-items: center; 
             width: 60%; 
         }
         #textBox{
+            
             margin-left: auto; 
             margin-right: auto; 
             margin-top: 30px; 
             width: 60%; 
         }
-        #entryCreator { 
-            margin-top: 10px; 
-            margin-bottom: 10px; 
-            margin-left: -10px; 
+        #entryCreator {
+            background-color: white;
+            width:100%;
+            margin: 0.5em;
+
         }
         #radio1 { 
             margin-bottom: 10px; 
@@ -94,13 +98,14 @@ export default class EntryCreator extends HTMLElement{
         #entryBox { 
             margin: 10px auto 20px auto; 
             padding: 10px; 
-            width: 50vw; 
+            width: 100%; 
             box-sizing: border-box; 
             font-size: 15pt;
         }
         
         ul { 
-            list-style-type: none; 
+            list-style-type: none;
+            margin: 0.5em;
         }`;
 
         //Attach the template and style to this shadow root
