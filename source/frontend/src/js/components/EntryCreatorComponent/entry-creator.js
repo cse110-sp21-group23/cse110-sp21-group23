@@ -90,7 +90,6 @@ export default class EntryCreator extends HTMLElement{
             width: 60%; 
         }
         #entryCreator {
-            background-color: white;
             width:100%;
             margin: 0.5em;
 
@@ -102,16 +101,17 @@ export default class EntryCreator extends HTMLElement{
             margin-top: 10px; 
             margin-bottom: 10px; 
         }
-        #entryBox { 
-            margin: 10px auto 0px auto; 
-            padding: 10px; 
-            width: 100%; 
+        #entryBox {
+            border: 1px solid;
+            border-radius: 10px;
+            border-color: #6a828d;
+            margin: 0px auto 0px auto; 
+            padding: 15px; 
+            width: 100%;
             box-sizing: border-box; 
             font-size: 15pt;
         }
-        body {
-            background: #2c3e50;
-          }
+
         /* Basic styles */
         input[type="checkbox"],
         input[type="radio"] {
@@ -120,12 +120,14 @@ export default class EntryCreator extends HTMLElement{
         z-index: -1;
         }
         label {
+        font-family: 'Lato', sans-serif;
         position: relative;
         display: inline-block;
         padding: 0 0 0 2em;
         height: 1.5em;
         line-height: 1.5;
         cursor: pointer;
+        margin-right: 0.2em;
         }
         label::before,
         label::after {
@@ -154,19 +156,19 @@ export default class EntryCreator extends HTMLElement{
         }
         input[type=radio] + label::after {
         content: " ";
-        top: .25em;
-        left: .25em;
+        top: .2em;
+        left: .2em;
         width: 1em;
         height: 1em;
-        background: #fff;
-        border: .2em solid #2c3e50;
+        background: #f0d6c7;
+        border: .2em solid #C9CBB3;
         border-radius: 50%;
         }
         /* :checked */
         input[type="checkbox"]:checked + label::before,
         input[type="radio"]:checked + label::before {
-        background: #fff;
-        border-color: #fff;
+        background: #bdc3c7;
+        border-color: #bdc3c7;
         }
         input[type="checkbox"] + label::after,
         input[type=radio] + label::after {
