@@ -55,6 +55,7 @@ export default class EntryCreator extends HTMLElement{
                     <li>
                     <button type="submit" id="addButton"> Add </button> 
                     </li>
+                    
                 </ul>
             </form>
         </div>
@@ -68,6 +69,9 @@ export default class EntryCreator extends HTMLElement{
         //Add styling (Temporary for proof of concept)
         let style = document.createElement('style'); 
         style.textContent = `
+        #addButton{
+            display: none;
+        }
         #wrapper{ 
             border: 1px solid;
             border-radius: 10px;
