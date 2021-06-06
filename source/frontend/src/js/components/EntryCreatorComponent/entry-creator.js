@@ -29,18 +29,22 @@ export default class EntryCreator extends HTMLElement{
                         <label for="note">Note </label> 
                     </div>
                     </li>
-                    <!--Image input-->
+
+
+                    <!--TEMPORARY REMOVAL OF IMAGE AND AUDIO-->
+                    <!--Image input
                     <li>
                     <label for="image-input">Insert Image</label>
                     <input type="file" name="image" id="image-input" accept="image/*"> <br>
                     </li>
                     
-                    <!--Audio input-->
+                    <!--Audio input
                     <li>
                     <label for="audio-input">Insert Audio</label>
                     <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
                     </li>
                     
+
                     <!--Where they'll log their stuff-->
                     <li>
                     <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
