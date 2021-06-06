@@ -21,7 +21,7 @@ export default class EntryCreator extends HTMLElement{
                 <!--Determine type of bullet point it'll be-->
                     <li>
                     <div id="radio1">
-                        <input type="radio" name="entryType" id="task" value="task" required>
+                        <input type="radio" name="entryType" id="task" value="task" checked required>
                         <label for="task">Task</label>
                         <input type="radio" name="entryType" id="event" value="event"> 
                         <label for="event">Event </label>
