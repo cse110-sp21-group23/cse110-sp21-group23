@@ -47,7 +47,7 @@ export default class EntryCreator extends HTMLElement{
 
                     <!--Where they'll log their stuff-->
                     <li>
-                    <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+                    <input type="text" name="entryBox" id="entryBox" placeholder="Write a new entry..." required>
                     </li>
                     
             
@@ -80,7 +80,6 @@ export default class EntryCreator extends HTMLElement{
             width: 60%; 
         }
         #textBox{
-            
             margin-left: auto; 
             margin-right: auto; 
             margin-top: 30px; 
@@ -100,7 +99,7 @@ export default class EntryCreator extends HTMLElement{
             margin-bottom: 10px; 
         }
         #entryBox { 
-            margin: 10px auto 20px auto; 
+            margin: 10px auto 0px auto; 
             padding: 10px; 
             width: 100%; 
             box-sizing: border-box; 
@@ -223,8 +222,9 @@ export default class EntryCreator extends HTMLElement{
 
         //Get the text they wrote 
         let text = this.shadowRoot.querySelector("#entryBox").value; 
-        entry.body = text; 
-
+        entry.body = text;
+        
+        /*
         //Populate image fields with those inputted into the form 
         let inputImage = this.shadowRoot.querySelector("#image-input")
         if (inputImage.value != '') { 
@@ -239,7 +239,7 @@ export default class EntryCreator extends HTMLElement{
         let inputAudio = this.shadowRoot.querySelector("#audio-input");
         if (inputAudio.value != '') { 
             entry.audio = URL.createObjectURL(inputAudio.files[0]); 
-        } 
+        } */
         entry.date = formatDate(getDate()); 
         entry.journalId = getJournal(); 
 
