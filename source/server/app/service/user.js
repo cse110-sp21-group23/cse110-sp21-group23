@@ -24,7 +24,8 @@ module.exports = {
     login: async (email, password) => {
         try {
             const user = await common.toCamelCase(await userDB.getByEmail(email))
-            if (user.email == null) {
+            console.log("user: ", user)
+            if (user == null) {
                 throw {error: "Email not found"}
             }
             if (bcrypt.compareSync(password, user.password)) {
@@ -36,6 +37,7 @@ module.exports = {
                 throw {error: "Wrong password"}
             }
         } catch (err) {
+            console.log(err)
             throw err
         }
     }

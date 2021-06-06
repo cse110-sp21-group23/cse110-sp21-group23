@@ -10,9 +10,7 @@ userRouter.post('/register', async (req, res, next) => {
         await journalService.createJournal(userId, 'My First Journal')
         res.send("success")
     } catch (err) {
-        res.status(400).send({
-            error: err 
-        })
+        res.status(400).send(err)
     }
 });
 
@@ -24,9 +22,7 @@ userRouter.post('/login', async (req, res, next) => {
             token
         })
     } catch (err) {
-        res.status(400).send({
-            error: err
-        })
+        res.status(400).send(err)
     }
 })
 
