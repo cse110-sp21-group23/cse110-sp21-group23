@@ -52,17 +52,29 @@ export default class DatePicker extends HTMLElement {
                 margin-bottom: 1.4rem;
             }
             .fas-fa-angle-left-fa-pull-left {
-                transform: translateX(-250%);
+                transform: translateX(150%);
+                font-size: 35px;
+                color: #fff;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
             }
             .fas-fa-angle-right{
-                transform: translateX(250%);
+                transform: translateX(-150%);
+                font-size: 35px;
+                color: #fff;
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;
             }
 
             #date {
                 display: flex;
-                flex-direction: row;
+                justify-content: space-between;
                 align-items: center;
-                justify-content: center;
+                padding: 1rem;
+                padding-left: 3rem;
+                padding-right: 3rem;
+                background-color: #C9CBB3;
+                border-radius: 5em;
             }
         `
 
