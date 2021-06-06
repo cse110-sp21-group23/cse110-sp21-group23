@@ -282,7 +282,7 @@ function signinFunction() {
 
         )
         .catch(err => {
-            console.log(err)
+            window.alert(err.message)
         })
 }
 
@@ -303,12 +303,12 @@ function signupFunction() {
                         store.dispatch(loadRoute({ path: 'daily' }))
                     )
                     .catch(err => {
-                        console.log(err)
+                        window.alert(err.message)
                     })
             });
     }
     else {
-        console.log("Passwords do not match");
+        window.alert("Passwords do not match");
     }
 }
 
