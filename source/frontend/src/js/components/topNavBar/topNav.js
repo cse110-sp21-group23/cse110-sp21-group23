@@ -65,8 +65,8 @@ export default class TopNav extends HTMLElement {
 			padding: 1.0em 1.0em;
 			text-decoration: none;
 			text-align: center;
-			font-family: 'Montserrat', sans-serif;
-			font-weight: 700;
+			font-family: 'Lato', sans-serif;
+			font-weight: 500;
 		}
 
 		.email-button{
