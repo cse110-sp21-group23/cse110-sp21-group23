@@ -1,5 +1,5 @@
-import EntryCreatorWeek from "../EntryCreatorWeek/entry-creator-week"
-import WeekPicker from "../week-picker"
+import EntryCreatorWeek from "../EntryCreatorWeek/EntryCreatorWeek"
+import WeekPicker from "../WeekPicker"
 
 export default class WeeklyKanban extends HTMLElement {
     //Array of all entry-creator-day's in the component's days 

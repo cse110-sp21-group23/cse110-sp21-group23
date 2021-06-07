@@ -1,5 +1,5 @@
-import WeeklyKanban from '../WeeklyKanban/weekly-kanban'
-import WeekPicker from '../week-picker'
+import WeeklyKanban from '../WeeklyKanBan/WeeklyKanban'
+import WeekPicker from '../WeekPicker'
 
 export class WeeklyPage extends HTMLElement{ 
     connectedCallback() {
