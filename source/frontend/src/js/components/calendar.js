@@ -22,7 +22,7 @@ export default class Calendar extends HTMLElement {
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: black;
+            background-color: #b3d4db;
             background-image: url(https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png);
         }
         .datepicker-input {

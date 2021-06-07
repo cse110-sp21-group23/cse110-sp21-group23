@@ -44,7 +44,7 @@ export default class DatePicker extends HTMLElement {
 
         style.textContent = `
             #date-text{
-                color: black;
+                color: white;
                 font-family: 'Lato', sans-serif;
                 font-weight: 300;
                 -webkit-user-select: none; /* Safari */        
@@ -53,7 +53,7 @@ export default class DatePicker extends HTMLElement {
                 user-select: none; /* Standard */
             }
             #month-text{
-                color: black;
+                color: white;
                 font-family: 'Lato', sans-serif;
                 font-weight: lighter;
                 margin-bottom: 1.5em;
@@ -71,38 +71,39 @@ export default class DatePicker extends HTMLElement {
                 left: 100px;
                 align-items: center;
                 justify-content: center;
-                margin-top: 2.0rem;
+                padding-top: 3.0rem;
                 margin-bottom: 1.4rem;
             }
             .left-arrow {
+                color: white;
                 border-style: solid;
                 border-width: 1px 1px 0 0;
                 content: '';
                 display: inline-block;
-                height: 1.25em;
-                width: 1.25em;
-                position: fixed;
+                height: 1.5em;
+                width: 1.5em;
+                position: sticky;
                 vertical-align: top;
-                margin-right: 20em;
+                margin-right: 10em;
                 transform: rotate(-135deg);
             }
             .right-arrow{
+                color: white;
                 border-style: solid;
                 border-width: 1px 1px 0 0;
                 content: '';
                 display: inline-block;
-                height: 1.25em;
-                width: 1.25em;
-                position: fixed;
+                height: 1.5em;
+                width: 1.5em;
+                position: sticky;
                 vertical-align: top;
-                margin-left: 20em;
+                margin-left: 10em;
                 transform: rotate(45deg);
             }
             #date {
                 display: flex;
-                position: fixed;
-                margin-left: 16em;
-                justify-content: space-between;
+                position: sticky;
+                margin-left: 0.5em;
                 align-items: center;
             }
         `
@@ -137,8 +138,16 @@ export default class DatePicker extends HTMLElement {
 
         document.addEventListener('calendarDateChanged', e => {
             myDate = e.detail
-            date = e.detail
-            setDate(e.detail)
+            myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
+            month = myDate.getMonth();
+            date = myDate.getDate();
+            day = myDate.getDay();
+            year = myDate.getFullYear();
+            //This portion re-renders the current date string and appends it to the h1 tag
+            dateText = months[month] + " " + dates[date] + " " + year;
+            this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+            this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+            setDate(myDate);
             document.dispatchEvent(new CustomEvent("dateChange", {
                 detail: e.detail
             }))
