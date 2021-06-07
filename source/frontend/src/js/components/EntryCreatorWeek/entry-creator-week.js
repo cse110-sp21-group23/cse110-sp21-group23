@@ -39,9 +39,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         }
 
         #addButton {
-            margin: 10px auto 20px auto; 
-            padding: 10px;
-            margin-left: 20px;
+            display:none;
         }
 
         .entry-input {
