@@ -136,8 +136,16 @@ export default class DatePicker extends HTMLElement {
 
         document.addEventListener('calendarDateChanged', e => {
             myDate = e.detail
-            date = e.detail
-            setDate(e.detail)
+            myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
+            month = myDate.getMonth();
+            date = myDate.getDate();
+            day = myDate.getDay();
+            year = myDate.getFullYear();
+            //This portion re-renders the current date string and appends it to the h1 tag
+            dateText = months[month] + " " + dates[date] + " " + year;
+            this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+            this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+            setDate(myDate);
             document.dispatchEvent(new CustomEvent("dateChange", {
                 detail: e.detail
             }))
