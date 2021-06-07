@@ -6,7 +6,7 @@ const dates = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; 
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; 
 
 let myDate = new Date();
 let year;
@@ -23,7 +23,7 @@ export default class DatePicker extends HTMLElement {
         day = myDate.getDay();
         date = myDate.getDate();
 
-        dateText = days[day] + ", " + months[month] + " " + dates[date] + ", " + year;
+        dateText = months[month] + " " + dates[date] + " " + year;
 
         super();
 
@@ -34,15 +34,30 @@ export default class DatePicker extends HTMLElement {
         template.innerHTML = `
 
             <div class="full-date">
-                <i class='fas-fa-angle-left-fa-pull-left' id="prev"> &lt;</i>
-                <div id="date"></div>
-                <i class='fas-fa-angle-right' id="next"> &gt; </i>
+                <i class='left-arrow' id="prev"></i>
+                <div id="date">
+                    <h2 id="month-text"></h2>
+                    <h1 id="date-text">test</h1>
+                </div>
+                <i class='right-arrow' id="next"></i>
             </div>
 
         `
         let style = document.createElement('style');
 
         style.textContent = `
+            #date-text{
+                color: black;
+                font-family: 'Lato', sans-serif;
+                font-weight: 300;
+            }
+            #month-text{
+                color: black;
+                font-family: 'Lato', sans-serif;
+                font-weight: lighter;
+                margin-bottom: 1.5em;
+                padding-right: 0.25em;
+            }
             .full-date {
                 display: flex;
                 flex-direction: row;
@@ -51,19 +66,29 @@ export default class DatePicker extends HTMLElement {
                 margin-top: 2.0rem;
                 margin-bottom: 1.4rem;
             }
-            .fas-fa-angle-left-fa-pull-left {
-                transform: translateX(150%);
-                font-size: 35px;
-                color: #fff;
-                -webkit-text-stroke-width: 1px;
-                -webkit-text-stroke-color: black;
+            .left-arrow {
+                border-style: solid;
+                border-width: 1px 1px 0 0;
+                content: '';
+                display: inline-block;
+                height: 1.25em;
+                width: 1.25em;
+                position: fixed;
+                vertical-align: top;
+                margin-right: 30em;
+                transform: rotate(-135deg);
             }
-            .fas-fa-angle-right{
-                transform: translateX(-150%);
-                font-size: 35px;
-                color: #fff;
-                -webkit-text-stroke-width: 1px;
-                -webkit-text-stroke-color: black;
+            .right-arrow{
+                border-style: solid;
+                border-width: 1px 1px 0 0;
+                content: '';
+                display: inline-block;
+                height: 1.25em;
+                width: 1.25em;
+                position: fixed;
+                vertical-align: top;
+                margin-left: 30em;
+                transform: rotate(45deg);
             }
 
             #date {
@@ -73,8 +98,8 @@ export default class DatePicker extends HTMLElement {
                 padding: 1rem;
                 padding-left: 3rem;
                 padding-right: 3rem;
-                background-color: #C9CBB3;
                 border-radius: 5em;
+                color: transparent;
             }
         `
 
@@ -83,6 +108,9 @@ export default class DatePicker extends HTMLElement {
         let calendar = document.createElement('calendar-picker');
 
         this.shadowRoot.getElementById("date").append(calendar)
+
+        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
 
         //Store the date into local storage 
         setDate(myDate); 
@@ -130,6 +158,11 @@ export default class DatePicker extends HTMLElement {
         day = myDate.getDay();
         date = myDate.getDate();
         this.shadowRoot.querySelector('calendar-picker').date = myDate
+
+        //This portion re-renders the current date string and appends it to the h1 tag
+        dateText = months[month] + " " + dates[date] + " " + year;
+        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
     }
 
     prev() {
@@ -139,6 +172,11 @@ export default class DatePicker extends HTMLElement {
         day = myDate.getDay();
         date = myDate.getDate();
         this.shadowRoot.querySelector('calendar-picker').date = myDate
+        
+        //This portion re-renders the current date string and appends it to the h1 tag
+        dateText = months[month] + " " + dates[date] + ", " + year;
+        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
     }
     
     get date() { 
