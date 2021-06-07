@@ -62,6 +62,8 @@ export default class WeeklyKanban extends HTMLElement {
         style.textContent = `
         .flex-container {
             display: flex;
+            position: relative;
+            left: 150px;
             font-size: 2rem;
             text-align: center;
             background: #6a828d;

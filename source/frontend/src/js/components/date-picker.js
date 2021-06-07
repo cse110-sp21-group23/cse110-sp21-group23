@@ -46,6 +46,9 @@ export default class DatePicker extends HTMLElement {
             .full-date {
                 display: flex;
                 flex-direction: row;
+                position: relative;
+                top: 45px;
+                left: 100px;
                 align-items: center;
                 justify-content: center;
                 margin-top: 2.0rem;

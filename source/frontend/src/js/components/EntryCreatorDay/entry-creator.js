@@ -69,6 +69,9 @@ export default class EntryCreator extends HTMLElement {
 
 
         #wrapper{ 
+            position: relative;
+            top: 45px;
+            left: 100px;
             border: 1px solid; 
             margin-left: auto; 
             margin-right: auto; 

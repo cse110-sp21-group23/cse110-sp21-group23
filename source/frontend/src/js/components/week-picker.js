@@ -19,6 +19,9 @@ export default class WeekPicker extends HTMLElement {
 
         style.textContent = `
             .full-date {
+                position: relative;
+                left: 150px;
+                top: 65px;
                 display: flex;
                 flex-direction: row;
                 align-items: center;

@@ -16,9 +16,10 @@ class NavigationBar extends HTMLElement {
             .sidebar {
               position: fixed;
               height: 100vh;
-              width: 190px;
+              width: 230px;
               z-index: 1;
               left: -10px;
+              top: 50px;
               background-color: #C9CBB3;
               -webkit-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
               -moz-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
@@ -31,12 +32,12 @@ class NavigationBar extends HTMLElement {
             .sidebar-entry {
                 display: block;
                 border: none;
-                width: 190px;
+                width: 230px;
                 text-decoration: none;
                 background-color: #d9daca;
                 margin: 0px 0px 10px 0px;
-                padding: 20px 0px 20px 40px;
-                font-size: 20px;
+                padding: 20px 0px 20px 50px;
+                font-size: 22px;
                 color: #444C57;
                 font-family: 'Lato', sans-serif;
                 text-align: left;
@@ -53,24 +54,6 @@ class NavigationBar extends HTMLElement {
                 margin: 30px 0px 30px 0px;
             }
 
-            #addCustom{
-                display: block;
-                border: none;
-                width: 190px;
-                text-decoration: none;
-                background-color: #C9CBB3;
-                margin: 0px 0px 10px 0px;
-                padding: 20px 0px 20px 20px;
-                font-size: 20px;
-                color: #7C8578;
-                font-family: 'Lato', sans-serif;
-                text-align: left;
-            }
-
-            #addCustom:hover {
-                cursor: pointer;
-                background-color: #C9CBB3;
-            }
 
             #hide{
                 display: block;
@@ -80,7 +63,7 @@ class NavigationBar extends HTMLElement {
                 height: 25px;
                 text-decoration: none;
                 background-color: #d9daca;
-                margin: 5px 0px 5px 160px;
+                margin: 5px 0px 5px 200px;
                 font-size: 20px;
                 color: #7C8578;
                 font-family: 'Lato', sans-serif;
@@ -91,15 +74,7 @@ class NavigationBar extends HTMLElement {
                 background-color: #C9CBB3;
             }
 
-            @keyframes hidebar {
-                0%   {left:-20px;}
-                100% {left:-190px;}
-            }
 
-            @keyframes showbar {
-                0%   {left:-190px;}
-                100% {left:-20px;}
-            }
 
           </style>
 
@@ -109,10 +84,6 @@ class NavigationBar extends HTMLElement {
                 <button class="sidebar-entry" data-page="weekly">Week</button>
                 <hr id="splitline">
                 <button class="sidebar-entry">Mood Tracker</button>
-                <button class="sidebar-entry">Future Log</button>
-            <div id="customLogs">
-            </div>
-                <button id="addCustom">⊕ Custom Log</button>
           </div>
 
           
@@ -139,9 +110,9 @@ class NavigationBar extends HTMLElement {
         if(!hiding){
             var pos = -20;
             clearInterval(id);
-            id = setInterval(frame, 3);
+            id = setInterval(frame, 1);
             function frame() {
-              if (pos == -165) {
+              if (pos == -200) {
                 clearInterval(id);
               } else {
                 pos--;  
@@ -151,7 +122,7 @@ class NavigationBar extends HTMLElement {
             hiding = !hiding;
             hidebutton.innerHTML = ">";
         }else{
-            var pos = -165;
+            var pos = -200;
             clearInterval(id);
             id = setInterval(frame, 1);
             function frame() {
@@ -177,11 +148,6 @@ class NavigationBar extends HTMLElement {
             e.target.style.backgroundColor = "#ABB696";
           };
       }
-
-      var addcustom = this.shadowRoot.querySelectorAll("#addCustom");
-      addcustom.onclick = function(e){
-        alert("Coming soon");
-      };
 
     }
   
