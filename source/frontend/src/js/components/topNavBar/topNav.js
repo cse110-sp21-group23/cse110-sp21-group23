@@ -76,7 +76,7 @@ export default class TopNav extends HTMLElement {
 		}
 		
 		.header {
-			position: fixed;
+			position: relative;
 			margin-left:-8px;
 			margin-right:-8px;
 			margin-top: -10px;
