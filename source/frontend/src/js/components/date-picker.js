@@ -35,10 +35,9 @@ export default class DatePicker extends HTMLElement {
 
             <div class="full-date">
                 <i class='left-arrow' id="prev"></i>
-                <div id="date">
-                    <h2 id="month-text"></h2>
-                    <h1 id="date-text">test</h1>
-                </div>
+                <h2 id="month-text"></h2>
+                <h1 id="date-text">test</h1>
+                <div id="date"></div>
                 <i class='right-arrow' id="next"></i>
             </div>
 
@@ -50,6 +49,10 @@ export default class DatePicker extends HTMLElement {
                 color: black;
                 font-family: 'Lato', sans-serif;
                 font-weight: 300;
+                -webkit-user-select: none; /* Safari */        
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* IE10+/Edge */
+                user-select: none; /* Standard */
             }
             #month-text{
                 color: black;
@@ -57,6 +60,10 @@ export default class DatePicker extends HTMLElement {
                 font-weight: lighter;
                 margin-bottom: 1.5em;
                 padding-right: 0.25em;
+                -webkit-user-select: none; /* Safari */        
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* IE10+/Edge */
+                user-select: none; /* Standard */
             }
             .full-date {
                 display: flex;
