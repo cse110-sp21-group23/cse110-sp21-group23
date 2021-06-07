@@ -82,7 +82,7 @@ export default class DatePicker extends HTMLElement {
                 width: 1.25em;
                 position: fixed;
                 vertical-align: top;
-                margin-right: 30em;
+                margin-right: 20em;
                 transform: rotate(-135deg);
             }
             .right-arrow{
@@ -94,12 +94,14 @@ export default class DatePicker extends HTMLElement {
                 width: 1.25em;
                 position: fixed;
                 vertical-align: top;
-                margin-left: 30em;
+                margin-left: 20em;
                 transform: rotate(45deg);
             }
 
             #date {
                 display: flex;
+                position: fixed;
+                margin-left: 16em;
                 justify-content: space-between;
                 align-items: center;
             }
@@ -176,7 +178,7 @@ export default class DatePicker extends HTMLElement {
         this.shadowRoot.querySelector('calendar-picker').date = myDate
         
         //This portion re-renders the current date string and appends it to the h1 tag
-        dateText = months[month] + " " + dates[date] + ", " + year;
+        dateText = months[month] + " " + dates[date] + " " + year;
         this.shadowRoot.getElementById("date-text").innerHTML = dateText;
         this.shadowRoot.getElementById("month-text").innerHTML = days[day];
     }

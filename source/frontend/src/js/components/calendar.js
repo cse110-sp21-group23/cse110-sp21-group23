@@ -14,8 +14,8 @@ export default class Calendar extends HTMLElement {
         .datepicker-toggle {
             display: inline-block;
             position: relative;
-            width: 18px;
-            height: 19px;
+            width: 1.25em;
+            height: 1.25em;
         }
         .datepicker-toggle-button {
             position: absolute;
