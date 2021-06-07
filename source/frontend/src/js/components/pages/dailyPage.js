@@ -16,16 +16,10 @@ export class DailyPage extends HTMLElement {
         this.attachShadow({ mode: 'open' });
 
         template.innerHTML = `
-        <style>
-        body {
-
-        }
-        </style>
-
-        <body>
-            <div id="datePickerDiv"></div>
-            <div id="entryCreatorDiv"> </div>
-        </body>
+            <body>
+                <div id="datePickerDiv"></div>
+                <div id="entryCreatorDiv"> </div>
+            </body>
         `;
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));

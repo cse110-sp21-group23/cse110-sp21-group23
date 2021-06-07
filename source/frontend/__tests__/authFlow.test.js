@@ -1,7 +1,10 @@
+const baseURL = 'http://0.0.0.0:2014'
+
 describe('Authentication flow', () => {
     beforeAll(async () => {
-        await page.goto('http://0.0.0.0:2014/');
+        await page.goto(baseURL);
         await page.waitForTimeout(500);
+        jest.setTimeout(30000)
     });
 
     it('Test1: Initial Login Page - check if form exists', async () => {
@@ -15,14 +18,14 @@ describe('Authentication flow', () => {
         await page.$eval('#signin-button', e => e.click())
         await page.waitForTimeout(500);
 
-        expect(page.url()).toBe('http://0.0.0.0:2014/')
+        expect(page.url()).toBe(`${baseURL}/`)
     })
 
     it('Test3: Redirect - check if page redirects to login if URL has changed without token', async () => {
-        await page.goto('http://0.0.0.0:2014/daily');
+        await page.goto(`${baseURL}/daily`);
         await page.waitForTimeout(500);
 
-        expect(page.url()).toBe('http://0.0.0.0:2014/')
+        expect(page.url()).toBe(`${baseURL}/`)
     })
 
     it('Test4: Login - check if page changes after successful login', async () => {
