@@ -68,7 +68,7 @@ export default class WeekPicker extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.shadowRoot.appendChild(style);    
         
-        this.dateEnd.setDate(this.dateStart.getDate() + 7); 
+        this.dateEnd.setDate(this.dateStart.getDate() + 6); 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 
 
@@ -109,7 +109,8 @@ export default class WeekPicker extends HTMLElement {
      * Function which goes to the next week by changing internal dates and resetting text
      */
     plusWeek(){ 
-        this.dateStart = new Date(this.dateEnd.toDateString());
+        //this.dateStart = new Date(this.dateEnd.toDateString());
+        this.dateStart.setDate(this.dateStart.getDate() + 7); 
         this.dateEnd.setDate(this.dateEnd.getDate() + 7); 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 
@@ -123,8 +124,8 @@ export default class WeekPicker extends HTMLElement {
      */
     minusWeek(){ 
         let temp = new Date(this.dateStart.toDateString()); 
-        this.dateStart.setDate(this.dateStart.getDate() -7); 
-        this.dateEnd = temp; 
+        this.dateStart.setDate(this.dateStart.getDate() - 7); 
+        this.dateEnd.setDate(this.dateEnd.getDate() - 7);
 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 

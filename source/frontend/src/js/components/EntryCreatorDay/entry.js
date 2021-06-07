@@ -70,10 +70,12 @@ export default class Entry extends HTMLElement{
         `
         .bullet-container {
             border: none;
-            background-color: white;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 1rem;
+            color: white;
             text-align: left;
-            padding: 0.6em;
-            margin: 0.5em;
+            padding: 0.5em;
+            margin: 0.25em;
         }
         
         .content-container { 
@@ -82,9 +84,8 @@ export default class Entry extends HTMLElement{
             justify-content: space-between; 
         }
         li {
+            align-item: left;
             position: relative;
-            top: 45px;
-            left: 80px;
             list-style-type: none;
             border-style: solid;
             border-width: 1pt;
@@ -105,7 +106,7 @@ export default class Entry extends HTMLElement{
         p { 
             display: inline; 
             font-size: 20px;
-            
+            font-family: 'Lato', sans-serif;
         }
 
         img{ 

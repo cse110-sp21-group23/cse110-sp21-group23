@@ -17,7 +17,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 <div id="textBox"> 
                     <form id="entryCreator">
                         <div class="entry-input">
-                            <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
+                            <input type="text" name="entryBox" id="entryBox" placeholder="Add a new ..." required>
                             <button type="submit" id="addButton"> Add </button> 
                         </div>
                     </form>

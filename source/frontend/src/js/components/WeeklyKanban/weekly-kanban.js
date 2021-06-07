@@ -17,38 +17,34 @@ export default class WeeklyKanban extends HTMLElement {
             <div class="column-container">
                 <div class='d4'>
                     <div class="day monday">
-                        <p>Monday</p>
+                        <p>Mon</p>
                         <div class="column-content">
                         </div>
                     </div>
                     <div class="day tuesday">
-                        <p>Tuesday</p>
+                        <p>Tue</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day wednesday">
-                        <p>Wednesday</p>
+                        <p>Wed</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day thursday">
-                        <p>Thursday</p>
+                        <p>Thur</p>
                         <div class="column-content"></div>
                     </div>
                 </div>
                 <div class='d4'>
                     <div class="day friday">
-                        <p>Friday</p>
+                        <p>Fri</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day saturday">
-                        <p>Saturday</p>
+                        <p>Sat</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day sunday">
-                        <p>Sunday</p>
-                        <div class="column-content"></div>
-                    </div>
-                    <div class="day monday">
-                        <p>Monday</p>
+                        <p>Sun</p>
                         <div class="column-content"></div>
                     </div>
                 </div>
@@ -63,13 +59,13 @@ export default class WeeklyKanban extends HTMLElement {
         .flex-container {
             display: flex;
             position: relative;
-            left: 150px;
+            left: 210px;
             font-size: 2rem;
             text-align: center;
-            background: #6a828d;
             min-height: 30rem;
-            padding: 1rem;
-            margin: 5rem;
+            padding-top: 2rem;
+            margin: 1rem;
+            width:90%;
         }
         
         .d4 {
@@ -80,6 +76,15 @@ export default class WeeklyKanban extends HTMLElement {
             overflow-x: auto;
             flex-direction: row;
         }
+        p {
+            color: white;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            font-size: 0.75em;
+            padding-top: 0rem;
+            padding-left: 2rem;
+            text-align: left;
+        }
 
         .column-container {
             display: flex;
@@ -89,15 +94,17 @@ export default class WeeklyKanban extends HTMLElement {
             flex-direction: column;
             width: 100%;
             max-height: 100vh;
+            background-color: #384E5E;
         }
         
         .day {
-            background: white;
-            border: 1px solid #6a828d;
+            background: #384E5E;
+            border: 1px solid #2FC4F3;
             width: 20rem;
             min-height: 4rem;
             flex-basis: 8rem;
             min-width: 300px;
+            min-height: 750px;
             flex-grow: 1;
         }
         
@@ -121,7 +128,7 @@ export default class WeeklyKanban extends HTMLElement {
             border-color: #6a828d;
             border-radius: 10px;
             box-shadow: 1px 1px 3px #6a828d;
-            background-color: #f9f9f8;
+            background-color: #;
             text-align: left;
             padding: 0.6em;
             margin: auto;
@@ -130,7 +137,8 @@ export default class WeeklyKanban extends HTMLElement {
         }
         
         .bullet-entry:hover {
-            background-color: #b3d4db;
+            background-color: #384E5E;
+            border-color: pink;
         }`;
 
         // Attach template and style to this shadowRoot
