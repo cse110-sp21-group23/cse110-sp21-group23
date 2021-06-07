@@ -14,7 +14,7 @@ export class Delph {
     this.handleBackButton(config.store)
   }
 
-  handleBackButton = (store) => {
+  handleBackButton(store){
     window.onpopstate = (event) => {
       let content = "";
       if (event.state) {

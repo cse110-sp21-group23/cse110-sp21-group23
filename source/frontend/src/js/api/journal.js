@@ -1,18 +1,19 @@
 import axios from './axios'
 import { getToken } from '../utils/localStorage'
+import "@babel/polyfill";
 
-export const getJournals = async () => {
+export const getJournals = async (header) => {
     try {
-        return (await axios.get('journal', getHeader())).data
+        return (await axios.get('journal', nullishCoalesce(header, getHeader()))).data
     } catch (err) {
         console.log(err)
         throw err
     }
 }
 
-export const getBulletsByDay = async (journalId, start) => {
+export const getBulletsByDay = async (journalId, start, header) => {
     try {
-        return (await axios.get(`journal/${journalId}/bullet/day/${start.toDateString()}`, getHeader())).data
+        return (await axios.get(`journal/${journalId}/bullet/day/${start.toDateString()}`, nullishCoalesce(header, getHeader()))).data
     } catch (err) {
         console.log(err)
         throw err
@@ -30,13 +31,13 @@ Bullet must look like this
         "date": "2021-03-30"
     }
 */
-export const addBullet = async (bullet) => {
+export const addBullet = async (bullet, header) => {
     console.log(bullet); 
     try {
         return (await axios.post(
             'journal/bullet',
             bullet,
-            getHeader()
+            nullishCoalesce(header, getHeader())
         )).data
     } catch (err) {
         console.log(err)
@@ -44,30 +45,30 @@ export const addBullet = async (bullet) => {
     }
 }
 
-export const deleteBullet = async id => {
+export const deleteBullet = async (id, header) => {
     try {
         await axios.delete(
             `/journal/bullet/${id}`,
-            getHeader()
+            nullishCoalesce(header, getHeader())
         )
     } catch (err) {
         throw err
     }
 }
 
-export const editBullet = async bullet => {
+export const editBullet = async (bullet, header) => {
     try {
         await axios.put(
             `/journal/bullet`,
             bullet,
-            getHeader()
+            nullishCoalesce(header, getHeader())
         )
     } catch (err) {
         throw err
     }
 }
 
-export const updateSorting = async (journalId, date, array) => {
+export const updateSorting = async (journalId, date, array, header) => {
     try {
         return (
             await axios.patch(
@@ -75,7 +76,7 @@ export const updateSorting = async (journalId, date, array) => {
                 {
                     array: array
                 },
-                getHeader()
+                nullishCoalesce(header, getHeader())
             )
         ).data
     } catch (err) {
@@ -91,5 +92,13 @@ const getHeader = () => {
             Authorization: token,
             'Content-Type': 'application/json'
         }
+    }
+}
+
+const nullishCoalesce = (h1, h2) => {
+    if (h1) {
+        return h1
+    } else {
+        return h2
     }
 }

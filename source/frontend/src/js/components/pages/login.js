@@ -1,6 +1,8 @@
 import { login, register } from "../../api/user";
+import { getJournals } from '../../api/journal'
 import { store } from '../../store'
 import { loadRoute } from '../../actions'
+import { setToken, setEmail } from '../../utils/localStorage'
 export class LoginPage extends HTMLElement {
 
     connectedCallback() {
@@ -275,15 +277,7 @@ window.onload = function () {
 function signinFunction() {
     var username = document.getElementById('username-input').value;
     var password = document.getElementById('password-input').value;
-    login(username, password)
-        .then(data => {
-            store.dispatch(loadRoute({ path: 'daily' }))
-        }
-
-        )
-        .catch(err => {
-            console.log(err)
-        })
+    signIn(username, password)
 }
 
 
@@ -298,18 +292,24 @@ function signupFunction() {
     if (password == confirmpassword) {
         register(username, password)
             .then(() => {
-                login(username, password)
-                    .then(
-                        store.dispatch(loadRoute({ path: 'daily' }))
-                    )
-                    .catch(err => {
-                        console.log(err)
-                    })
+                signIn(username, password)
             });
     }
     else {
-        console.log("Passwords do not match");
+        window.alert("Passwords do not match");
     }
+}
+
+function signIn(username, password) {
+    login(username, password)
+        .then(token => {
+            setEmail(username);
+            setToken(token)
+            store.dispatch(loadRoute({ path: 'daily' }))
+        })
+        .catch(err => {
+            window.alert(err)
+        })
 }
 
 customElements.define('login-page', LoginPage);
