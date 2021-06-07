@@ -102,11 +102,6 @@ export default class DatePicker extends HTMLElement {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 1rem;
-                padding-left: 3rem;
-                padding-right: 3rem;
-                border-radius: 5em;
-                color: transparent;
             }
         `
 
