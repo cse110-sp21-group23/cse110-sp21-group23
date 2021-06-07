@@ -44,7 +44,7 @@ export default class DatePicker extends HTMLElement {
 
         style.textContent = `
             #date-text{
-                color: black;
+                color: white;
                 font-family: 'Lato', sans-serif;
                 font-weight: 300;
                 -webkit-user-select: none; /* Safari */        
@@ -53,7 +53,7 @@ export default class DatePicker extends HTMLElement {
                 user-select: none; /* Standard */
             }
             #month-text{
-                color: black;
+                color: white;
                 font-family: 'Lato', sans-serif;
                 font-weight: lighter;
                 margin-bottom: 1.5em;
@@ -72,24 +72,26 @@ export default class DatePicker extends HTMLElement {
                 margin-bottom: 1.4rem;
             }
             .left-arrow {
+                color: white;
                 border-style: solid;
                 border-width: 1px 1px 0 0;
                 content: '';
                 display: inline-block;
-                height: 1.25em;
-                width: 1.25em;
+                height: 1.5em;
+                width: 1.5em;
                 position: fixed;
                 vertical-align: top;
                 margin-right: 20em;
                 transform: rotate(-135deg);
             }
             .right-arrow{
+                color: white;
                 border-style: solid;
                 border-width: 1px 1px 0 0;
                 content: '';
                 display: inline-block;
-                height: 1.25em;
-                width: 1.25em;
+                height: 1.5em;
+                width: 1.5em;
                 position: fixed;
                 vertical-align: top;
                 margin-left: 20em;
