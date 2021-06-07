@@ -113,22 +113,6 @@ export default class EntryCreatorWeek extends HTMLElement{
         //Get the text they wrote 
         let text = this.shadowRoot.querySelector("#entryBox").value;
         entry.body = text;
-
-        //Populate image fields with those inputted into the form 
-        // let inputImage = this.shadowRoot.querySelector("#image-input")
-        // if (inputImage.value != '') {
-        //     let img = {
-        //         src: URL.createObjectURL(inputImage.files[0]),
-        //         alt: inputImage.value.split("\\").pop()
-        //     };
-        //     entry.image = img;
-        // }
-
-        //Get audio from file input 
-        // let inputAudio = this.shadowRoot.querySelector("#audio-input");
-        // if (inputAudio.value != '') {
-        //     entry.audio = URL.createObjectURL(inputAudio.files[0]);
-        // }
         
         entry.date = formatDate(this.currDate);
         entry.journalId = getJournal();
@@ -157,8 +141,6 @@ export default class EntryCreatorWeek extends HTMLElement{
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(date)).then((value) => {
-            console.log(value);
-            console.log(date);
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";

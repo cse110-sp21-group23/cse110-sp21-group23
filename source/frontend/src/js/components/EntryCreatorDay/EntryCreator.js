@@ -251,32 +251,13 @@ export default class EntryCreator extends HTMLElement {
         let text = this.shadowRoot.querySelector("#entryBox").value;
         entry.body = text;
 
-        //Populate image fields with those inputted into the form 
-        // let inputImage = this.shadowRoot.querySelector("#image-input")
-        // if (inputImage.value != '') {
-        //     let img = {
-        //         src: URL.createObjectURL(inputImage.files[0]),
-        //         alt: inputImage.value.split("\\").pop()
-        //     };
-        //     entry.image = img;
-        // }
-        
-        //Get audio from file input 
-        // let inputAudio = this.shadowRoot.querySelector("#audio-input");
-        // if (inputAudio.value != '') {
-        //     entry.audio = URL.createObjectURL(inputAudio.files[0]);
-        // }
-
         entry.date = formatDate(getDate());
-        console.log(entry.date);
         entry.journalId = getJournal();
 
         //Append the entry to the backend and internal list at the end 
         await addBullet(entry).then((value) => {
             //Always append bullet to end 
             this.idList.push(value.id);
-            console.log(this.idList);
-            console.log(this.idList.length);
 
             entry.id = value.id;
 
@@ -284,7 +265,6 @@ export default class EntryCreator extends HTMLElement {
             updateSorting(getJournal(), new Date(getDate()), this.idList);
             return value;
         });
-        console.log(entry.id);
 
 
         //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
@@ -299,11 +279,8 @@ export default class EntryCreator extends HTMLElement {
         let journalId = getJournal();
         let theDate = getDate();
 
-        console.log(theDate); 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate)).then((value) => {
-            console.log(value);
-            console.log(new Date(theDate));
 
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
