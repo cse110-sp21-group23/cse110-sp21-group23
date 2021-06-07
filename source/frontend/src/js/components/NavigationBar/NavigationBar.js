@@ -19,7 +19,7 @@ class NavigationBar extends HTMLElement {
               width: 190px;
               z-index: 1;
               left: -10px;
-              background-color: #C9CBB3;
+              background-color: #1D5B72;
               -webkit-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
               -moz-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
               box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
@@ -33,7 +33,7 @@ class NavigationBar extends HTMLElement {
                 border: none;
                 width: 190px;
                 text-decoration: none;
-                background-color: #d9daca;
+                background-color: #B3D4DB;
                 margin: 0px 0px 10px 0px;
                 padding: 20px 0px 20px 40px;
                 font-size: 20px;
@@ -109,10 +109,6 @@ class NavigationBar extends HTMLElement {
                 <button class="sidebar-entry" data-page="weekly">Week</button>
                 <hr id="splitline">
                 <button class="sidebar-entry">Mood Tracker</button>
-                <button class="sidebar-entry">Future Log</button>
-            <div id="customLogs">
-            </div>
-                <button id="addCustom">⊕ Custom Log</button>
           </div>
 
           
