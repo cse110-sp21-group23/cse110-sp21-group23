@@ -68,7 +68,7 @@ export default class DatePicker extends HTMLElement {
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
-                margin-top: 2.0rem;
+                padding-top: 3.0rem;
                 margin-bottom: 1.4rem;
             }
             .left-arrow {
@@ -79,9 +79,9 @@ export default class DatePicker extends HTMLElement {
                 display: inline-block;
                 height: 1.5em;
                 width: 1.5em;
-                position: fixed;
+                position: sticky;
                 vertical-align: top;
-                margin-right: 20em;
+                margin-right: 10em;
                 transform: rotate(-135deg);
             }
             .right-arrow{
@@ -92,16 +92,15 @@ export default class DatePicker extends HTMLElement {
                 display: inline-block;
                 height: 1.5em;
                 width: 1.5em;
-                position: fixed;
+                position: sticky;
                 vertical-align: top;
-                margin-left: 20em;
+                margin-left: 10em;
                 transform: rotate(45deg);
             }
             #date {
                 display: flex;
-                position: fixed;
-                margin-left: 16em;
-                justify-content: space-between;
+                position: sticky;
+                margin-left: 0.5em;
                 align-items: center;
             }
         `
