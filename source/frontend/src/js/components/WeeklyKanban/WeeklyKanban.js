@@ -181,6 +181,7 @@ export default class WeeklyKanban extends HTMLElement {
     renderAllEc() {
         let colContent = this.shadowRoot.querySelectorAll(".column-content");
         for (let index = 0; index < colContent.length; index++) {
+            this.ecArray[index].date = this.dayArray[index];  
             this.ecArray[index].renderBullets(this.dayArray[index]);
         }
     }

@@ -21,8 +21,6 @@ export default class Entry extends HTMLElement{
         //Create the template and insert html 
         const template = document.createElement('template');
 
-        
-
         template.innerHTML = `
             <li id="type" draggable="true" class="type-name">
                 <div class="bullet-container">
@@ -428,7 +426,7 @@ export default class Entry extends HTMLElement{
 
             //used in getBulletsByDay
             let journalId = getJournal(); 
-            let theDate = getDate();
+            let theDate = this.getRootNode().host.date; 
 
             //Get bullets for that day from the backend to find the one to edit
             await getBulletsByDay(journalId,new Date(theDate)).then((value) =>{

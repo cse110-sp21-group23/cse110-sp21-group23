@@ -22,6 +22,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                         </div>
                     </form>
                     <ul id="entryContainer">
+                        <entry></entry>
                     </ul> 
                 </div>
             </div>
@@ -166,6 +167,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             });
         });
     }
+
     connectedCallback(){ 
         this.render(); 
     }
@@ -203,12 +205,14 @@ export default class EntryCreatorWeek extends HTMLElement{
     set idOrder(list) {
         this.idList = list;
     }
+
     /**
      * @returns {Array} - Returns an array of the bullets in order by id
      */
     get idOrder() {
         return this.idList;
     }
+
     /**
      * Helper function which swaps the positions of the two ids passed in within 
      * the id array 

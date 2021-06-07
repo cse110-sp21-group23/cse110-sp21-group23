@@ -277,7 +277,7 @@ export default class EntryCreator extends HTMLElement {
     renderBullets() {
         //Grab journal id from local storage 
         let journalId = getJournal();
-        let theDate = getDate();
+        let theDate = this.date; 
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate)).then((value) => {
@@ -316,6 +316,7 @@ export default class EntryCreator extends HTMLElement {
      * Function which renders the entryComponent on the page.
      */
     render() {
+        this.date = getDate(); 
         //Render the bullets for the first day it's instantiated in 
         this.renderBullets();
         //Get the form in entry-creator
@@ -381,6 +382,21 @@ export default class EntryCreator extends HTMLElement {
             this.idList.splice(index2, 0, dragged);
         }
     }
+
+    /**
+     * @param {String} date - The date of this ec creator as a string 
+     */
+    set date(date) {
+        this.currDate = date;
+     }
+    
+    /**
+     * @return {String} - Returns a string of this entry creator's internal date
+     */
+    get date() {
+        return this.currDate;
+    }
+
 }
 
 
