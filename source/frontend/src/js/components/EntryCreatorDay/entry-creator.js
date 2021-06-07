@@ -72,7 +72,10 @@ export default class EntryCreator extends HTMLElement {
         }
 
         #wrapper{ 
-            border: 1px solid;
+            position: relative;
+            top: 45px;
+            left: 100px;
+            border: 1px solid; 
             border-radius: 20px;
             background-color: rgba(106, 130, 141, 0.8);
             border-color: #6a828d;

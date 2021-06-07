@@ -82,6 +82,9 @@ export default class Entry extends HTMLElement{
             justify-content: space-between; 
         }
         li {
+            position: relative;
+            top: 45px;
+            left: 80px;
             list-style-type: none;
             border-style: solid;
             border-width: 1pt;
