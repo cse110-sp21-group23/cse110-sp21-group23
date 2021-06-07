@@ -17,34 +17,34 @@ export default class WeeklyKanban extends HTMLElement {
             <div class="column-container">
                 <div class='d4'>
                     <div class="day monday">
-                        <p>Mon</p>
+                        <p class="title">Mon</p>
                         <div class="column-content">
                         </div>
                     </div>
                     <div class="day tuesday">
-                        <p>Tue</p>
+                        <p class="title">Tue</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day wednesday">
-                        <p>Wed</p>
+                        <p class="title">Wed</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day thursday">
-                        <p>Thur</p>
+                        <p class="title">Thur</p>
                         <div class="column-content"></div>
                     </div>
                 </div>
                 <div class='d4'>
                     <div class="day friday">
-                        <p>Fri</p>
+                        <p class="title">Fri</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day saturday">
-                        <p>Sat</p>
+                        <p class="title">Sat</p>
                         <div class="column-content"></div>
                     </div>
                     <div class="day sunday">
-                        <p>Sun</p>
+                        <p class="title">Sun</p>
                         <div class="column-content"></div>
                     </div>
                 </div>
@@ -156,6 +156,8 @@ export default class WeeklyKanban extends HTMLElement {
         this.dayArray = weekP.sendArray();
 
         let colContent = this.shadowRoot.querySelectorAll(".column-content");
+        let titles = this.shadowRoot.querySelectorAll(".title"); 
+
         for (let index = 0; index < colContent.length; index++) {
             //Append ecw to all days 
             let ecWeek = document.createElement('entry-creator-week');
@@ -167,6 +169,11 @@ export default class WeeklyKanban extends HTMLElement {
 
             //Set internal date 
             ecWeek.date = this.dayArray[index];
+
+            //Rename title HTML of all days 
+            let date = new Date(this.dayArray[index]); 
+            let day = this.dayArray[index].split(' '); 
+            titles[index].innerHTML = day[0] + ' ' + date.toLocaleDateString ('default', {month: 'long'}) + " " + date.getDate(); 
         }
         //Event listener to update day array on week change event 
         document.addEventListener('weekChange', () => {
@@ -180,10 +187,17 @@ export default class WeeklyKanban extends HTMLElement {
      */
     renderAllEc() {
         let colContent = this.shadowRoot.querySelectorAll(".column-content");
+        let titles = this.shadowRoot.querySelectorAll(".title"); 
         for (let index = 0; index < colContent.length; index++) {
             this.ecArray[index].date = this.dayArray[index];  
             this.ecArray[index].renderBullets(this.dayArray[index]);
+
+            //Rename title HTML of all days 
+            let date = new Date(this.dayArray[index]); 
+            let day = this.dayArray[index].split(' '); 
+            titles[index].innerHTML = day[0] + ' ' + date.toLocaleDateString ('default', {month: 'long'}) + " " + date.getDate();
         }
     }
 }
+
 customElements.define('weekly-kanban', WeeklyKanban);

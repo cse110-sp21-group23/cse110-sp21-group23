@@ -280,7 +280,7 @@ export default class EntryCreatorWeek extends HTMLElement{
  * @returns a string with the date formatted correctly 
  */
 function formatDate(date) {
-    var d = new Date(date),
+    let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
