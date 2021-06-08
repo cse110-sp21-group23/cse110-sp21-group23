@@ -33,7 +33,7 @@ const storeJournal = async (title) => {
         `
         const res = (await db.queryParam(statement, [title])).rows[0]
         return {
-            id: res.id
+            id: parseInt(res.id)
         }
     } catch (err) {
         console.log(err)
@@ -54,7 +54,7 @@ const storeDay = async (journalId, date) => {
         `
         const res = (await db.queryParam(statement, [journalId, date])).rows[0]
         return {
-            id: res.id
+            id: parseInt(res.id)
         }
     } catch (err) {
         throw err
