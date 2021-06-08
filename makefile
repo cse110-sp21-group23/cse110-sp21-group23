@@ -2,8 +2,11 @@ fix_conflict:
 	git fetch origin main:main
 	git merge main
 
-dev:
-	cd source/frontend && npm run dev
+dep_ensure_frontend:
+	cd source/frontend && npm i
+
+dev-test:
+	cd source/frontend && npm run dev-test
 
 test:
 	cd source/frontend && npm run test
