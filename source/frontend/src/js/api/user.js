@@ -3,6 +3,11 @@ import axios from './axios'
 var localStorage = require('../utils/localStorage')
 var journalAPI = require('./journal')
 
+/**
+ * Registers new account
+ * @returns {String} - success message
+ */
+
 export const register = async (email, password) => {
     try {
         const res = await axios.post(
@@ -18,6 +23,12 @@ export const register = async (email, password) => {
     }
 }
 
+/**
+ * Retrieves JWT token
+ * @param   {String} - email
+ * @param   {String} - password
+ * @returns {String} - JWT token
+ */
 export const login = async (email, password) => {
     try {
         const res = await axios.post(

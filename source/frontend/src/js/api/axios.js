@@ -3,7 +3,7 @@ import axios from "axios";
 // http://localhost:8080 FOR local server
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'https://cse110-23-api.herokuapp.com',
 });
 
 export default api;

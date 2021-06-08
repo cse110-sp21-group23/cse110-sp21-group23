@@ -1,4 +1,5 @@
 import { getBulletsByDay, addBullet, updateSorting, deleteBullet } from '../../api/journal'
+import getHeader from '../../utils/header';
 import { getJournal } from "../../utils/localStorage"
 
 export default class EntryCreatorWeek extends HTMLElement{
@@ -17,7 +18,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 <div id="textBox"> 
                     <form id="entryCreator">
                         <div class="entry-input">
-                            <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+                            <input type="text" name="entryBox" id="entryBox" placeholder="Add a new ..." required>
                             <button type="submit" id="addButton"> Add </button> 
                         </div>
                     </form>
@@ -39,9 +40,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         }
 
         #addButton {
-            margin: 10px auto 20px auto; 
-            padding: 10px;
-            margin-left: 20px;
+            display:none;
         }
 
         .entry-input {
@@ -50,7 +49,6 @@ export default class EntryCreatorWeek extends HTMLElement{
         }
 
         #textBox{
-            margin-top: 30px; 
             width: 100%; 
             display: flex;
             justify-content: center;
@@ -68,15 +66,19 @@ export default class EntryCreatorWeek extends HTMLElement{
             margin-top: 10px; 
             margin-bottom: 10px; 
         }
-        #entryBox { 
-            margin: 10px auto 20px auto; 
+        #entryBox {
+            border: 1px solid;
+            border-radius: 10px;
+            border-color: #6a828d;
+            margin: 0px auto 0px auto; 
             padding: 10px; 
-            width: 80%; 
+            width: 85%; 
             box-sizing: border-box; 
-            font-size: 15pt;
+            font-size: 12pt;
+            font-family: 'Lato', sans-serif;
         }
         
-        ul { 
+        ul {
             list-style-type: none; 
         }`;
 
@@ -155,7 +157,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         let journalId = getJournal();
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId, new Date(date)).then((value) => {
+        getBulletsByDay(journalId, new Date(date), getHeader()).then((value) => {
             console.log(value);
             console.log(date);
             //Clear the textbox

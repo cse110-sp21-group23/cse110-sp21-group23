@@ -34,7 +34,7 @@ export class Delph {
       let back = state.route.back
 
       //load navBar for every page not login
-      if (state.route.path != 'login' || state.route.path != '') {
+      if (state.route.path != '') {
         //creates side navBar and top navBar
         let main = document.querySelector("main");
         let topNavBar = document.querySelector("topNavBar")

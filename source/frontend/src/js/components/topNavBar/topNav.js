@@ -35,11 +35,12 @@ export default class TopNav extends HTMLElement {
 		a {
 			color: #444C57;
 			text-decoration: none;
+			font-family: 'Lato', sans-serif;
 		}
 
 		.logo {
 			margin: 0;
-			font-size: 1.45em;
+			font-size: 32px;
 		}
 		
 		.logo a {
@@ -47,6 +48,7 @@ export default class TopNav extends HTMLElement {
 			text-transform: uppercase;
 			text-align: center;
 			display: block;
+			font-family: 'Lato', sans-serif;
 		}
 
 		button{
@@ -56,16 +58,15 @@ export default class TopNav extends HTMLElement {
 			cursor: pointer;
 			display: flex;
 			align-self: center;
-			font-size: 1rem;
+			font-size: 20px;
 			font-weight: 400;
 			line-height: 1;
 			margin: 0px;
 			padding: 1.0em 1.0em;
 			text-decoration: none;
 			text-align: center;
-			text-transform: uppercase;
-			font-family: 'Montserrat', sans-serif;
-			font-weight: 700;
+			font-family: 'Lato', sans-serif;
+			font-weight: 500;
 		}
 
 		.email-button{
@@ -76,13 +77,14 @@ export default class TopNav extends HTMLElement {
 		}
 		
 		.header {
-			margin-left:-8px;
-			margin-right:-8px;
-			margin-top: -10px;
-			position: relative;
-			min-height: 5vh;
+			position: fixed;
+			left:-8px;
+			right:-8px;
+			top: -5px;
+			z-index: 1;
+			height: 55px;
 			min-width:100vw;
-			background-color: #f0d6c7;
+			background-color: #B3D4DB;
 			-webkit-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
 			-moz-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
 			box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);

@@ -1,5 +1,6 @@
 
 import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
+import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -33,7 +34,6 @@ export default class Entry extends HTMLElement{
                         </div> 
                         <img src="" alt="" class="entry-image"></img> <br>
                         <audio src="" class="entry-audio"></audio>
-                        <button id="deleteButton">X Symbol Here </button> 
                     </div> 
                 </div>
             </li>
@@ -56,6 +56,7 @@ export default class Entry extends HTMLElement{
                   </div>
                   <button id="editButton"> Confirm Edit </button>
                   <button id="doneButton"> Finish Bullet </button>
+                  <button id="deleteButton">Delete Bullet </button> 
                 </ul>
               </form>
             </div> 
@@ -68,13 +69,14 @@ export default class Entry extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = 
         `
-
         .bullet-container {
             border: none;
-            background-color: white;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 1rem;
+            color: white;
             text-align: left;
-            padding: 0.6em;
-            margin: 0.5em;
+            padding: 0.5em;
+            margin: 0.25em;
         }
         
         .content-container { 
@@ -83,6 +85,8 @@ export default class Entry extends HTMLElement{
             justify-content: space-between; 
         }
         li {
+            align-item: left;
+            position: relative;
             list-style-type: none;
             border-style: solid;
             border-width: 1pt;
@@ -103,10 +107,7 @@ export default class Entry extends HTMLElement{
         p { 
             display: inline; 
             font-size: 20px;
-            
-        }
-
-        #deleteButton { 
+            font-family: 'Lato', sans-serif;
         }
 
         img{ 
@@ -129,19 +130,19 @@ export default class Entry extends HTMLElement{
         
         /* Modal Content/Box */
         .modal-content {
-            border-radius: 10px;
+            border-radius: 40px;
             background-color: #C9CBB3;
             margin: 15% auto; /* 15% from the top and centered */
             padding: 30px;
             border: 5px solid #888;
             width: 75%; /* Could be more or less, depending on screen size */
-            height: 30%;
+            height: 33%;
         }
         #modal-words {
             padding: 10px; 
             width: 50vw; 
             box-sizing: border-box; 
-            font-size: 15pt;
+            font-size: 16pt;
             border-radius: 10px;
         }
         [contenteditable] {
@@ -161,6 +162,10 @@ export default class Entry extends HTMLElement{
             text-decoration: none;
             cursor: pointer;
         }
+        input[type='radio'] {
+            transform: scale(1.4);
+            margin-top: 18px;
+        }
         
         #editButton {
             border-radius: 10px;
@@ -168,7 +173,7 @@ export default class Entry extends HTMLElement{
             padding: 10px;
             width: 90px;
             height: 90px;
-            font-size: 16px;
+            font-size: 18px;
         }
         #doneButton {
             border-radius: 10px;
@@ -176,14 +181,30 @@ export default class Entry extends HTMLElement{
             padding: 10px;
             width: 90px;
             height: 90px;
-            font-size: 16px;
+            font-size: 18px;
         }
+        
+        #deleteButton { 
+            border-radius: 10px;
+            margin-top:20px;
+            padding: 10px;
+            width: 90px;
+            height: 90px;
+            font-size: 18px;
+            float: right
+        }
+
+        label {
+            font-size: 20px;
+        }
+
         .modal-title {
             text-align: center;
-            font-size: 20px;
+            font-size: 25px;
             text-decoration: underline;
             position: relative;
             height: 10px;
+            margin-top: 5px
         }`;
 
         //Attach shadow 
@@ -374,63 +395,11 @@ export default class Entry extends HTMLElement{
     connectedCallback(){ 
         this.render(); 
     }
-    
 
-    /*           
-     edit.addEventListener("click", async(event) => {
-        console.log("hey");
-        event.preventDefault();
-        //changes entry's content and bullet type
-        shadow.getElementById("content").textContent = shadow.getElementById("modal-words").value;
-        bulletChange.body = shadow.getElementById("modal-words").value;
-        let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
-        for (const choice of choices) { 
-            if (choice.checked){ 
-                console.log("choice = " + choice.value);
-                entry.className = choice.value;
-                choice.checked = false;
-                bulletChange.type = choice.value;
-            }
-        }
-        let symbol = "";
-        if(symbol == "") {
-            symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
-        }
-        shadow.getElementById("symbol").textContent = symbol;
-        //closes modal and fixes finish bullet button text
-        await editBullet(bulletChange);
-        modal.style.display = "none";
-    });
-    */
-
-    async bulletEdit(event, bulletChange) {
-        const shadow = this.shadowRoot;
-        event.preventDefault();
-        console.log("hey");
-        //changes entry's content and bullet type
-        shadow.getElementById("content").textContent = shadow.getElementById("modal-words").value;
-        bulletChange.body = shadow.getElementById("modal-words").value;
-        let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
-        for (const choice of choices) { 
-            if (choice.checked){ 
-                console.log("choice = " + choice.value);
-                entry.className = choice.value;
-                choice.checked = false;
-                bulletChange.type = choice.value;
-            }
-        }
-        let symbol = "";
-        if(symbol == "") {
-            symbol = this.shadowRoot.querySelector("#type").className == "task" ? "☐" : this.shadowRoot.querySelector("#type").className == "event" ? "○" : "\u2022"
-        }
-        shadow.getElementById("symbol").textContent = symbol;
-        //closes modal and fixes finish bullet button text
-        await editBullet(bulletChange);
-        //shadow.getElementById("modal").style.display = "none";
-    }
-
+    /**
+     * Renders the edit modal popup, allowing users to edit, finish, and delete bullets
+     */
     render(){ 
-
         const shadow = this.shadowRoot;
 
         //Sets up modal
@@ -440,32 +409,6 @@ export default class Entry extends HTMLElement{
         //Entry part
         let entry = this.shadowRoot.querySelector("#type");
         var content = entry.children;   
-
-        //Delete listener 
-        let delButton = this.shadowRoot.querySelector("#deleteButton"); 
-        delButton.addEventListener('click', ()=> { 
-            //Delete the bullet in the server 
-            deleteBullet(this.internalEntry.id).then(()=> { 
-                let ec = this.getRootNode().host; 
-                //Update ec id list 
-                let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
-                ec.idOrder.splice(index,1);  
-                
-                let date; 
-                //daily 
-                if (ec.currDate == undefined){ 
-                    date = getDate(); 
-                }
-                //weekly
-                else { 
-                    date = ec.currDate; 
-                }
-
-                //Update list in backend
-                updateSorting(getJournal(), new Date(date), ec.idOrder); 
-                this.remove(); 
-             }); 
-        })
 
         //Strikethrough button
         var strike = shadow.getElementById("doneButton");
@@ -480,30 +423,33 @@ export default class Entry extends HTMLElement{
 
             //changes modal textbox to match entry's content
             shadow.getElementById("modal-words").value = shadow.getElementById("content").textContent;
+            
+            //bullet to change
+            let bulletChange;
+
+            //used in getBulletsByDay
             let journalId = getJournal(); 
             let theDate = getDate();
-            
-            let bulletChange;
-            //Get bullets for that day from the backend and populate bulletArray
-            await getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
-                console.log(shadow.getElementById("content").innerHTML);
-                console.log(shadow.getElementById("content").textContent);
+
+            //Get bullets for that day from the backend to find the one to edit
+            await getBulletsByDay(journalId,new Date(theDate), getHeader()).then((value) =>{
                 for(let i = 0; i < value.length; i++) {
+
+                    //found the bullet
                     if(value[i].body == shadow.getElementById("content").textContent ||
                       value[i].body == shadow.getElementById("content").innerHTML    &&
                       value[i].type == this.shadowRoot.querySelector("#type").className) {
-                        console.log(value[i]);
                         bulletChange = value[i];
                     }
                 }
             });
-            //Makes sure finish bullet button says the right text
-            
 
+            //makes sure that the bullet has an is_done value
             if(bulletChange.is_done == null) {
                 bulletChange.is_done = false;
             }
-            console.log(bulletChange.is_done);
+
+            //Makes sure finish bullet button says the right text
             if(bulletChange.is_done == true) {
                 strike.firstChild.nodeValue = "Unfinish Bullet";
             }
@@ -513,16 +459,18 @@ export default class Entry extends HTMLElement{
 
             //shows modal
             modal.style.display = "block";
+
             //edit button from modal
             var edit = shadow.getElementById("editButton");
             edit.onclick = async (event) => {
-            //edit.addEventListener("click", async(event) => {
-                console.log("hey");
                 event.preventDefault();
+
                 //changes entry's content and bullet type
                 shadow.getElementById("content").textContent = shadow.getElementById("modal-words").value;
                 bulletChange.body = shadow.getElementById("modal-words").value;
                 let choices = shadow.getElementById("radioEdit").querySelectorAll("input[name='entryTypeEdit']"); 
+
+                //looks for the bullet type
                 for (const choice of choices) { 
                     if (choice.checked){ 
                         console.log("choice = " + choice.value);
@@ -531,20 +479,20 @@ export default class Entry extends HTMLElement{
                         bulletChange.type = choice.value;
                     }
                 }
+                //used to change onscreen bullet type since the above only changes backend
                 let symbol = "";
                 if(symbol == "") {
                     symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
                 }
                 shadow.getElementById("symbol").textContent = symbol;
-                //closes modal and fixes finish bullet button text
+                
+                //edits bullet in the backend and closes modal
                 await editBullet(bulletChange);
                 modal.style.display = "none";
-            };
-            
+            }; //end edit bullet method
             
             //adds strikethrough through entry
             strike.onclick = async (event) => {
-                //strike.addEventListener("click", async (event) => {
                 event.preventDefault();
 
                 //holds strikethrough text
@@ -572,14 +520,18 @@ export default class Entry extends HTMLElement{
                     //updates onscreen text
                     shadow.getElementById("content").innerHTML = strikeT;
                 }
+                //add strikethrough and changes strike button text
                 else {
                     //adds strikethrough text
                     strikeT = "<strike>" + shadow.getElementById("content").innerHTML + "</strike>";
+
+                    //updates button txt
                     strike.firstChild.nodeValue = "Unfinish Bullet";
 
                     //updates relevant bullet parts
                     bulletChange.body = strikeT;
                     bulletChange.isDone = true;
+
                     //updates onscreen text
                     shadow.getElementById("content").innerHTML = strikeT;
                 }
@@ -588,8 +540,40 @@ export default class Entry extends HTMLElement{
                 modal.style.display = "none";
                 await editBullet(bulletChange);
             };    //end strikethrough function
+
+            //Delete listener 
+            let delButton = this.shadowRoot.querySelector("#deleteButton"); 
+            delButton.addEventListener('click', (event)=> { 
+                event.preventDefault();
+
+                //Delete the bullet in the server 
+                deleteBullet(this.internalEntry.id).then(()=> { 
+                    let ec = this.getRootNode().host; 
+
+                    //Update ec id list 
+                    let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
+                    ec.idOrder.splice(index,1);  
+                    
+                    let date; 
+                    //daily 
+                    if (ec.currDate == undefined){ 
+                        date = getDate(); 
+                    }
+                    //weekly
+                    else { 
+                        date = ec.currDate; 
+                    }
+
+                    //Update list in backend
+                    updateSorting(getJournal(), new Date(date), ec.idOrder); 
+                    this.remove(); 
+                }); 
+            });
+
         }); //end edit bullet event listener 
+
     } //end render
+
 } //end class
 
 //Define the custom element 

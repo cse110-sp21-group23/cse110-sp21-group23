@@ -1,11 +1,11 @@
 import {login, register} from '../src/js/api/user'
 
-test('Test1: valid login', async () => {
+test('Test1: Valid login', async () => {
     const res = await login('e@gmail.com', 'asd')
     expect(res.token).not.toBe(null);
 });
 
-test('Test2: login with unregistered email', async () => {
+test('Test2: Login with unregistered email', async () => {
     try {
         await login('doesnt-exist@gmail.com', 'nope')
     } catch (err) {
@@ -13,7 +13,7 @@ test('Test2: login with unregistered email', async () => {
     }
 })
 
-test('Test3: login with wrong password', async () => {
+test('Test3: Login with wrong password', async () => {
     try {
         await login('e@gmail.com', 'nope')
     } catch (err) {
@@ -21,7 +21,7 @@ test('Test3: login with wrong password', async () => {
     }
 })
 
-test('Test4: register with used email', async () => {
+test('Test4: Register with used email', async () => {
     try {
         await register('e@gmail.com', 'nope')
     } catch (err) {

@@ -1,4 +1,5 @@
 import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
+import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
 
 export default class EntryCreator extends HTMLElement {
@@ -17,17 +18,17 @@ export default class EntryCreator extends HTMLElement {
                 <!--Determine type of bullet point it'll be-->
                     <li>
                     <div id="radio1">
-                        <input type="radio" name="entryType" id="task" value="task" required>
+                        <input type="radio" name="entryType" id="task" value="task" checked required>
                         <label for="task">
-                            <span>Task</span>
+                            <span>task</span>
                         </label>
                         <input type="radio" name="entryType" id="event" value="event"> 
                         <label for="event">
-                            <span>Event</span>
+                            <span>event</span>
                         </label>
                         <input type="radio" name="entryType" id="note" value="note"> 
                         <label for="note">
-                            <span>Note</span>
+                            <span>note</span>
                         </label> 
                     </div>
                     </li>
@@ -48,7 +49,7 @@ export default class EntryCreator extends HTMLElement {
 
                     <div class="bottom-div">
                         <!--Where they'll log their stuff-->
-                        <input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+                        <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
 
                         <!--Add button-->
                         <button type="submit" id="addButton"> Add </button> 
@@ -67,29 +68,30 @@ export default class EntryCreator extends HTMLElement {
         let style = document.createElement('style');
         style.textContent = `
 
+        #addButton {
+            display:none;
+        }
 
         #wrapper{ 
+            position: relative;
+            top: 45px;
+            left: 100px;
             border: 1px solid; 
+            border-radius: 20px;
+            background-color: rgba(106, 130, 141, 0.8);
+            border-color: #6a828d;
             margin-left: auto; 
             margin-right: auto; 
             display: flex; 
             flex-direction: column; 
-            align-items: flex-start; 
+            align-items: center; 
             width: 60%; 
-            border-radius: 30px;
-        }
-
-        #addButton {
-            margin: 10px auto 20px auto; 
-            padding: 10px;
-            margin-left: 20px;
         }
 
         .bottom-div {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            
         }
 
         #textBox{
@@ -99,29 +101,122 @@ export default class EntryCreator extends HTMLElement {
             width: 60%; 
         }
         #entryCreator { 
-            margin-top: 10px; 
-            margin-bottom: 10px; 
-            margin-left: -10px; 
+            width:100%;
+            margin-top: 0.5em;
+            margin-left: -1em;
         }
         #radio1 { 
             margin-bottom: 10px; 
-            display: flex;
-            flex-direction: row;
         }
         #image-input, #audio-input { 
             margin-top: 10px; 
             margin-bottom: 10px; 
         }
         #entryBox { 
-            margin: 10px auto 20px auto; 
-            padding: 10px; 
-            width: 50vw; 
+            border: 1px solid;
+            border-radius: 10px;
+            border-color: #6a828d;
+            margin: 0px  0px auto; 
+            padding: 15px; 
+            width: 100%;
             box-sizing: border-box; 
             font-size: 15pt;
+            font-family: 'Lato', sans-serif;
         }
         
         ul { 
-            list-style-type: none; 
+            list-style-type: none;
+            margin: 0.5em;
+        }
+        /* Basic styles */
+        input[type="checkbox"],
+        input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+        }
+        label {
+            font-family: 'Lato', sans-serif;
+            color: white;
+            font-weight: 100;
+            position: relative;
+            display: inline-block;
+            padding: 0 0 0 2em;
+            height: 1.5em;
+            line-height: 1.5;
+            cursor: pointer;
+            margin-right: 0.2em;
+        }
+        label::before,
+        label::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        label::before {
+            content: " ";
+            border: 2px solid #bdc3c7;
+            border-radius: 20%;
+        }
+
+        /* Checkbox */
+        input[type="checkbox"] + label::after {
+            content: "2714";
+            color: #2c3e50;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Radio */
+        input[type="radio"] + label::before {
+            border-radius: 50%;
+            background: #4C444C;
+        }
+
+        input[type=radio] + label::after {
+            content: " ";
+            top: .2em;
+            left: .2em;
+            width: 1em;
+            height: 1em;
+            background: #b3d4db;
+            border: .2em solid #2eb7eb;
+            border-radius: 50%;
+        }
+
+        /* :checked */
+        input[type="checkbox"]:checked + label::before,
+        input[type="radio"]:checked + label::before {
+            background: #4C444C;
+            border-color: #4C444C;
+        }
+
+        input[type="checkbox"] + label::after,
+        input[type=radio] + label::after {
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            -o-transform: scale(0);
+            transform: scale(0);
+        }
+
+        input[type="checkbox"]:checked + label::after,
+        input[type=radio]:checked + label::after {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            -o-transform: scale(1);
+            transform: scale(1);
+        }
+
+        /* Transition */
+        label::before,
+        label::after {
+            -webkit-transition: .25s all ease;
+            -o-transition: .25s all ease;
+            transition: .25s all ease;
         }`;
 
         //Attach the template and style to this shadow root
@@ -207,7 +302,7 @@ export default class EntryCreator extends HTMLElement {
 
         console.log(theDate); 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId, new Date(theDate)).then((value) => {
+        getBulletsByDay(journalId, new Date(theDate), getHeader()).then((value) => {
             console.log(value);
             console.log(new Date(theDate));
 

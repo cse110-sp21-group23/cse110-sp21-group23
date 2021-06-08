@@ -1,5 +1,6 @@
 import { login, register } from '../../api/user'
 import { getJournals, getBulletsByDay, addBullet, deleteBullet, editBullet, updateSorting } from '../../api/journal'
+import getHeader from '../../utils/header';
 
 
 export class DefaultPage extends HTMLElement {
@@ -26,6 +27,7 @@ export class DefaultPage extends HTMLElement {
         getBulletsByDay(
             7,
             new Date("2021-04-27"), 
+            getHeader()
         ).then(data => {
             console.log("Data: ", data)
         }).catch(err => {

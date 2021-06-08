@@ -10,9 +10,9 @@ export default class WeekPicker extends HTMLElement {
         const template = document.createElement('template'); 
         template.innerHTML = `
         <div class="full-date">
-            <i class='fas fa-angle-left fa-pull-left' id="prev"> &lt;</i>
-            <div id="date"></div>
-            <i class='fas fa-angle-right' id="next"> &gt; </i>
+            <i class='left-arrow' id="prev"></i>
+            <h1 id="date"></h1>
+            <i class='right-arrow' id="next"></i>
         </div>
         `
         let style = document.createElement('style');
@@ -21,19 +21,59 @@ export default class WeekPicker extends HTMLElement {
             .full-date {
                 display: flex;
                 flex-direction: row;
+                position: relative;
+                top: 45px;
+                left: 100px;
                 align-items: center;
                 justify-content: center;
+                padding-top: 3.0rem;
+                margin-bottom: 1.4rem;
+            }
+            .left-arrow {
+                color: white;
+                border-style: solid;
+                border-width: 1px 1px 0 0;
+                content: '';
+                display: inline-block;
+                height: 1.5em;
+                width: 1.5em;
+                position: sticky;
+                vertical-align: top;
+                margin-right: 5em;
+                transform: rotate(-135deg);
+            }
+            .right-arrow{
+                color: white;
+                border-style: solid;
+                border-width: 1px 1px 0 0;
+                content: '';
+                display: inline-block;
+                height: 1.5em;
+                width: 1.5em;
+                position: sticky;
+                vertical-align: top;
+                margin-left: 5em;
+                transform: rotate(45deg);
+            }
+            #date {
+                display: flex;
+                position: sticky;
+                margin-left: 0.5em;
+                align-items: center;
+                color: white;
+                font-family: 'Lato', sans-serif;
+                font-weight: 300;
             }
         `
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.shadowRoot.appendChild(style);    
         
-        this.dateEnd.setDate(this.dateStart.getDate() + 7); 
+        this.dateEnd.setDate(this.dateStart.getDate() + 6); 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 
 
         //Set beginning text 
-        this.shadowRoot.getElementById("date").innerText = startText + "———" + endText; 
+        this.shadowRoot.getElementById("date").innerText = startText + " — " + endText; 
 
         //Add event listeners for clicking on the arrows 
         this.shadowRoot.getElementById("next").addEventListener('click', () => {
@@ -69,13 +109,14 @@ export default class WeekPicker extends HTMLElement {
      * Function which goes to the next week by changing internal dates and resetting text
      */
     plusWeek(){ 
-        this.dateStart = new Date(this.dateEnd.toDateString());
+        //this.dateStart = new Date(this.dateEnd.toDateString());
+        this.dateStart.setDate(this.dateStart.getDate() + 7); 
         this.dateEnd.setDate(this.dateEnd.getDate() + 7); 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 
 
         //Set text 
-        this.shadowRoot.getElementById("date").innerText = startText + "———" + endText; 
+        this.shadowRoot.getElementById("date").innerText = startText + " — " + endText; 
     }
 
     /**
@@ -83,14 +124,14 @@ export default class WeekPicker extends HTMLElement {
      */
     minusWeek(){ 
         let temp = new Date(this.dateStart.toDateString()); 
-        this.dateStart.setDate(this.dateStart.getDate() -7); 
-        this.dateEnd = temp; 
+        this.dateStart.setDate(this.dateStart.getDate() - 7); 
+        this.dateEnd.setDate(this.dateEnd.getDate() - 7);
 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 
 
         //Set text 
-        this.shadowRoot.getElementById("date").innerText = startText + "———" + endText; 
+        this.shadowRoot.getElementById("date").innerText = startText + " — " + endText; 
     }
     
     /**
