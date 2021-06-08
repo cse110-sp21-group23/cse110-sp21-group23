@@ -29,7 +29,6 @@ export const getBulletsByDay = async (journalId, start, header) => {
     try {
         return (await axios.get(`journal/${journalId}/bullet/day/${start.toDateString()}`, header)).data
     } catch (err) {
-        console.log(err)
         throw err
     }
 }
@@ -58,7 +57,6 @@ export const addBullet = async (bullet, header) => {
             header
         )).data
     } catch (err) {
-        console.log(err)
         throw err
     }
 }
@@ -118,5 +116,4 @@ export const updateSorting = async (journalId, date, array, header) => {
     } catch (err) {
         throw err
     }
-
 }
