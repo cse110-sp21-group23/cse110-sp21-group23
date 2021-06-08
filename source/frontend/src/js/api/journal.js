@@ -116,7 +116,6 @@ export const updateSorting = async (journalId, date, array, header) => {
             )
         ).data
     } catch (err) {
-        console.log(err)
         throw err
     }
 
