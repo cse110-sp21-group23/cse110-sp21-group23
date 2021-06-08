@@ -9,7 +9,7 @@ dev-test:
 	cd source/frontend && npm run dev-test
 
 test:
-	cd source/frontend && npm run test
+	cd source/frontend && npm run dev-test & npm run test
 
 deploy_frontend:
 	git push https://git.heroku.com/cse110-23-web.git HEAD:master
