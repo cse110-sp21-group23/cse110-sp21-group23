@@ -21,5 +21,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: make dep_ensure_frontend
-    - run: make dev
-    - run: make test
+    - run: make dev & make test
