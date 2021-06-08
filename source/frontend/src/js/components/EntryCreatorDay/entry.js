@@ -589,7 +589,6 @@ export default class Entry extends HTMLElement{
                 //Delete the bullet in the server 
                 deleteBullet(this.internalEntry.id).then(()=> { 
                     let ec = this.getRootNode().host; 
-
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
@@ -603,10 +602,27 @@ export default class Entry extends HTMLElement{
                     else { 
                         date = ec.currDate; 
                     }
-
                     //Update list in backend
                     updateSorting(getJournal(), new Date(date), ec.idOrder); 
                     this.remove(); 
+
+                    //Empty funcionality 
+                    if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
+                        //Attach empty entry if no entries 
+                        let entryComponent = document.createElement('entry-comp'); 
+                        entryComponent.entry = { 
+                            journal_id: null,
+                            body: null,
+                            type: null,
+                            priority: 1,
+                            mood: 1,
+                            date: null,
+                        };
+                        //Make it invisible 
+                        let textBox =  ec.shadowRoot.querySelector("#entryContainer");
+                        entryComponent.shadowRoot.querySelector('li').className = "empty";
+                        textBox.appendChild(entryComponent); 
+                    }
                 }); 
             });
 
