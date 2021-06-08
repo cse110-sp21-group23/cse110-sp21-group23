@@ -18,7 +18,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 <div id="textBox"> 
                     <form id="entryCreator">
                         <div class="entry-input">
-                            <input type="text" name="entryBox" id="entryBox" placeholder="Add a new ..." required>
+                            <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
                             <button type="submit" id="addButton"> Add </button> 
                         </div>
                     </form>
@@ -114,22 +114,6 @@ export default class EntryCreatorWeek extends HTMLElement{
         //Get the text they wrote 
         let text = this.shadowRoot.querySelector("#entryBox").value;
         entry.body = text;
-
-        //Populate image fields with those inputted into the form 
-        // let inputImage = this.shadowRoot.querySelector("#image-input")
-        // if (inputImage.value != '') {
-        //     let img = {
-        //         src: URL.createObjectURL(inputImage.files[0]),
-        //         alt: inputImage.value.split("\\").pop()
-        //     };
-        //     entry.image = img;
-        // }
-
-        //Get audio from file input 
-        // let inputAudio = this.shadowRoot.querySelector("#audio-input");
-        // if (inputAudio.value != '') {
-        //     entry.audio = URL.createObjectURL(inputAudio.files[0]);
-        // }
         
         entry.date = formatDate(this.currDate);
         entry.journalId = getJournal();
@@ -157,10 +141,9 @@ export default class EntryCreatorWeek extends HTMLElement{
         let journalId = getJournal();
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId, new Date(date), getHeader()).then((value) => {
-            console.log(value);
-            console.log(date);
-            //Clear the textbox
+        getBulletsByDay(journalId, new Date(date)).then((value) => {
+
+            //Clear the textbox 
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
 
@@ -169,6 +152,20 @@ export default class EntryCreatorWeek extends HTMLElement{
 
             //No bullets for that day, return
             if (value.length == 0) {
+                //Attach empty entry if no entries 
+                let entryComponent = document.createElement('entry-comp'); 
+                entryComponent.entry = { 
+                    journal_id: null,
+                    body: null,
+                    type: null,
+                    priority: 1,
+                    mood: 1,
+                    date: null,
+                };
+                //Make it invisible 
+                entryComponent.shadowRoot.querySelector('li').className = "empty";
+                textBox.appendChild(entryComponent); 
+
                 return;
             };
 
@@ -185,6 +182,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             });
         });
     }
+
     connectedCallback(){ 
         this.render(); 
     }
@@ -222,12 +220,14 @@ export default class EntryCreatorWeek extends HTMLElement{
     set idOrder(list) {
         this.idList = list;
     }
+
     /**
      * @returns {Array} - Returns an array of the bullets in order by id
      */
     get idOrder() {
         return this.idList;
     }
+
     /**
      * Helper function which swaps the positions of the two ids passed in within 
      * the id array 
@@ -265,7 +265,7 @@ export default class EntryCreatorWeek extends HTMLElement{
      */
     diffListIns(index2, dBullet) {
         //Case drag is dragged on last element in this list 
-        if (index2 + 1 == this.idList.length) {
+        if (index2 + 1 >= this.idList.length) {
             this.idList.push(dBullet.id);
         }
         //Insert normally
@@ -295,7 +295,7 @@ export default class EntryCreatorWeek extends HTMLElement{
  * @returns a string with the date formatted correctly 
  */
 function formatDate(date) {
-    var d = new Date(date),
+    let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();

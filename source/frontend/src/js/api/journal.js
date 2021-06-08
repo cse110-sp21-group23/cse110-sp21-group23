@@ -1,5 +1,4 @@
 import axios from './axios'
-import { getToken } from '../utils/localStorage'
 import "@babel/polyfill";
 
 /**
@@ -9,7 +8,9 @@ import "@babel/polyfill";
  */
 export const getJournals = async (header) => {
     try {
-        return (await axios.get('journal', header).data)
+        const res = (await axios.get('journal', header))
+        console.log(res)
+        return res.data
     } catch (err) {
         console.log(err)
         throw err
@@ -50,9 +51,6 @@ Bullet must look like this
  * @param   {Object} - header object (FOR UNIT TESTING)
  */
 export const addBullet = async (bullet, header) => {
-    console.log(bullet); 
-    console.log("header")
-
     try {
         return (await axios.post(
             'journal/bullet',

@@ -1,26 +1,26 @@
-import WeeklyKanban from '../WeeklyKanban/weekly-kanban'
-import WeekPicker from '../week-picker'
+import WeeklyKanban from '../WeeklyKanban/WeeklyKanban'
+import WeekPicker from '../WeekPicker'
 
-export class WeeklyPage extends HTMLElement{ 
+export class WeeklyPage extends HTMLElement {
     connectedCallback() {
-        this.render(); 
+        this.render();
     }
 
-    render(){ 
+    render() {
 
-        const template = document.createElement("template"); 
-        this.attachShadow({mode: 'open'});
+        const template = document.createElement("template");
+        this.attachShadow({ mode: 'open' });
 
         template.innerHTML = `
             <week-picker></week-picker>
             <div id="weekly-kanban-div"> </div>
-        `; 
+        `;
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         // Attach weekly kanban to template div 
-        const ec = document.createElement("weekly-kanban");
-        this.shadowRoot.querySelector("#weekly-kanban-div").append(ec); 
+        const weeklyKanban = new WeeklyKanban()
+        this.shadowRoot.querySelector("#weekly-kanban-div").append(weeklyKanban);
     }
 }
 

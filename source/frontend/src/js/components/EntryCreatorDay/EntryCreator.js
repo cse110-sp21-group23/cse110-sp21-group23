@@ -1,6 +1,7 @@
 import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
 import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
+import EntryComponent from './entry'
 
 export default class EntryCreator extends HTMLElement {
     //Stores bullets by id's 
@@ -252,32 +253,13 @@ export default class EntryCreator extends HTMLElement {
         let text = this.shadowRoot.querySelector("#entryBox").value;
         entry.body = text;
 
-        //Populate image fields with those inputted into the form 
-        // let inputImage = this.shadowRoot.querySelector("#image-input")
-        // if (inputImage.value != '') {
-        //     let img = {
-        //         src: URL.createObjectURL(inputImage.files[0]),
-        //         alt: inputImage.value.split("\\").pop()
-        //     };
-        //     entry.image = img;
-        // }
-        
-        //Get audio from file input 
-        // let inputAudio = this.shadowRoot.querySelector("#audio-input");
-        // if (inputAudio.value != '') {
-        //     entry.audio = URL.createObjectURL(inputAudio.files[0]);
-        // }
-
         entry.date = formatDate(getDate());
-        console.log(entry.date);
         entry.journalId = getJournal();
 
         //Append the entry to the backend and internal list at the end 
-        await addBullet(entry).then((value) => {
+        await addBullet(entry, getHeader()).then((value) => {
             //Always append bullet to end 
             this.idList.push(value.id);
-            console.log(this.idList);
-            console.log(this.idList.length);
 
             entry.id = value.id;
 
@@ -285,7 +267,6 @@ export default class EntryCreator extends HTMLElement {
             updateSorting(getJournal(), new Date(getDate()), this.idList);
             return value;
         });
-        console.log(entry.id);
 
 
         //After adding, sort the bulletList and then send that sorted ordering to back end again **TODO**
@@ -295,17 +276,13 @@ export default class EntryCreator extends HTMLElement {
     /**
      * Function which renders all bullets from the backend in the order they are stored 
      */
-    renderBullets() {
+    renderBullets(date) {
         //Grab journal id from local storage 
         let journalId = getJournal();
-        let theDate = getDate();
+        let theDate = date;
 
-        console.log(theDate); 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate), getHeader()).then((value) => {
-            console.log(value);
-            console.log(new Date(theDate));
-
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
@@ -340,20 +317,21 @@ export default class EntryCreator extends HTMLElement {
      * Function which renders the entryComponent on the page.
      */
     render() {
+        this.date = getDate(); 
         //Render the bullets for the first day it's instantiated in 
-        this.renderBullets();
+        this.renderBullets(getDate());
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
         //Attach submit event listener to ec form 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-
+            console.log('submit')
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = document.createElement("entry-comp");
+            let entryComponent = new EntryComponent()
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry();
@@ -405,6 +383,21 @@ export default class EntryCreator extends HTMLElement {
             this.idList.splice(index2, 0, dragged);
         }
     }
+
+    /**
+     * @param {String} date - The date of this ec creator as a string 
+     */
+    set date(date) {
+        this.currDate = date;
+     }
+    
+    /**
+     * @return {String} - Returns a string of this entry creator's internal date
+     */
+    get date() {
+        return this.currDate;
+    }
+
 }
 
 

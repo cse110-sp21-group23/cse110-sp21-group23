@@ -1,7 +1,8 @@
-import {getBulletsByDay, getJournals, addBullet} from '../../api/journal'
-import {getJournal, setJournal} from '../../utils/localStorage'
+import { getJournals } from '../../api/journal'
+import { getJournal, setJournal } from '../../utils/localStorage'
 import getHeader from '../../utils/header'
-
+import EntryCreator from '../EntryCreatorDay/EntryCreator'
+import DatePicker from '../DatePicker'
 export class DailyPage extends HTMLElement {
     connectedCallback() {
         this.render();
@@ -21,23 +22,21 @@ export class DailyPage extends HTMLElement {
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        //const topNav = document.createElement('top-Nav');
         //Attach entry creator and datepicker to template div 
-        const ec = document.createElement('entry-creator');
+        const ec = new EntryCreator()
+        const dp = new DatePicker()
 
-        const datePicker = document.createElement('date-picker');
-
-        this.shadowRoot.querySelector('#datePickerDiv').append(datePicker);
+        this.shadowRoot.querySelector('#datePickerDiv').append(dp);
         this.shadowRoot.querySelector('#entryCreatorDiv').append(ec);
 
         //Store the user's journal id into local storage
-        getJournals(getHeader()).then((value) => { 
+        getJournals(getHeader()).then((value) => {
             setJournal(value[0].id);
         });
 
         // Listen to Date changes from date picker
         document.addEventListener('dateChange', e => {
-            ec.renderBullets(); 
+            ec.renderBullets(getDate());
         })
 
     }
