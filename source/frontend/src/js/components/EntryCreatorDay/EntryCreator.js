@@ -11,6 +11,7 @@ export default class EntryCreator extends HTMLElement {
         super(); 
         //Create template and insert html
         //Grab the template 
+        console.log("CONSTRUCTOR: ", getJournal())
         const template = document.createElement('template');
         template.innerHTML = `
         <div id="wrapper">
@@ -284,6 +285,7 @@ export default class EntryCreator extends HTMLElement {
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate), getHeader()).then((value) => {
             //Clear the textbox
+
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
 
@@ -300,8 +302,8 @@ export default class EntryCreator extends HTMLElement {
                 this.idList.push(element.id);
 
                 //Make an entry component 
-                let entryComponent = document.createElement("entry-comp");
-
+                let entryComponent = new EntryComponent();
+                console.log("sanity test")
                 //Append the component to the page 
                 entryComponent.entry = element;
                 textBox.appendChild(entryComponent);
@@ -335,6 +337,7 @@ export default class EntryCreator extends HTMLElement {
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry();
+
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
