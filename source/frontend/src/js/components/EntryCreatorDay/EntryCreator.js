@@ -274,10 +274,10 @@ export default class EntryCreator extends HTMLElement {
     /**
      * Function which renders all bullets from the backend in the order they are stored 
      */
-    renderBullets() {
+    renderBullets(date) {
         //Grab journal id from local storage 
         let journalId = getJournal();
-        let theDate = this.date; 
+        let theDate = date;
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate)).then((value) => {
@@ -318,7 +318,7 @@ export default class EntryCreator extends HTMLElement {
     render() {
         this.date = getDate(); 
         //Render the bullets for the first day it's instantiated in 
-        this.renderBullets();
+        this.renderBullets(getDate());
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
