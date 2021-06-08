@@ -94,7 +94,7 @@ module.exports = {
             const days = await journalDB.getDayByInterval(journalId, start, end)
             let dayId
             if (days.length == 0) {
-                dayId = await journalDB.storeDay(journalId, start)
+                dayId = await journalDB.storeDay(journalId, start).id
             } else {
                 dayId = days[0].id  
             }
