@@ -18,6 +18,7 @@ export default class WeeklyKanban extends HTMLElement {
                 <div class='d4'>
                     <div class="day monday">
                         <p class="title">Mon</p>
+
                         <div class="column-content">
                         </div>
                     </div>
@@ -157,7 +158,6 @@ export default class WeeklyKanban extends HTMLElement {
 
         let colContent = this.shadowRoot.querySelectorAll(".column-content");
         let titles = this.shadowRoot.querySelectorAll(".title"); 
-
         for (let index = 0; index < colContent.length; index++) {
             //Append ecw to all days 
             let ecWeek = document.createElement('entry-creator-week');
@@ -169,11 +169,11 @@ export default class WeeklyKanban extends HTMLElement {
 
             //Set internal date 
             ecWeek.date = this.dayArray[index];
-
             //Rename title HTML of all days 
             let date = new Date(this.dayArray[index]); 
             let day = this.dayArray[index].split(' '); 
             titles[index].innerHTML = day[0] + ' ' + date.toLocaleDateString ('default', {month: 'long'}) + " " + date.getDate(); 
+
         }
         //Event listener to update day array on week change event 
         document.addEventListener('weekChange', () => {
@@ -187,6 +187,7 @@ export default class WeeklyKanban extends HTMLElement {
      */
     renderAllEc() {
         let colContent = this.shadowRoot.querySelectorAll(".column-content");
+
         let titles = this.shadowRoot.querySelectorAll(".title"); 
         for (let index = 0; index < colContent.length; index++) {
             this.ecArray[index].date = this.dayArray[index];  

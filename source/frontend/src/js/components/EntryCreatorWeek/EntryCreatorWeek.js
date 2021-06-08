@@ -141,7 +141,7 @@ export default class EntryCreatorWeek extends HTMLElement{
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(date)).then((value) => {
-            
+
             //Clear the textbox 
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
@@ -164,6 +164,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 //Make it invisible 
                 entryComponent.shadowRoot.querySelector('li').className = "empty";
                 textBox.appendChild(entryComponent); 
+
                 return;
             };
 

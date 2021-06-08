@@ -318,7 +318,7 @@ export default class EntryCreator extends HTMLElement {
     render() {
         this.date = getDate(); 
         //Render the bullets for the first day it's instantiated in 
-        this.renderBullets(this.date);
+        this.renderBullets(getDate());
         //Get the form in entry-creator
         const form = this.shadowRoot.getElementById("entryCreator");
 
