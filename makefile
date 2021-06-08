@@ -13,3 +13,6 @@ deploy_frontend:
 
 deploy_server:
 	git push https://git.heroku.com/cse110-23-api.git HEAD:master
+
+dep_ensure_frontend:
+	cd source/frontend && npm i
