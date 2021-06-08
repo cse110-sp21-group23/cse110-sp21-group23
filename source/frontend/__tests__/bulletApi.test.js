@@ -10,7 +10,6 @@ test('Test1: Get Journals', async () => {
     }
 
     let res = await getJournals(header)
-    // expect(res.id).not.toBe(null);
     expect(res[0].id).toBe("7")
 }, 20000);
 

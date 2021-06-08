@@ -9,10 +9,8 @@ import "@babel/polyfill";
 export const getJournals = async (header) => {
     try {
         const res = (await axios.get('journal', header))
-        console.log(res)
         return res.data
     } catch (err) {
-        console.log(err)
         throw err
     }
 }
@@ -103,7 +101,6 @@ export const editBullet = async (bullet, header) => {
  */
 export const updateSorting = async (journalId, date, array, header) => {
     try {
-        console.log(date.toDateString())
         return (
             await axios.patch(
                 `journal/${journalId}/day/${date.toDateString()}`,
