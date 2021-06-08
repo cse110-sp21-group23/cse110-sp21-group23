@@ -1,5 +1,7 @@
 import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
+import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
+import EntryComponent from './entry'
 
 export default class EntryCreator extends HTMLElement {
     //Stores bullets by id's 
@@ -255,7 +257,7 @@ export default class EntryCreator extends HTMLElement {
         entry.journalId = getJournal();
 
         //Append the entry to the backend and internal list at the end 
-        await addBullet(entry).then((value) => {
+        await addBullet(entry, getHeader()).then((value) => {
             //Always append bullet to end 
             this.idList.push(value.id);
 
@@ -280,8 +282,7 @@ export default class EntryCreator extends HTMLElement {
         let theDate = date;
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId, new Date(theDate)).then((value) => {
-
+        getBulletsByDay(journalId, new Date(theDate), getHeader()).then((value) => {
             //Clear the textbox
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
@@ -325,12 +326,12 @@ export default class EntryCreator extends HTMLElement {
         //Attach submit event listener to ec form 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-
+            console.log('submit')
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = document.createElement("entry-comp");
+            let entryComponent = new EntryComponent()
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry();

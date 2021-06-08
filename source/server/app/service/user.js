@@ -26,7 +26,7 @@ module.exports = {
             const user = await common.toCamelCase(await userDB.getByEmail(email))
             console.log("user: ", user)
             if (user == null) {
-                throw {error: "Email not found"}
+                throw "Email not found"
             }
             if (bcrypt.compareSync(password, user.password)) {
                 return jwt.generateAccessToken({
@@ -34,10 +34,9 @@ module.exports = {
                     email:  user.email,
                 })
             } else {
-                throw {error: "Wrong password"}
+                throw "Wrong password"
             }
         } catch (err) {
-            console.log(err)
             throw err
         }
     }

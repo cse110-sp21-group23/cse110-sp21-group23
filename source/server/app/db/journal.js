@@ -179,7 +179,7 @@ const updateSorting = async (dayId, arr) => {
         await db.queryParam(statement, [dayId, arr])
         return 'Success'
     } catch (err) {
-
+        throw err
     }
 }
 

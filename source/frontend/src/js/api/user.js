@@ -1,7 +1,12 @@
 import axios from './axios'
 // test
-import { setEmail, setToken } from '../utils/localStorage'
-import { getJournals } from './journal'
+var localStorage = require('../utils/localStorage')
+var journalAPI = require('./journal')
+
+/**
+ * Registers new account
+ * @returns {String} - success message
+ */
 
 export const register = async (email, password) => {
     try {
@@ -18,6 +23,12 @@ export const register = async (email, password) => {
     }
 }
 
+/**
+ * Retrieves JWT token
+ * @param   {String} - email
+ * @param   {String} - password
+ * @returns {String} - JWT token
+ */
 export const login = async (email, password) => {
     try {
         const res = await axios.post(
@@ -27,15 +38,8 @@ export const login = async (email, password) => {
                 "password": password
             },
         )
-        
-        setEmail(email);
-        setToken(res.data.token)
-
-        const journals = await getJournals(); 
-        return journals[0] 
-        // SET TOKEN HERE
+        return res.data.token
     } catch (err) {
-        console.log("ERR: ", err)
         throw err.response.data
     }
 }

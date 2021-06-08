@@ -133,10 +133,6 @@ export default class TopNav extends HTMLElement {
 		}
 		
     }
-
-
-
-
 }
 
 // document.getElementById('email').innerHTML = getEmail();
