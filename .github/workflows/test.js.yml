@@ -15,10 +15,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set Timezone to +0 (With input)
-      uses: ./
-      with:
-        timezoneLinux: "PDT"
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
