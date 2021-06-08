@@ -1,5 +1,6 @@
 
 import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
+import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -471,7 +472,7 @@ export default class Entry extends HTMLElement{
             let theDate = this.getRootNode().host.date; 
 
             //Get bullets for that day from the backend to find the one to edit
-            await getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+            await getBulletsByDay(journalId,new Date(theDate), getHeader()).then((value) =>{
                 for(let i = 0; i < value.length; i++) {
 
                     //found the bullet

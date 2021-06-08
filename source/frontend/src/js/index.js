@@ -2,7 +2,7 @@ import { store } from './store';
 import { Delph } from './Delph';
 //import { Header } from './components/header'
 import { routes } from './routes'
-
+import "@babel/polyfill";
 
 export class Index {
 

@@ -1,4 +1,5 @@
 import { getBulletsByDay, addBullet, updateSorting, deleteBullet } from '../../api/journal'
+import getHeader from '../../utils/header';
 import { getJournal } from "../../utils/localStorage"
 
 export default class EntryCreatorWeek extends HTMLElement{
