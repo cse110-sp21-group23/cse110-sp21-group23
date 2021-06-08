@@ -1,7 +1,7 @@
 import EntryCreator from '../EntryCreatorDay/EntryCreator'
 import Entry from '../EntryCreatorDay/entry'
 import {getBulletsByDay, getJournals, addBullet} from '../../api/journal'
-import {getJournal, setJournal} from '../../utils/localStorage'
+import {getJournal, setJournal, getDate} from '../../utils/localStorage'
 import DatePicker from '../DatePicker'
 import TopNav from '../topNavBar/topNav'
 
@@ -45,7 +45,7 @@ export class DailyPage extends HTMLElement {
 
         // Listen to Date changes from date picker
         document.addEventListener('dateChange', e => {
-            ec.renderBullets(); 
+            ec.renderBullets(getDate()); 
         })
 
     }

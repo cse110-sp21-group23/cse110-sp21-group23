@@ -257,10 +257,9 @@ export default class Entry extends HTMLElement{
     handleDragStart(event) {
 
         // Keep track of element we're dragging
-        dragSrcEl = event.target; 
+        dragSrcEl = event.target;
         //Make sure you can't drag empty entries 
         if (event.target.entry.journal_id == null){ 
-            console.log("why")
             return; 
         }
 
@@ -310,7 +309,7 @@ export default class Entry extends HTMLElement{
 
             //Case of dragging on empty 
             let dOnIndex; 
-            if (event.target.entry.journalId == null){ 
+            if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
             //Case of dragging on non empty entry 
@@ -319,7 +318,7 @@ export default class Entry extends HTMLElement{
             }
 
             //Set direction
-            let up2Down = dragIndex < dOnIndex;  
+            let up2Down = dragIndex < dOnIndex;   
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
