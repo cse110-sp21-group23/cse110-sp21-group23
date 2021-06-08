@@ -22,7 +22,6 @@ export default class EntryCreatorWeek extends HTMLElement{
                         </div>
                     </form>
                     <ul id="entryContainer">
-                        <entry></entry>
                     </ul> 
                 </div>
             </div>
@@ -142,7 +141,8 @@ export default class EntryCreatorWeek extends HTMLElement{
 
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(date)).then((value) => {
-            //Clear the textbox
+            
+            //Clear the textbox 
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
 
@@ -151,6 +151,19 @@ export default class EntryCreatorWeek extends HTMLElement{
 
             //No bullets for that day, return
             if (value.length == 0) {
+                //Attach empty entry if no entries 
+                let entryComponent = document.createElement('entry-comp'); 
+                entryComponent.entry = { 
+                    journal_id: null,
+                    body: null,
+                    type: null,
+                    priority: 1,
+                    mood: 1,
+                    date: null,
+                };
+                //Make it invisible 
+                entryComponent.shadowRoot.querySelector('li').className = "empty";
+                textBox.appendChild(entryComponent); 
                 return;
             };
 
@@ -250,7 +263,7 @@ export default class EntryCreatorWeek extends HTMLElement{
      */
     diffListIns(index2, dBullet) {
         //Case drag is dragged on last element in this list 
-        if (index2 + 1 == this.idList.length) {
+        if (index2 + 1 >= this.idList.length) {
             this.idList.push(dBullet.id);
         }
         //Insert normally

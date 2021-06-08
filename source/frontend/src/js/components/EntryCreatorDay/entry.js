@@ -195,6 +195,13 @@ export default class Entry extends HTMLElement{
             font-size: 20px;
         }
 
+        .empty { 
+            opacity: .01;
+            height:100%; 
+            width: 500px;
+            padding-left: -30px; 
+        }
+
         .modal-title {
             text-align: center;
             font-size: 25px;
@@ -203,6 +210,7 @@ export default class Entry extends HTMLElement{
             height: 10px;
             margin-top: 5px
         }`;
+
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -250,6 +258,11 @@ export default class Entry extends HTMLElement{
 
         // Keep track of element we're dragging
         dragSrcEl = event.target; 
+        //Make sure you can't drag empty entries 
+        if (event.target.entry.journal_id == null){ 
+            console.log("why")
+            return; 
+        }
 
         event.dataTransfer.effectAllowed = 'move';
 
@@ -294,7 +307,17 @@ export default class Entry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
-            let dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+
+            //Case of dragging on empty 
+            let dOnIndex; 
+            if (event.target.entry.journalId == null){ 
+                dOnIndex = 0; 
+            }
+            //Case of dragging on non empty entry 
+            else{ 
+                dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+            }
+
             //Set direction
             let up2Down = dragIndex < dOnIndex;  
 
@@ -329,7 +352,6 @@ export default class Entry extends HTMLElement{
             //Don't have the same shadow root
             else { 
                 parent = dragSrcEl.parentNode;
-                console.log(dragSrcEl.entry.id); 
 
                 //Set date on dragSrcEl to date it was dragged to in server
                 let movedBullet = dragSrcEl.entry; 
@@ -337,13 +359,12 @@ export default class Entry extends HTMLElement{
 
                 //Update bullet date in server
                 editBullet(movedBullet).then(
-                    console.log("movedbullet")
-                )
+                );
 
                 //Remove draggedB from its ec id list
                 dragEc.idOrder.splice(dragIndex, 1)
 
-                //Insert draggedB draggedOn's ec id list 
+                //Insert draggedB into draggedOn's ec id list 
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
 
                 //Update sorting in backend 
@@ -363,6 +384,28 @@ export default class Entry extends HTMLElement{
                 }
                 else{ 
                     event.target.insertAdjacentElement('beforebegin', dropElement); 
+                }
+                //Empty cases
+                if (event.target.entry.journal_id == null){ 
+                    let otherParent = event.target.parentNode; 
+                    otherParent.removeChild(event.target); 
+                }
+                //Moving the bulle made the moved from ec empty
+                if (parent.children.length == 0){ 
+                    //Attach empty entry if no entries 
+                    let entryComponent = document.createElement('entry-comp'); 
+                    entryComponent.entry = { 
+                        journal_id: null,
+                        body: null,
+                        type: null,
+                        priority: 1,
+                        mood: 1,
+                        date: null,
+                    };
+                    //Make it invisible 
+                    let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
+                    entryComponent.shadowRoot.querySelector('li').className = "empty";
+                    textBox.appendChild(entryComponent); 
                 }
             }
         }
