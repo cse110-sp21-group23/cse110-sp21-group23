@@ -2,7 +2,6 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Test
-
 on: [pull_request]
 jobs:
   build:
@@ -16,6 +15,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set Timezone to +0 (With input)
+        uses: ./
+        with:
+          timezoneLinux: "PDT"
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
