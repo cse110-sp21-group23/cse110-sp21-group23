@@ -1,8 +1,8 @@
-import EntryCreator from '../EntryCreatorDay/entry-creator'
-import Entry from '../EntryCreatorDay/entry'
+import EntryCreator from '../EntryCreatorDay/EntryCreator'
+import Entry from '../EntryCreatorDay/Entry'
 import {getBulletsByDay, getJournals, addBullet} from '../../api/journal'
 import {getJournal, setJournal} from '../../utils/localStorage'
-import DatePicker from '../date-picker'
+import DatePicker from '../DatePicker'
 import TopNav from '../topNavBar/topNav'
 
 export class DailyPage extends HTMLElement {

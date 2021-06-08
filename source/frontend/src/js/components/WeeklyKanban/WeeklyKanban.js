@@ -1,5 +1,5 @@
-import EntryCreatorWeek from "../EntryCreatorWeek/entry-creator-week"
-import WeekPicker from "../week-picker"
+import EntryCreatorWeek from "../EntryCreatorWeek/EntryCreatorWeek"
+import WeekPicker from "../WeekPicker"
 
 export default class WeeklyKanban extends HTMLElement {
     //Array of all entry-creator-day's in the component's days 
@@ -154,7 +154,6 @@ export default class WeeklyKanban extends HTMLElement {
         //Get weekpicker on page 
         let weekP = document.querySelector("weekly-page").shadowRoot.querySelector("week-picker");
         this.dayArray = weekP.sendArray();
-        console.log(this.dayArray);
 
         let colContent = this.shadowRoot.querySelectorAll(".column-content");
         for (let index = 0; index < colContent.length; index++) {
@@ -173,9 +172,7 @@ export default class WeeklyKanban extends HTMLElement {
         document.addEventListener('weekChange', () => {
             this.dayArray = weekP.sendArray();
             this.renderAllEc();
-        })
-
-        console.log(this.shadowRoot.querySelectorAll('.day'))
+        });
     }
 
     /**

@@ -31,7 +31,6 @@ Bullet must look like this
     }
 */
 export const addBullet = async (bullet) => {
-    console.log(bullet); 
     try {
         return (await axios.post(
             'journal/bullet',
