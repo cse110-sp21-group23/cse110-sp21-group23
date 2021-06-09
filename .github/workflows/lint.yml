@@ -25,6 +25,9 @@ jobs:
           npm install babel-eslint --save-dev
           npm ci
 
+      - name: Lint Action
+        uses: wearerequired/lint-action@v1.10.0
+        
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
