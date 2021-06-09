@@ -17,18 +17,10 @@
 <br />
 <p align="center">
 
-  <h3 align="center">23andMe Bullet Journal</h3>
-
   <p align="center">
-    This application is our design of the Bullet Journal!
+    <b>Developed by: Kent Utomo, Christopher Yoon, Daniel Huynh, Caroline Xiong, Sophia Lui, Yuchen Jin, Wen Tian, Bas Beeuwsaert, Michael Fu</b>
 </p>
 
-
-<!-- Quick Access List -->
-<ol>
-    <li><a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1">23andMe Kanban Board</a></li>
-
-</ol>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -36,22 +28,11 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#video">Video</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
@@ -66,10 +47,9 @@ This application is our design of the Bullet Journal
 
 
 ### Built With
-
-* []()
-* []()
-* []()
+* HTML
+* CSS
+* Javascript
 
 
 
@@ -77,49 +57,45 @@ This application is our design of the Bullet Journal
 <!-- USAGE EXAMPLES -->
 ## Project Features
 
+* User signup
+* Editable journal
+* Mood tracker
+* Drag and drop
+* Dynamic weekly view
+
+<!-- Documentations -->
+## Documentation
+<!-- Quick Access List -->
+<ol>
+    <a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1">23andMe Kanban Board</a>
+
+</ol>
+
+<!-- Videos -->
+## Videos
+<ol>
+    <a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/videos/teamintro.mp4">Team Intro</a>
+    <br>
+    <a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/videos/statusvideo1.mp4">Status Video 1</a>
 
 
+</ol>
 
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/cse110-sp21-group23/cse110-sp21-group23/issues) for a list of proposed features (and known issues).
 
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
-<!-- CONTACT -->
-## Contact
-
-Project Link: [https://github.com/cse110-sp21-group23/cse110-sp21-group23](https://github.com/github_username/repo_name)
-
-
-
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* []()
-* []()
-* []()
+* Deepak Karki for being our TA mentor
+* Thomas Powell for being our Professor
 
 
 
