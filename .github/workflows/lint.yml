@@ -33,6 +33,3 @@ jobs:
         with:
           eslint: true
           prettier: true
-
-      - name: fix
-        run: prettier --fix
