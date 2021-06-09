@@ -2,7 +2,8 @@ import { login, register } from "../../api/user";
 import { getJournals } from '../../api/journal'
 import { store } from '../../store'
 import { loadRoute } from '../../actions'
-import { setToken, setEmail } from '../../utils/localStorage'
+import { setToken, setEmail, setJournal } from '../../utils/localStorage'
+import getHeader from '../../utils/header'
 export class LoginPage extends HTMLElement {
 
     connectedCallback() {
@@ -320,7 +321,10 @@ function signIn(username, password) {
         .then(token => {
             setEmail(username);
             setToken(token)
-            store.dispatch(loadRoute({ path: 'daily' }))
+            getJournals(getHeader()).then((value) => {
+                setJournal(value[0].id);
+                store.dispatch(loadRoute({ path: 'daily' }))
+            });
         })
         .catch(err => {
             window.alert(err)
