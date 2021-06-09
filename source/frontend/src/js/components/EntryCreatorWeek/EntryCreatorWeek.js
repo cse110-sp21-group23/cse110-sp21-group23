@@ -156,7 +156,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             //No bullets for that day, return
             if (value.length == 0) {
                 //Attach empty entry if no entries 
-                let entryComponent = new Entry('week'); 
+                let entryComponent = new WeeklyEntry(); 
                 entryComponent.entry = { 
                     journal_id: null,
                     body: null,
@@ -177,7 +177,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 this.idList.push(element.id);
 
                 //Make an entry component 
-                let entryComponent = new WeeklyEntry; 
+                let entryComponent = new WeeklyEntry(); 
 
                 //Append the component to the page 
                 entryComponent.entry = element;
