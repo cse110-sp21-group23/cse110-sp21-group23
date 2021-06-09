@@ -12,7 +12,6 @@ class NavigationBar extends HTMLElement {
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
             
-            
             .sidebar {
               position: fixed;
               height: 100vh;
@@ -20,7 +19,7 @@ class NavigationBar extends HTMLElement {
               z-index: 1;
               left: -10px;
               top: 50px;
-              background-color: #C9CBB3;
+              background-color: #769daa;
               -webkit-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
               -moz-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
               box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
@@ -34,23 +33,23 @@ class NavigationBar extends HTMLElement {
                 border: none;
                 width: 230px;
                 text-decoration: none;
-                background-color: #d9daca;
+                background-color: #97b1ba;
                 margin: 0px 0px 10px 0px;
                 padding: 20px 0px 20px 50px;
                 font-size: 22px;
-                color: #444C57;
+                color: #fff;
                 font-family: 'Lato', sans-serif;
                 text-align: left;
             }
             
             .sidebar-entry:hover {
                 cursor: pointer;
-                background-color: #C9CBB3 !important;
+                background-color: #437587 !important;
             }
 
             
             #splitline{
-                border: 3px dotted #ABB696;
+                border: 1px solid #495560;
                 margin: 30px 0px 30px 0px;
             }
 
@@ -62,7 +61,7 @@ class NavigationBar extends HTMLElement {
                 width: 25px;
                 height: 25px;
                 text-decoration: none;
-                background-color: #d9daca;
+                background-color: #97b1ba;
                 margin: 5px 0px 5px 200px;
                 font-size: 20px;
                 color: #7C8578;
@@ -71,7 +70,7 @@ class NavigationBar extends HTMLElement {
 
             #hide:hover {
                 cursor: pointer;
-                background-color: #C9CBB3;
+                background-color: #437587;
             }
 
 
@@ -143,9 +142,9 @@ class NavigationBar extends HTMLElement {
           entries[i].onclick = function(e){
             store.dispatch(loadRoute({ path: this.dataset.page }))
             for(var j = 0; j < entries.length; j++){
-                entries[j].style.backgroundColor = '#d9daca';
+                entries[j].style.backgroundColor = '#97b1ba';
             }
-            e.target.style.backgroundColor = "#ABB696";
+            e.target.style.backgroundColor = "#437587";
           };
       }
 
