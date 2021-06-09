@@ -33,3 +33,5 @@ jobs:
         with:
           eslint: true
           prettier: true
+      - name: prettier
+        run: yarn prettier --write .
