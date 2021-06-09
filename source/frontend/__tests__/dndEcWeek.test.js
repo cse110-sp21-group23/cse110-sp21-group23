@@ -92,7 +92,8 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
             let dateNew = dateSplit[0] + ' ' + dateSplit[1] + ' ' +  dateSplit[2]; 
             return dateNew;
         });   
-        expect(dateAfter).tobe(currDate); 
+
+        expect(dateAfter).toEqual(currDate); 
     }, 30000); 
 
     it ('Test3: Drag element from first day to third day', async()=> { 
