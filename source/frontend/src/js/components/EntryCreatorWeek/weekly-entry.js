@@ -1,5 +1,4 @@
-
-import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
+import { updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay } from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -68,14 +67,15 @@ export default class WeeklyEntry extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = 
         `
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
         .bullet-container {
             border: none;
             background-color: rgba(255,255,255,0.3);
             border-radius: 1rem;
             color: white;
             text-align: left;
-            padding: 0.5em;
-            margin: 0.25em;
+            padding: 0.1em;
+            margin: 0.1em;
         }
         
         .content-container { 
@@ -93,11 +93,19 @@ export default class WeeklyEntry extends HTMLElement{
             border-radius: 10px;
             box-shadow: 1px 1px 3px #6a828d;
             margin: 0.7em;
-            margin-left: -0.7em;
+            margin-bottom: -0.25em;
+            margin-left: -0.5em;
+            position: relative;
+            background: #transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 1px 1px 3px #6a828d;
+            transition: 0.5s;
         }
 
         li:hover {
-            background-color: #f9f9f8;
+            transform: scale(1.05);
+            opacity: 1;
         }
 
         li button:hover {
