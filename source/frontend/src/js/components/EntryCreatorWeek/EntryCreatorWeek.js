@@ -71,20 +71,20 @@ export default class EntryCreatorWeek extends HTMLElement{
             border: 1px solid;
             border-radius: 10px;
             border-color: #6a828d;
-            margin: 0px auto 0px auto; 
-            padding: 10px; 
-            width: 85%; 
+            margin: 0px auto 0px 15px; 
+            padding: 12px; 
+            width: 100%; 
             box-sizing: border-box; 
             font-size: 12pt;
             font-family: 'Lato', sans-serif;
         }
 
         ul {
-            margin-top: 0em;
+            margin-top: -0.25em;
             list-style-type: none;
             position: relative;
             width: 100%;
-            padding: 20px;
+            padding-left: 20px;
             display: flex-column;
             justify-content: center;
             align-items: center;
