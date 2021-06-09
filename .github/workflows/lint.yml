@@ -21,9 +21,10 @@ jobs:
         run: |
           npm ci
           npm install eslint
+          npm install --save-dev --save-exact prettier
 
       - name: Run linters
-        uses: wearerequired/lint-action@v1
+        uses: cse110-sp21-group23/lint-action@v1
         with:
           eslint: true
           prettier: true
