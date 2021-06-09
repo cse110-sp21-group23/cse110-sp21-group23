@@ -15,7 +15,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
+    - name: Setup timezone
+      uses: zcong1993/setup-timezone@master
+      with:
+        timezone: America/Los_Angeles
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
