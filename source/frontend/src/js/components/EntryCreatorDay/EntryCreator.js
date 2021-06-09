@@ -360,8 +360,8 @@ export default class EntryCreator extends HTMLElement {
     /**
      * Helper function which swaps the positions of the two ids passed in within 
      * the id array 
-     * @param {Object} dragged - First bullet to be swapped
-     * @param {Object} droppedOn - Second bullet to be swapped
+     * @param {Object} index1 - Bullet that was dragged
+     * @param {Object} index2 - Bullet that was dropped on
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */

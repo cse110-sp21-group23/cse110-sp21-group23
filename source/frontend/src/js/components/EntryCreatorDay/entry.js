@@ -311,9 +311,10 @@ export default class Entry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dOnIndex; 
 
             //Case of dragging on empty 
-            let dOnIndex; 
+
             if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
@@ -331,7 +332,6 @@ export default class Entry extends HTMLElement{
 
                 //Swap positions of elements in id lists
                 dragEc.swapIds(dragIndex, dOnIndex, up2Down);
-    
 
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
@@ -339,19 +339,20 @@ export default class Entry extends HTMLElement{
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
 
-                //Recreate the element with stored data in DataTransfer object in UI
+                //Recreate the dropped element 
                 let dropElement = document.createElement('entry-comp');
+                dropElement.entry = dragSrcEl.entry; 
                 // let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 // dropElement.entry = entry; 
 
-                // //Dragged object was above the one it's dropped on
-                // if (up2Down){ 
-                //     event.target.insertAdjacentElement('afterend', dropElement);
-                // }
-                // //Dragged object was below the one it's dropped on
-                // else {
-                //     event.target.insertAdjacentElement('beforebegin', dropElement);
-                // }
+                //Dragged object to the last position 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
+                    event.target.insertAdjacentElement('afterend', dropElement);
+                }
+                //Always insert on top
+                else {
+                    event.target.insertAdjacentElement('beforebegin', dropElement);
+                }
             }
             //Don't have the same shadow root
             else { 
@@ -379,8 +380,8 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = document.createElement('entry-comp');
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
-                dropElement.entry = entry; 
+                //let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                dropElement.entry = dragSrcEl.entry; 
     
                 //If dragged to bottom, insert at bottom 
                 if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
