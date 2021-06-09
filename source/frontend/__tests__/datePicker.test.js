@@ -113,10 +113,11 @@ describe("Date Picker Tests", () => {
     monthInd = currDate.getMonth();
     dateInd = currDate.getDate();
     dayInd = currDate.getDay();
+    page.waitForTimeout(4000);
 
     const next = await (
       await page.evaluateHandle(
-        `document.querySelector("body > div:nth-child(6) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#next")`
+        `document.querySelector("body > div:nth-child(5) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#next")`
       )
     ).asElement();
     await next.click();
@@ -145,7 +146,8 @@ describe("Date Picker Tests", () => {
   });
 
   it("Test 5: Check if clicking on left-arrow changes month-text to prev day correctly", async () => {
-    currDate = new Date(currDate - 1);
+
+    currDate = new Date(currDate - 86400000);
     year = currDate.getFullYear();
     monthInd = currDate.getMonth();
     dateInd = currDate.getDate();
@@ -153,11 +155,11 @@ describe("Date Picker Tests", () => {
 
     const prev = await (
       await page.evaluateHandle(
-        `document.querySelector("body > div:nth-child(6) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#prev")`
+        `document.querySelector("body > div:nth-child(5) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#prev")`
       )
     ).asElement();
     await prev.click();
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
 
     const prevMT = await page.evaluate(() => {
       return document
@@ -165,8 +167,9 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h2").innerHTML;
     });
-    console.log(prevMT);
-    await page.waitForTimeout(1000);
+    console.log("prevMT: ", prevMT);
+    console.log("actual prevMT: ", days[dayInd]);
+    await page.waitForTimeout(2000);
     expect(prevMT).toBe(days[dayInd]);
   }, 20000);
 
@@ -177,7 +180,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
-    // await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000);
     expect(prevDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
   });
 });
