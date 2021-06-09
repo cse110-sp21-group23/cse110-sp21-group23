@@ -90,7 +90,6 @@ describe("Date Picker Tests", () => {
     );
 
     const today = new Date();
-    console.log("date: ", date, today);
     expect(date.getFullYear()).toBe(today.getFullYear());
     expect(date.getMonth()).toBe(today.getMonth());
     expect(date.getDate()).toBe(date.getDate());
@@ -103,7 +102,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
-    page.waitForTimeout(4000);
+    await page.waitForTimeout(4000);
     expect(dateText).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
   });
 
@@ -113,14 +112,16 @@ describe("Date Picker Tests", () => {
     monthInd = currDate.getMonth();
     dateInd = currDate.getDate();
     dayInd = currDate.getDay();
-    page.waitForTimeout(4000);
+    await page.waitForTimeout(1000);
 
     const next = await (
       await page.evaluateHandle(
         `document.querySelector("body > div:nth-child(5) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#next")`
       )
     ).asElement();
+
     await next.click();
+    await page.waitForTimeout(3000); 
 
     const nextMT = await page.evaluate(() => {
       return document
@@ -129,7 +130,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector(".full-date > h2").innerHTML;
     });
 
-    page.waitForTimeout(2000);
+    // await page.waitForTimeout(2000);
     // await page.waitForTimeout(1000);
     expect(nextMT).toBe(days[dayInd]);
   }, 20000);
@@ -146,34 +147,43 @@ describe("Date Picker Tests", () => {
   });
 
   it("Test 5: Check if clicking on left-arrow changes month-text to prev day correctly", async () => {
-
+    //Calc new date
     currDate = new Date(currDate - 86400000);
     year = currDate.getFullYear();
     monthInd = currDate.getMonth();
     dateInd = currDate.getDate();
     dayInd = currDate.getDay();
 
+    await page.waitForTimeout(1000); 
+
+    //Grab the prev arrow 
     const prev = await (
       await page.evaluateHandle(
         `document.querySelector("body > div:nth-child(5) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#prev")`
       )
     ).asElement();
-    await prev.click();
-    await page.waitForTimeout(2000);
 
+    //Click the prev arrow 
+    await prev.click();
+    await page.waitForTimeout(5000);
+
+    //Grab the month text
     const prevMT = await page.evaluate(() => {
       return document
         .querySelector("daily-page")
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h2").innerHTML;
     });
-    console.log("prevMT: ", prevMT);
-    console.log("actual prevMT: ", days[dayInd]);
-    await page.waitForTimeout(2000);
+    console.log("prevMT" + prevMT);
+
+    // await page.waitForTimeout(2000);
+
     expect(prevMT).toBe(days[dayInd]);
   }, 20000);
 
   it("Test 6: Check if clicking on left-arrow changes date-text to prev day correctly", async () => {
+    await page.waitForTimeout(2000); 
+
     const prevDT = await page.evaluate(() => {
       return document
         .querySelector("daily-page")
@@ -181,6 +191,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
     await page.waitForTimeout(1000);
+
     expect(prevDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
   });
 });
