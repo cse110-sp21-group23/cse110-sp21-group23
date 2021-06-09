@@ -11,7 +11,6 @@ export default class EntryCreator extends HTMLElement {
         super(); 
         //Create template and insert html
         //Grab the template 
-        console.log("CONSTRUCTOR: ", getJournal())
         const template = document.createElement('template');
         template.innerHTML = `
         <div id="wrapper">

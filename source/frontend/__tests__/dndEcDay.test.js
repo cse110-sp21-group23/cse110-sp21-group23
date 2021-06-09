@@ -1,4 +1,9 @@
-//import EntryCreator from "../src/js/components/EntryCreatorDay/EntryCreator"
+/**
+ * Helper function for dragging and dropping elements on the page natively through JS. (Puppeteer alternatives just did 
+ * not work)
+ * @param {*} source - The object we're dragging 
+ * @param {*} target - Where we're dragging the object to
+ */
 async function dragAndDrop(source, target) {
     await page.evaluate((source, target) => {
         let event
@@ -41,7 +46,7 @@ async function dragAndDrop(source, target) {
 
 }
 
-describe('E2E testing for dragging within same list', () => {
+describe('E2E Testing for dragging within same list', () => {
     beforeAll(async () => {
         await jest.setTimeout(30000)
         await page.goto('http://127.0.0.1:5000/')
@@ -66,19 +71,6 @@ describe('E2E testing for dragging within same list', () => {
 
         expect(dateText).toEqual("Jul 7 1950");
         await page.waitForTimeout(1000);
-        // await bodyHTML.click(); 
-        // await bodyHTML.click(); 
-
-        //let arrow = await (await page.evaluateHandle(`document.querySelector("body > div:nth-child(6) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#next")`)).asElement();
-        //console.log(bodyHTML);
-        //await arrow.click();  
-        //await bodyHTML.click();
-        // let bodyHTML = await page.$$eval('daily-page', (what)=>{ 
-        //     console.log(what); 
-        // })
-        // let bodyHTML = await page.$$('daily-page'); 
-        // console.log(bodyHTML.shadowRoot);
-        //console.log(bodyHTML); 
     }, 15000)
 
     it('Test2: Ensure there are five entries on the page', async () => {
@@ -90,76 +82,144 @@ describe('E2E testing for dragging within same list', () => {
     });
 
     it('Test3: Drag entry at second index to fourth index', async () => {
-        //await page.evaluate()
+        //Grab content in the entries 
+        let entry2Body = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+
         let entry2 = await (await page.evaluateHandle(`document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(2)")`));
-        // const bBox2 = await entry2.boundingBox();
         let entry4 = await (await page.evaluateHandle(`document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(4)")`));
-        // const bBox4 = await entry4.boundingBox();
         await page.waitForTimeout(2000);
         dragAndDrop(entry2, entry4); 
-
-        // try {
-        //     await page.evaluate(() => {
-        //         let entry2 = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(2)")
-        //         let entry4 = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(4)")
-        //         let event
-
-        //         console.log("fuck1")
-
-        //         event = document.createEvent("CustomEvent");
-        //         event.initCustomEvent("mousedown", true, true, null);
-        //         event.clientX = entry2.getBoundingClientRect().left;
-        //         event.clientY = entry2.getBoundingClientRect().top;
-        //         entry2.dispatchEvent(event);
-                
-        //         console.log("fuck2")
-        //         event = document.createEvent("CustomEvent");
-        //         event.initCustomEvent("dragstart", true, true, null);
-        //         event.clientX = entry2.getBoundingClientRect().left;
-        //         event.clientY = entry2.getBoundingClientRect().top;
-        //         entry2.dispatchEvent(event);
-    
-        //         console.log("fuck3")
-        //         event = document.createEvent("CustomEvent");
-        //         event.initCustomEvent("drag", true, true, null);
-        //         event.clientX = entry2.getBoundingClientRect().left;
-        //         event.clientY = entry2.getBoundingClientRect().top;
-        //         entry2.dispatchEvent(event);
-    
-        //         console.log("fuck4")
-        //         event = document.createEvent("CustomEvent");
-        //         event.initCustomEvent("dragover", true, true, null);
-        //         event.clientX = entry4.getBoundingClientRect().left;
-        //         event.clientY = entry4.getBoundingClientRect().top;
-        //         entry4.dispatchEvent(event);
-    
-        //         console.log("fuck5")
-        //         event = document.createEvent("CustomEvent");
-        //         event.initCustomEvent("drop", true, true, null);
-        //         event.clientX = entry4.getBoundingClientRect().left;
-        //         event.clientY = entry4.getBoundingClientRect().top;
-        //         entry4.dispatchEvent(event);
-                
-        //         console.log("fuck6")
-        //         event = document.createEvent("CustomEvent");
-        //         event.initCustomEvent("dragend", true, true, null);
-        //         event.clientX = entry4.getBoundingClientRect().left;
-        //         event.clientY = entry4.getBoundingClientRect().top;
-        //         entry4.dispatchEvent(event);
-
-        //         return
-        //     })
-        // } catch (err) {
-        //     console.log(err)
-        // }
-
-        // console.log("bboxes: " + bBox2.x + ' ' + bBox4.x); 
-        // console.log("widths" + bBox2.width + ' ' + bBox4.width); 
-        // console.log("heights" + bBox2.height + ' ' + bBox4.height); 
-        // console.log("bboxes" + bBox2.y + ' ' +  bBox4.y)
         await page.waitForTimeout(1000);
 
-        expect(true).toBe(true);
+        //DnD should place second index entry to index on top of fourth. So third index
+        let entry2BodyAfter = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(3)").shadowRoot.querySelector("#content").innerHTML; 
+            return content; 
+        })
+
+        expect(entry2Body).toBe(entry2BodyAfter);
     }, 50000);
+
+    it('Test4: Drag entry at last index to first index', async ()=> { 
+        //GRab content in the entries 
+        let entry1Body = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+        let entry5Body = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(5)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+
+        //DnD
+        let entry1 = await (await page.evaluateHandle(`document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(1)")`));
+        let entry5 = await (await page.evaluateHandle(`document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(5)")`));
+        await page.waitForTimeout(2000);
+        dragAndDrop(entry5, entry1); 
+        await page.waitForTimeout(1000);
+
+        //DnD should place last index entry to first index. And first index to second 
+        let entry1BodyAfter = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML; 
+            return content; 
+        }); 
+
+        let entry5BodyAfter = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+        expect(entry5BodyAfter + entry1BodyAfter).toBe(entry5Body + entry1Body); 
+    }, 50000); 
+
+    it ('Test5: Edge case of dragging first element to last element', async()=> { 
+        //Grab content in the entries 
+        let entry1Body = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+        let entry5Body = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(5)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+
+        //DnD
+        let entry1 = await (await page.evaluateHandle(`document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(1)")`));
+        let entry5 = await (await page.evaluateHandle(`document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(5)")`));
+        await page.waitForTimeout(2000);
+        dragAndDrop(entry1, entry5); 
+        await page.waitForTimeout(1000);
+
+        //Should place entry1 to last index and last index to fourth index
+        let entry1BodyAfter = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(5)").shadowRoot.querySelector("#content").innerHTML; 
+            return content; 
+        }); 
+
+        let entry5BodyAfter = await page.evaluate(() => { 
+            let content = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer entry-comp:nth-child(4)").shadowRoot.querySelector("#content").innerHTML; 
+            return content;
+        }); 
+        expect(entry5BodyAfter + entry1BodyAfter).toBe(entry5Body + entry1Body); 
+    }, 50000); 
+
+    it("Test 6: Move to the day before and move back to July7 to see if entry order is the same", async ()=>{ 
+        //Get current entry order 
+        let entryOrder = await page.evaluate(() => { 
+            let idArray =[]; 
+            let entries = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer").children; 
+            for (let i =0; i < entries.length ; i++){ 
+                idArray.push(entries[i].id); 
+            }
+            return idArray; 
+        }); 
+
+        //Move to date before 
+        await page.evaluate(() => {
+            let calendar = document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("calendar-picker");
+            // Month is zero indexxed
+            calendar.date = new Date(1950, 6, 6);
+        });
+
+        let dateText = await page.evaluate(() => {
+            let dP = document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("#date-text").innerHTML;
+            return dP;
+        });
+
+        //Ensure it's a day before 
+        if (dateText != "Jul 6 1950"){ 
+            throw new Error("Wrong date"); 
+        }
+
+        //Move back to original day
+        await page.evaluate(() => {
+            let calendar = document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("calendar-picker");
+            // Month is zero indexxed
+            calendar.date = new Date(1950, 6, 7);
+        });
+
+        let dateText2 = await page.evaluate(() => {
+            let dP = document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("#date-text").innerHTML;
+            return dP;
+        });
+        //Ensure it's the original day 
+        if (dateText2 != "Jul 7 1950"){ 
+            throw new Error("Wrong date"); 
+        }
+
+        //Obtain idArray again 
+        let entryOrderAfter = await page.evaluate(() => { 
+            let idArray =[]; 
+            let entries = document.querySelector("daily-page").shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer").children; 
+            for (let i =0; i < entries.length ; i++){ 
+                idArray.push(entries[i].id); 
+            }
+            return idArray; 
+        }); 
+
+        expect(entryOrder).toEqual(entryOrderAfter);
+    }); 
 });
 
