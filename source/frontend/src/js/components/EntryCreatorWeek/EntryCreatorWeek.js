@@ -78,10 +78,17 @@ export default class EntryCreatorWeek extends HTMLElement{
             font-size: 12pt;
             font-family: 'Lato', sans-serif;
         }
-        
+
         ul {
             margin-top: 0em;
-            list-style-type: none; 
+            list-style-type: none;
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            display: flex-column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }`;
 
         //Attach the template and style to this shadow root
