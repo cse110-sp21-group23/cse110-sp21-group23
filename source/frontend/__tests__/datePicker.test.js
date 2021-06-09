@@ -55,7 +55,6 @@ const months = [
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-//let currDate, year, monthInd, dateInd, dayInd;
 let currDate = new Date();
 let year = currDate.getFullYear();
 let monthInd = currDate.getMonth();
@@ -64,7 +63,7 @@ let dayInd = currDate.getDay();
 
 describe("Date Picker Tests", () => {
   beforeAll(async () => {
-    jest.setTimeout(30000);
+    jest.setTimeout(100000);
     await page.goto(loginURL);
     await page.waitForTimeout(500);
     // Login first
@@ -78,21 +77,14 @@ describe("Date Picker Tests", () => {
   }, 20000);
 
   it("Test 1: Check if date-picker has correct month-text", async () => {
-    // May need to adjust timeout time because takes forever to login
 
-    const date = new Date(
-      await page.evaluate(() =>
-        document
-          .querySelector("daily-page")
-          .shadowRoot.querySelector("date-picker")
-          .date.toJSON()
-      )
-    );
-
-    const today = new Date();
-    expect(date.getFullYear()).toBe(today.getFullYear());
-    expect(date.getMonth()).toBe(today.getMonth());
-    expect(date.getDate()).toBe(date.getDate());
+    const monthText = await page.evaluate(() => {
+      return document
+        .querySelector("daily-page")
+        .shadowRoot.querySelector("date-picker")
+        .shadowRoot.querySelector(".full-date > h2").innerHTML;
+    });
+    expect(monthText).toBe(days[dayInd]);
   });
 
   it("Test 2: Check if date-picker has correct date-text", async () => {
@@ -102,7 +94,6 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
-    await page.waitForTimeout(4000);
     expect(dateText).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
   });
 
@@ -130,8 +121,6 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector(".full-date > h2").innerHTML;
     });
 
-    // await page.waitForTimeout(2000);
-    // await page.waitForTimeout(1000);
     expect(nextMT).toBe(days[dayInd]);
   }, 20000);
 
@@ -142,7 +131,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
-    // await page.waitForTimeout(1000);
+
     expect(nextDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
   });
 
@@ -165,7 +154,6 @@ describe("Date Picker Tests", () => {
 
     //Click the prev arrow 
     await prev.click();
-    await page.waitForTimeout(5000);
 
     //Grab the month text
     const prevMT = await page.evaluate(() => {
@@ -174,15 +162,11 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h2").innerHTML;
     });
-    console.log("prevMT" + prevMT);
-
-    // await page.waitForTimeout(2000);
 
     expect(prevMT).toBe(days[dayInd]);
   }, 20000);
 
   it("Test 6: Check if clicking on left-arrow changes date-text to prev day correctly", async () => {
-    await page.waitForTimeout(2000); 
 
     const prevDT = await page.evaluate(() => {
       return document
@@ -190,7 +174,6 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("date-picker")
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
-    await page.waitForTimeout(1000);
 
     expect(prevDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
   });
