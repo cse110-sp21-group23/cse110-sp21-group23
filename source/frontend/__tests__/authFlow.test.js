@@ -26,7 +26,7 @@ describe('Authentication flow', () => {
 
     it('Test3: Redirect - check if page redirects to login if URL has changed without token', async () => {
         await page.goto(`${baseURL}/daily`);
-        await page.waitForTimeout(100);
+        await page.waitForTimeout(500);
 
         expect(page.url()).toBe(`${baseURL}/`)
     })

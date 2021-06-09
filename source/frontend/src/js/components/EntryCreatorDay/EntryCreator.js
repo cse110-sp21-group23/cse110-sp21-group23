@@ -336,7 +336,7 @@ export default class EntryCreator extends HTMLElement {
         //Attach submit event listener to ec form 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            console.log('submit')
+
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
