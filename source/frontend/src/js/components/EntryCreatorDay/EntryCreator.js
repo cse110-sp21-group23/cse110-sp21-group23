@@ -303,7 +303,6 @@ export default class EntryCreator extends HTMLElement {
 
                 //Make an entry component 
                 let entryComponent = new EntryComponent();
-                console.log("sanity test")
                 //Append the component to the page 
                 entryComponent.entry = element;
                 textBox.appendChild(entryComponent);

@@ -279,6 +279,8 @@ export default class Entry extends HTMLElement{
         event.target.classList.add('over');
       
         event.dataTransfer.dropEffect = 'move';  
+        ////////////////////////////////////////////////////////////////////////////////////
+        console.log("when over " + event.target.entry.body); 
       
         return false;
     }
@@ -292,6 +294,8 @@ export default class Entry extends HTMLElement{
     }
 
     handleDrop(event) {
+        ///////////////////////////////////////////////////////////////////////////
+        console.log("does this happen"); 
         //event.target is the node that is being dropped on
         if (event.stopPropagation) {
             event.stopPropagation(); // Stops some browsers from redirecting.
@@ -457,6 +461,14 @@ export default class Entry extends HTMLElement{
         span.onclick = function() {
             modal.style.display = "none";
         } 
+
+        //DEBUGGING TODO TODO TODO TODO //////////////////////////////
+        //                                                          //
+        //                      I WANT TO DIE                       //
+        //////////////////////////////////////////////////////////////
+        entry.addEventListener('mousedown', ()=> { 
+            console.log("Clicked "  + this.entry.body); 
+        })
 
         //on doubleclick on entry for edit cause single click is drag&drop
         entry.addEventListener("dblclick", async () => {
