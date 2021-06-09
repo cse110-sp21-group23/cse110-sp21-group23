@@ -22,7 +22,6 @@ jobs:
           npm audit fix
           npm install eslint
           npm install --save-dev --save-exact prettier
-          eslint --init
           npm ci
 
       - name: Run linters
