@@ -4,6 +4,13 @@
 You can access our 23andMe Bullet Journal using this [link](https://zvidmarb.github.io/cse110-w21-group23/).<br>
 ![Here is a preview of our application's homepage](https://github.com/zvidmarb/cse110-w21-group23/blob/master/docs/media/pomoScreenShot.png)
 
+## Project Features
+* User signup
+* Editable journal
+* Mood tracker
+* Drag and drop
+* Dynamic weekly view
+
 ## Final Project Videos
 - [Final Video Public Version](link_here)
 - [Final Video Private Version](link_here)
@@ -44,7 +51,8 @@ The full design documentation of our Bullet Journal Application is under **/spec
 - You can see all the meeting notes [here](https://github.com/zvidmarb/cse110-w21-group23/tree/master/admin/meetings)
 - The signed contract is included [here](https://github.com/zvidmarb/cse110-w21-group23/tree/master/admin/misc)
 - Standup meeting records listed [here](https://github.com/zvidmarb/cse110-w21-group23/tree/master/admin/standup)
-- All the status video and final project video [here](https://github.com/zvidmarb/cse110-w21-group23/tree/master/admin/videos)
+- All the status video and final project video [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/videos)
+- Our Team 23andMe Kanban board [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1)
 ## Source 
 [\source](https://github.com/zvidmarb/cse110-w21-group23/tree/master/source) folder includes all source code and test code of Bullet Journal Application.\
 We separate the code in three part, css code in \css folder, java script code in \js folder, and the index.html is in the root of \source.

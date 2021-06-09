@@ -1,1 +1,1 @@
-web: cd source/frontend && npm i -force && npm run prod
+web: cd source/frontend && npm i --only=prod && npm run prod
