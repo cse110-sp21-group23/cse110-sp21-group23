@@ -98,7 +98,7 @@ export const editBullet = async bullet => {
  * @param  {Array} array   - list containing new order of bullets
  * @returns data associated with the newly ordered bullets
  */
-export const updateSorting = async (journalId, date, array) => {
+export const updateSorting = async (journalId, date, array, header) => {
     try {
         return (
             await axios.patch(
