@@ -104,6 +104,7 @@ export default class WeeklyEntry extends HTMLElement{
         }
 
         li:hover {
+            background-color: rgba(255,255,255, 0.25);
             transform: scale(1.05);
             opacity: 1;
         }
@@ -114,7 +115,7 @@ export default class WeeklyEntry extends HTMLElement{
         
         p { 
             display: inline; 
-            font-size: 20px;
+            font-size: 16px;
             font-family: 'Lato', sans-serif;
         }
 
