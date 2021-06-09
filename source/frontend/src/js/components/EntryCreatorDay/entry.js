@@ -269,10 +269,10 @@ export default class Entry extends HTMLElement{
             return; 
         }
 
-        event.dataTransfer.effectAllowed = 'move';
+       // event.dataTransfer.effectAllowed = 'move';
 
         //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-        event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
+       // event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
 
         event.target.classList.add('dragElem'); 
     }
@@ -283,7 +283,7 @@ export default class Entry extends HTMLElement{
         }
         event.target.classList.add('over');
       
-        event.dataTransfer.dropEffect = 'move';  
+     //   event.dataTransfer.dropEffect = 'move';  
       
         return false;
     }
@@ -342,7 +342,8 @@ export default class Entry extends HTMLElement{
 
                 //Recreate the element with stored data in DataTransfer object in UI
                 let dropElement = document.createElement('entry-comp');
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                let entry = dragSrcEl.entry; 
+                //JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
@@ -363,7 +364,7 @@ export default class Entry extends HTMLElement{
                 movedBullet.date = draggedOnEc.date;  
 
                 //Update bullet date in server
-                editBullet(movedBullet).then(
+                editBullet(movedBullet, getHeader()).then(
                 );
 
                 //Remove draggedB from its ec id list
@@ -380,7 +381,8 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = document.createElement('entry-comp');
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                let entry = dragSrcEl.entry; 
+                //JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
@@ -592,7 +594,7 @@ export default class Entry extends HTMLElement{
                 event.preventDefault();
 
                 //Delete the bullet in the server 
-                deleteBullet(this.internalEntry.id).then(()=> { 
+                deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
@@ -608,7 +610,7 @@ export default class Entry extends HTMLElement{
                         date = ec.currDate; 
                     }
                     //Update list in backend
-                    updateSorting(getJournal(), new Date(date), ec.idOrder); 
+                    updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
                     this.remove(); 
 
                     //Empty funcionality 

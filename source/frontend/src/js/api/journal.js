@@ -79,7 +79,7 @@ export const deleteBullet = async (id, header) => {
  * Function which will edit a bullet in the journal
  * @param  {Object} bullet - An entry object containing entry content, type, and if applicable, images and audio attributes.
  */
-export const editBullet = async bullet => {
+export const editBullet = async (bullet, header) => {
     try {
         await axios.put(
             `/journal/bullet`,
