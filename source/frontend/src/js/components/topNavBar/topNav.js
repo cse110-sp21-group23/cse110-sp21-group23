@@ -31,7 +31,7 @@ export default class TopNav extends HTMLElement {
 		}
 
 		span{
-			font-family: 'Lato', sans-serif;
+			font-family: 'Rock Salt', cursive;
 			font-weight: 400;
 		}
 
