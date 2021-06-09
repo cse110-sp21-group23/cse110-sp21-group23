@@ -1,5 +1,5 @@
 import { getJournals } from '../../api/journal'
-import { getJournal, setJournal } from '../../utils/localStorage'
+import { getDate, getJournal, setJournal } from '../../utils/localStorage'
 import getHeader from '../../utils/header'
 import EntryCreator from '../EntryCreatorDay/EntryCreator'
 import DatePicker from '../DatePicker'
