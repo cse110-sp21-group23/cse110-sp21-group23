@@ -47,10 +47,6 @@ export default class DatePicker extends HTMLElement {
                 color: white;
                 font-family: 'Lato', sans-serif;
                 font-weight: 300;
-                -webkit-user-select: none; /* Safari */        
-                -moz-user-select: none; /* Firefox */
-                -ms-user-select: none; /* IE10+/Edge */
-                user-select: none; /* Standard */
             }
             #month-text{
                 color: white;
@@ -58,10 +54,6 @@ export default class DatePicker extends HTMLElement {
                 font-weight: lighter;
                 margin-bottom: 1.5em;
                 padding-right: 0.25em;
-                -webkit-user-select: none; /* Safari */        
-                -moz-user-select: none; /* Firefox */
-                -ms-user-select: none; /* IE10+/Edge */
-                user-select: none; /* Standard */
             }
             .full-date {
                 display: flex;
