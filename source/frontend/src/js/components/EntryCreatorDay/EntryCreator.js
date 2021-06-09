@@ -370,20 +370,36 @@ export default class EntryCreator extends HTMLElement {
         let dragged = this.idList[index1];
         this.idList.splice(index1, 1);
 
-        //Dragged element was above 
-        if (direction) {
-            //Case we're dragging to last element 
-            if (index2 + 1 == this.idList.length) {
-                this.idList.push(dragged);
-            }
-            else {
-                this.idList.splice(index2, 0, dragged);
-            }
+        console.log(index2); 
+        //Case of dragging to end 
+        if (index2 == this.idList.length){ 
+            this.idList.push(dragged); 
+            console.log("insert end")
         }
-        //Dragged element was below 
-        else {
-            this.idList.splice(index2, 0, dragged);
+        else { 
+            //Deleted element above dragged element 
+            if (index1 < index2){ 
+                this.idList.splice(index2 - 1, 0, dragged);
+            }
+            //Deleted element below dragged element 
+            else { 
+                this.idList.splice(index2, 0, dragged); 
+            }  
         }
+        console.log(this.idList); 
+        // if (direction) {
+        //     //Case we're dragging to last element 
+        //     if (index2 + 1 == this.idList.length) {
+        //         this.idList.push(dragged);
+        //     }
+        //     else {
+        //         this.idList.splice(index2, 0, dragged);
+        //     }
+        // }
+        // //Dragged element was below 
+        // else {
+        //     this.idList.splice(index2, 0, dragged);
+        // }
     }
 
     /**

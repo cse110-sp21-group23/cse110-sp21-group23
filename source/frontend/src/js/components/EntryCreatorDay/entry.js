@@ -256,7 +256,6 @@ export default class Entry extends HTMLElement{
 
     //DnD stuff 
     handleDragStart(event) {
-        console.log("event: ", event)
         // Keep track of element we're dragging
         dragSrcEl = event.target;
         //Make sure you can't drag empty entries 
@@ -280,7 +279,6 @@ export default class Entry extends HTMLElement{
       
         //event.dataTransfer.dropEffect = 'move';  
         ////////////////////////////////////////////////////////////////////////////////////
-        console.log("when over " + event.target.entry.body); 
       
         return false;
     }
@@ -315,6 +313,8 @@ export default class Entry extends HTMLElement{
 
             //Case of dragging on empty 
 
+            console.log(event.target.entry.journalId); 
+            console.log(event.target.entry.journal_id); 
             if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
@@ -324,17 +324,20 @@ export default class Entry extends HTMLElement{
             }
 
             //Set direction
+            console.log("DonIndex: " + dOnIndex); 
             let up2Down = dragIndex < dOnIndex;   
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
+                console.log(dragEc.idOrder); 
                 //Swap positions of elements in id lists
                 dragEc.swapIds(dragIndex, dOnIndex, up2Down);
 
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+                console.log("Length unchanged " + dragEc.idOrder.length); 
 
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
@@ -346,7 +349,9 @@ export default class Entry extends HTMLElement{
                 // dropElement.entry = entry; 
 
                 //Dragged object to the last position 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
+                console.log(dragEc.idOrder.length -1); 
+                if (dOnIndex == dragEc.idOrder.length - 1){ 
+                    console.log("afterend"); 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Always insert on top
@@ -462,14 +467,6 @@ export default class Entry extends HTMLElement{
         span.onclick = function() {
             modal.style.display = "none";
         } 
-
-        //DEBUGGING TODO TODO TODO TODO //////////////////////////////
-        //                                                          //
-        //                      I WANT TO DIE                       //
-        //////////////////////////////////////////////////////////////
-        entry.addEventListener('mousedown', ()=> { 
-            console.log("Clicked "  + this.entry.body); 
-        })
 
         //on doubleclick on entry for edit cause single click is drag&drop
         entry.addEventListener("dblclick", async () => {
