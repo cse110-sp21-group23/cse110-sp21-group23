@@ -24,6 +24,7 @@ jobs:
           npm install --save-dev --save-exact prettier
           npm install babel-eslint --save-dev
           npm ci
+          npx prettier --write .
 
       - name: Lint Action
         uses: wearerequired/lint-action@v1.10.0
