@@ -256,7 +256,7 @@ export default class Entry extends HTMLElement{
 
     //DnD stuff 
     handleDragStart(event) {
-
+        console.log("event: ", event)
         // Keep track of element we're dragging
         dragSrcEl = event.target;
         //Make sure you can't drag empty entries 
@@ -264,10 +264,10 @@ export default class Entry extends HTMLElement{
             return; 
         }
 
-        event.dataTransfer.effectAllowed = 'move';
+        //event.dataTransfer.effectAllowed = 'move';
 
         //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-        event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
+        //event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
 
         event.target.classList.add('dragElem'); 
     }
@@ -278,7 +278,7 @@ export default class Entry extends HTMLElement{
         }
         event.target.classList.add('over');
       
-        event.dataTransfer.dropEffect = 'move';  
+        //event.dataTransfer.dropEffect = 'move';  
         ////////////////////////////////////////////////////////////////////////////////////
         console.log("when over " + event.target.entry.body); 
       
@@ -341,17 +341,17 @@ export default class Entry extends HTMLElement{
 
                 //Recreate the element with stored data in DataTransfer object in UI
                 let dropElement = document.createElement('entry-comp');
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
-                dropElement.entry = entry; 
+                // let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                // dropElement.entry = entry; 
 
-                //Dragged object was above the one it's dropped on
-                if (up2Down){ 
-                    event.target.insertAdjacentElement('afterend', dropElement);
-                }
-                //Dragged object was below the one it's dropped on
-                else {
-                    event.target.insertAdjacentElement('beforebegin', dropElement);
-                }
+                // //Dragged object was above the one it's dropped on
+                // if (up2Down){ 
+                //     event.target.insertAdjacentElement('afterend', dropElement);
+                // }
+                // //Dragged object was below the one it's dropped on
+                // else {
+                //     event.target.insertAdjacentElement('beforebegin', dropElement);
+                // }
             }
             //Don't have the same shadow root
             else { 
