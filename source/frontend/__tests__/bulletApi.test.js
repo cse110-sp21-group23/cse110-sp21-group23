@@ -33,7 +33,7 @@ test('Test2: Create bullet', async () => {
         header
     )
     // expect(res.id).not.toBe(null);
-    const date = new Date("2069-01-04")
+    const date = new Date("04 Jan 2069 00:00:00 PDT")
     date.setDate(date.getDate() + 1)
     res = await updateSorting(7, date, [res.id], header)
     expect(res).toBe('success')
@@ -45,8 +45,8 @@ test('Test3: Fetch bullet', async () => {
             Authorization: await login('e@gmail.com', 'asd'),
             'Content-Type': 'application/json'
         }
-    }
-    const date = new Date("2069-01-04")
+    }   
+    const date = new Date("04 Jan 2069 00:00:00 PDT")
     date.setDate(date.getDate() + 1)
     let res = await getBulletsByDay(
         7,
@@ -63,7 +63,7 @@ test('Test4: Edit bullet', async () => {
             'Content-Type': 'application/json'
         }
     }
-    const date = new Date("2069-01-04")
+    const date = new Date("04 Jan 2069 00:00:00 PDT")
     date.setDate(date.getDate() + 1)
 
     await editBullet(
@@ -93,7 +93,7 @@ test('Test5: Verify Edited bullet is Saved', async () => {
             'Content-Type': 'application/json'
         }
     }
-    const date = new Date("2069-01-04")
+    const date = new Date("04 Jan 2069 00:00:00 PDT")
     date.setDate(date.getDate() + 1)
     let res = await getBulletsByDay(
         7,
@@ -110,7 +110,7 @@ test('Test6: Delete Bullet', async () => {
             'Content-Type': 'application/json'
         }
     }
-    const date = new Date("2069-01-04")
+    const date = new Date("04 Jan 2069 00:00:00 PDT")
     date.setDate(date.getDate() + 1)
     let res = await getBulletsByDay(
         7,
@@ -130,7 +130,7 @@ test('Test7: Verify Bullet is Deleted', async () => {
             'Content-Type': 'application/json'
         }
     }
-    const date = new Date("2069-01-04")
+    const date = new Date("04 Jan 2069 00:00:00 PDT")
     date.setDate(date.getDate() + 1)
     let res = await getBulletsByDay(
         7,
