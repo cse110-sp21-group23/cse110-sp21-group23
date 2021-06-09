@@ -47,7 +47,7 @@ Bullet must look like this
  * @param  {Object} bullet - An entry object containing entry content, type, and if applicable, images and audio attributes.
  * @returns data of bullet added to the journal
  */
-export const addBullet = async (bullet) => {
+export const addBullet = async (bullet, header) => {
     try {
         return (await axios.post(
             'journal/bullet',
