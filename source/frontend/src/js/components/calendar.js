@@ -85,11 +85,22 @@ export default class Calendar extends HTMLElement {
         })
     }
 
+    
+    /**
+     * Function which will change the current date
+     * @param  {Date} d
+     */
     set date(d) {
         date = d
         this.shadowRoot.querySelector('#today').value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + '-' + date.getDate().toString().padStart(2, 0);
     }
 
+    
+    
+    /**
+     * Function which returns the current date
+     * @returns The current date
+     */
     get date() {
         return d
     }

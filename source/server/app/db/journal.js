@@ -1,6 +1,11 @@
 'use strict';
 const db = require('../lib/pg');
 
+/**
+ * Function which will insert the bullet into the database and returns the bullet's id
+ * @param  {Object} bullet 
+ * @returns bullet id
+ */
 const store = async (bullet) => {
     try {
         const { journalId, body, type, priority, mood, date } = bullet
@@ -21,6 +26,11 @@ const store = async (bullet) => {
     }
 }
 
+/**
+ * Function which will store the journal into the database
+ * @param  {string} title - Title of the journal
+ * @returns The journal id
+ */
 const storeJournal = async (title) => {
     try {
         const statement = `
@@ -42,6 +52,12 @@ const storeJournal = async (title) => {
 
 }
 
+/**
+ * Function which will store the day specified by date into the database
+ * @param  {int} journalId
+ * @param  {Date} date
+ * @returns id
+ */
 const storeDay = async (journalId, date) => {
     try {
         const statement = `
@@ -61,6 +77,12 @@ const storeDay = async (journalId, date) => {
     }
 }
 
+/**
+ * Function which will set a user's (specified by userId) journal (specified by journalId)
+ * @param  {int} userId
+ * @param  {int} journalId
+ * @returns id
+ */
 const setUserJournal = async (userId, journalId) => {
     try {
         const statement = `
@@ -81,6 +103,11 @@ const setUserJournal = async (userId, journalId) => {
     }
 }
 
+/**
+ * Function which returns a journal based off of the user id
+ * @param  {int} id
+ * @returns The journal of the usre that matches the user id
+ */
 const getJournalByUserId = async (id) => {
     try {
         const statement = `
@@ -102,6 +129,13 @@ const getJournalByUserId = async (id) => {
     }
 }
 
+/**
+ * Function which will get the bullets from the journal specified by journalId from the start time (start) to the end time (end)
+ * @param  {int} journalId
+ * @param  {Date} start
+ * @param  {Date} end
+ * @returns Bullets from the journal specified by journalId from the start time (start) to the end time (end)
+ */
 const getByInterval = async (journalId, start, end) => {
     try {
         const statement = `
@@ -118,7 +152,13 @@ const getByInterval = async (journalId, start, end) => {
     }
 }
 
-
+/**
+ * Function which will return the data held in the day column of the database from the journal specified by journalId from the start time (start) to the end time (end)
+ * @param  {int} journalId
+ * @param  {Date} start
+ * @param  {Date} end
+ * @returns The data held in the day column of the database from the journal specified by journalId from the start time (start) to the end time (end)
+ */
 const getDayByInterval = async (journalId, start, end) => {
     try {
         const statement = `
@@ -135,6 +175,11 @@ const getDayByInterval = async (journalId, start, end) => {
     }
 }
 
+/**
+ * Function which will edit a bullet
+ * @param  {Object} bullet
+ * @returns A string signaling a successful update
+ */
 const update = async (bullet) => {
     try {
         const { id, body, type, isDone, priority, mood, date } = bullet
@@ -152,6 +197,11 @@ const update = async (bullet) => {
     }
 }
 
+/**
+ * Function which will delete the bullet specified by id
+ * @param  {int} id
+ * @returns A string signaling a successful deletion
+ */
 const deleteBullet = async (id) => {
     try {
         const statement = `
@@ -166,6 +216,12 @@ const deleteBullet = async (id) => {
     }
 }
 
+/**
+ * Function which will edit the way the bullets for a particular day are ordered
+ * @param  {int} dayId
+ * @param  {Array} arr
+ * @returns A string signaling a successful update
+ */
 const updateSorting = async (dayId, arr) => {
     try {
         const statement = `

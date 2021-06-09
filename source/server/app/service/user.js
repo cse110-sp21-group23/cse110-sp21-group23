@@ -6,6 +6,13 @@ var common = require('../utils/common')
 var jwt = require('../utils/jwt')
 
 module.exports = {
+    
+    /**
+     * Function which will register a new user, given the correct credentials
+     * @param  {string} email
+     * @param  {string} password
+     * @returns id
+     */
     register: async (email, password) => {
         try {
             if (!common.validateEmail(email)) {
@@ -21,6 +28,13 @@ module.exports = {
             throw err
         }   
     },
+
+    /**
+     * Function which will login a user, given the appropriate credentials
+     * @param  {string} email
+     * @param  {string} password
+     * @returns Access Token
+     */
     login: async (email, password) => {
         try {
             const user = await common.toCamelCase(await userDB.getByEmail(email))

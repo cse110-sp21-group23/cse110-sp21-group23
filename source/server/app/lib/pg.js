@@ -10,15 +10,33 @@ const pool = new Pool({
 })
 
 module.exports = {
+    
+    /**
+     * Function which will perform the operation on the database specified by the statement parameter
+     * @param  {string} statement
+     * @returns The query result
+     */
     query: async statement => {
         return await pool.query(statement)
     },
+    
+    /**
+     * Function which will perform the operation on the database specified by statement with an additional parameter to assist in editing or searching the database
+     * @param  {string} statement
+     * @param  {Object} param
+     * @returns The query result
+     */
     queryParam: async (statement, param) => {
         return await pool.query(statement, param)
     },
     getClient: async () => {
         return await pool.connect()
     },
+
+    /**
+     * Function which will migrate the database
+     * @returns A string represention a successful migration
+     */
     migrate: async () => {
         try {
             const client = await pool.connect()

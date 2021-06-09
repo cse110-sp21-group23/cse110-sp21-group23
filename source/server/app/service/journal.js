@@ -7,6 +7,13 @@ var jwt = require('../utils/jwt')
 var common = require('../utils/common')
 
 module.exports = {
+    
+    /**
+     * Function which will create a journal for a user (specified by userId) titled by parameter title
+     * @param  {int} userId
+     * @param  {string} title
+     * @returns A string representing a successful journal creation
+     */
     createJournal: async (userId, title) => {
         try {
             let { id: journalId } = await journalDB.storeJournal(title)
@@ -17,6 +24,12 @@ module.exports = {
         }
     },
     
+    
+    /**
+     * Function which will return a journal from a user specified by userId
+     * @param  {int} id
+     * @returns A journal from a user specified by userId
+     */
     getJournalByUserId: async (id) => {
         try {
             return common.toCamelCase(await journalDB.getJournalByUserId(id))
@@ -25,6 +38,7 @@ module.exports = {
         }
     },
     
+
     createBullet: async (bullet) => {
         try {
             const newBullet = cleanBulletDate(bullet)
@@ -48,6 +62,13 @@ module.exports = {
     //     }
     // },
 
+    
+    /**
+     * Function which will get the bullets written in the span of a day
+     * @param  {int} journalId
+     * @param  {Date} date
+     * @returns The bullets written in the span of a day
+     */
     getBulletByDay: async (journalId, date) => {
         try {
             const start = new Date(date)
@@ -70,6 +91,11 @@ module.exports = {
         }
     },
     
+    /**
+     * Function which will edit a bullet 
+     * @param  {Object} bullet
+     * @returns A string representing a successful update
+     */
     updateBullet: async bullet => {
         try {
             await journalDB.update(cleanBulletDate(bullet))
@@ -79,6 +105,10 @@ module.exports = {
         }
     },
     
+    /**
+     * Function which will delete a bullet (specified by id)
+     * @param  {int} id
+     */
     deleteBullet: async id => {
         try {
             await journalDB.deleteBullet(id)
@@ -87,6 +117,13 @@ module.exports = {
         }
     },
 
+    
+    /**
+     * Function which will edit the sorting of the bullet points made in a particuar day
+     * @param  {int} journalId
+     * @param  {Date} date
+     * @param  {Array} arr
+     */
     updateSorting: async (journalId, date, arr) => {
         try {
             const start = new Date(date)

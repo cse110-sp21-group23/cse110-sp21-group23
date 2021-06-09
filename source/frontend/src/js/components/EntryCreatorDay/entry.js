@@ -250,6 +250,11 @@ export default class Entry extends HTMLElement{
         }
     }
 
+    
+    /**
+     * Function which will return the entry property of Entry
+     * @returns The entry property of Entry
+     */
     get entry(){ 
         return this.internalEntry; 
     }
