@@ -41,7 +41,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install
+        run: |
+          yarn install
+          yarn add --dev @react-native-community/eslint-plugin
 
       - name: Lint
         run: |
