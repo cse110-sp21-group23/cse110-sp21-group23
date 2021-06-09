@@ -335,7 +335,7 @@ export default class Entry extends HTMLElement{
     
 
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
 
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
@@ -371,10 +371,10 @@ export default class Entry extends HTMLElement{
 
                 //Insert draggedB into draggedOn's ec id list 
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
-
+                
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
-                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
+                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder, getHeader());
 
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
