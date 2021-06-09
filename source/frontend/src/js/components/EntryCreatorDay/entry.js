@@ -98,10 +98,20 @@ export default class Entry extends HTMLElement{
                 box-shadow: 1px 1px 3px #6a828d;
                 left: 80px;
                 margin: 0.7em;
+                margin-bottom: -0.25em;
+                margin-left: -0.5em;
+                position: relative;
+                background: #transparent;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 1px 1px 3px #6a828d;
+                transition: 0.5s;
             }
 
             li:hover {
-                background-color: #f9f9f8;
+                background-color: rgba(255,255,255, 0.25);
+                transform: scale(1.05);
+                opacity: 1;
             }
 
             li button:hover {

@@ -118,9 +118,9 @@ export default class EntryCreator extends HTMLElement {
             border: 1px solid;
             border-radius: 10px;
             border-color: #6a828d;
-            margin: 0px  0px auto; 
-            padding: 15px; 
-            width: 100%;
+            margin-left: -2em;
+            padding: 12px; 
+            width: 95%;
             box-sizing: border-box; 
             font-size: 15pt;
             font-family: 'Lato', sans-serif;
@@ -129,6 +129,15 @@ export default class EntryCreator extends HTMLElement {
         ul { 
             list-style-type: none;
             margin: 0.5em;
+            margin-top: -0.25em;
+            list-style-type: none;
+            position: relative;
+            width: 100%;
+            padding-left: 20px;
+            display: flex-column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
         /* Basic styles */
         input[type="checkbox"],
