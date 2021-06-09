@@ -1,7 +1,6 @@
 import { getBulletsByDay, addBullet, updateSorting, deleteBullet } from '../../api/journal'
 import getHeader from '../../utils/header';
 import { getJournal } from "../../utils/localStorage"
-import Entry from '../EntryCreatorDay/entry';
 import WeeklyEntry from './weekly-entry';
 
 export default class EntryCreatorWeek extends HTMLElement{
@@ -166,8 +165,8 @@ export default class EntryCreatorWeek extends HTMLElement{
                     date: null,
                 };
                 //Make it invisible 
-                entryComponent.shadowRoot.querySelector('li').className = "empty";
-                textBox.appendChild(entryComponent); 
+                //entryComponent.shadowRoot.querySelector('li').className = "empty";
+                //textBox.appendChild(entryComponent); 
 
                 return;
             };
