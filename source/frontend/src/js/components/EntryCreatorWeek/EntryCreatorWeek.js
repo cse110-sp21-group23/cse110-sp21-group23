@@ -141,7 +141,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         let journalId = getJournal();
 
         //Get bullets for that day from the backend and populate bulletArray
-        getBulletsByDay(journalId, new Date(date)).then((value) => {
+        getBulletsByDay(journalId, new Date(date), getHeader()).then((value) => {
 
             //Clear the textbox 
             let textBox = this.shadowRoot.querySelector("#entryContainer");
