@@ -5,7 +5,7 @@ import {getJournal, getDate} from '../../utils/localStorage'
 //Hold the dragged element
 var dragSrcEl = null; 
 
-export default class Entry extends HTMLElement{ 
+export default class WeeklyEntry extends HTMLElement{ 
 
     //Make the entry-comp element draggable when appended to DOM 
     connectedCallback(){ 
@@ -81,7 +81,7 @@ export default class Entry extends HTMLElement{
         .content-container { 
             display: flex;  
             align-items: center; 
-            justify-content: space-between; 
+            justify-content: space-between;
         }
         li {
             align-item: left;
@@ -92,7 +92,8 @@ export default class Entry extends HTMLElement{
             border-color: #6a828d;
             border-radius: 10px;
             box-shadow: 1px 1px 3px #6a828d;
-            margin: 0.7em; 
+            margin: 0.7em;
+            margin-left: -0.7em;
         }
 
         li:hover {
@@ -224,7 +225,7 @@ export default class Entry extends HTMLElement{
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
-        const symbol = entry.type == "task" ? "☐" : entry.type == "event" ? "○" : "\u2022"
+        const symbol = entry.type == "task" ? "📌" : entry.type == "event" ? "🥳" : "📝"
         shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
@@ -315,7 +316,7 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new WeeklyEntry();
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
 
@@ -355,7 +356,7 @@ export default class Entry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new WeeklyEntry();
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
     
@@ -481,7 +482,7 @@ export default class Entry extends HTMLElement{
                 //used to change onscreen bullet type since the above only changes backend
                 let symbol = "";
                 if(symbol == "") {
-                    symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
+                    symbol = entry.className == "task" ? "📌" : entry.className == "event" ? "🥳" : "📝"
                 }
                 shadow.getElementById("symbol").textContent = symbol;
                 
@@ -576,4 +577,4 @@ export default class Entry extends HTMLElement{
 } //end class
 
 //Define the custom element 
-customElements.define('entry-comp', Entry); 
+customElements.define('weekly-entry-comp', WeeklyEntry); 

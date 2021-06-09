@@ -63,155 +63,161 @@ export default class Entry extends HTMLElement{
           </ul>
         </div>`
 
-        //Add styling for bullet points 
-        let style = document.createElement('style'); 
-        style.textContent = 
-        `
-        .bullet-container {
-            border: none;
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 1rem;
-            color: white;
-            text-align: left;
-            padding: 0.5em;
-            margin: 0.25em;
-        }
+        let style = document.createElement('style');
         
-        .content-container { 
-            display: flex;  
-            align-items: center; 
-            justify-content: space-between; 
-        }
-        li {
-            align-item: left;
-            position: relative;
-            list-style-type: none;
-            border-style: solid;
-            border-width: 1pt;
-            border-color: #6a828d;
-            border-radius: 10px;
-            box-shadow: 1px 1px 3px #6a828d;
-            margin: 0.7em; 
-        }
+         /**
+         * This will render the style sheet for daily bullets
+         */
+       
+            //Add styling for bullet points 
+            style.textContent = 
+            `
+            .bullet-container {
+                border: none;
+                background-color: rgba(255,255,255,0.3);
+                border-radius: 1rem;
+                color: white;
+                text-align: left;
+                padding: 1em;
+                margin: 0.25em;
+            }
+            
+            .content-container { 
+                display: flex;  
+                align-items: center; 
+                justify-content: space-between; 
+            }
+            li {
+                align-item: left;
+                position: relative;
+                list-style-type: none;
+                border-style: solid;
+                border-width: 1pt;
+                border-color: #6a828d;
+                border-radius: 10px;
+                box-shadow: 1px 1px 3px #6a828d;
+                left: 80px;
+                margin: 0.7em;
+            }
 
-        li:hover {
-            background-color: #f9f9f8;
-        }
+            li:hover {
+                background-color: #f9f9f8;
+            }
 
-        li button:hover {
-            background-color: #f9f9f8;
-        }        
-        
-        p { 
-            display: inline; 
-            font-size: 20px;
-            font-family: 'Lato', sans-serif;
-        }
+            li button:hover {
+                background-color: #f9f9f8;
+            }        
+            
+            p { 
+                display: inline; 
+                font-size: 20px;
+                font-family: 'Lato', sans-serif;
+            }
 
-        img{ 
-            height: 0px; 
-            width: auto; 
-        }
+            img{ 
+                height: 0px; 
+                width: auto; 
+            }
 
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-        
-        /* Modal Content/Box */
-        .modal-content {
-            border-radius: 40px;
-            background-color: #C9CBB3;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 30px;
-            border: 5px solid #888;
-            width: 75%; /* Could be more or less, depending on screen size */
-            height: 33%;
-        }
-        #modal-words {
-            padding: 10px; 
-            width: 50vw; 
-            box-sizing: border-box; 
-            font-size: 16pt;
-            border-radius: 10px;
-        }
-        [contenteditable] {
-            outline: 2px solid;
-        }
-        /* The Close Button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 50px;
-            font-weight: bold;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        input[type='radio'] {
-            transform: scale(1.4);
-            margin-top: 18px;
-        }
-        
-        #editButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-        }
-        #doneButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-        }
-        
-        #deleteButton { 
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-            float: right
-        }
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            
+            /* Modal Content/Box */
+            .modal-content {
+                border-radius: 40px;
+                background-color: #C9CBB3;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 30px;
+                border: 5px solid #888;
+                width: 75%; /* Could be more or less, depending on screen size */
+                height: 33%;
+            }
+            #modal-words {
+                padding: 10px; 
+                width: 50vw; 
+                box-sizing: border-box; 
+                font-size: 16pt;
+                border-radius: 10px;
+            }
+            [contenteditable] {
+                outline: 2px solid;
+            }
+            /* The Close Button */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 50px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            input[type='radio'] {
+                transform: scale(1.4);
+                margin-top: 18px;
+            }
+            
+            #editButton {
+                border-radius: 10px;
+                margin-top:20px;
+                padding: 10px;
+                width: 90px;
+                height: 90px;
+                font-size: 18px;
+            }
+            #doneButton {
+                border-radius: 10px;
+                margin-top:20px;
+                padding: 10px;
+                width: 90px;
+                height: 90px;
+                font-size: 18px;
+            }
+            
+            #deleteButton { 
+                border-radius: 10px;
+                margin-top:20px;
+                padding: 10px;
+                width: 90px;
+                height: 90px;
+                font-size: 18px;
+                float: right
+            }
 
-        label {
-            font-size: 20px;
-        }
+            label {
+                font-size: 20px;
+            }
 
-        .empty { 
-            opacity: .01;
-            height:100%; 
-            width: 500px;
-            padding-left: -30px; 
-        }
+            .empty { 
+                opacity: .01;
+                height:100%; 
+                width: 500px;
+                padding-left: -30px; 
+            }
 
-        .modal-title {
-            text-align: center;
-            font-size: 25px;
-            text-decoration: underline;
-            position: relative;
-            height: 10px;
-            margin-top: 5px
-        }`;
-
+            .modal-title {
+                text-align: center;
+                font-size: 25px;
+                text-decoration: underline;
+                position: relative;
+                height: 10px;
+                margin-top: 5px
+            }`;
+    
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -231,7 +237,7 @@ export default class Entry extends HTMLElement{
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
-        const symbol = entry.type == "task" ? "☐" : entry.type == "event" ? "○" : "\u2022"
+        const symbol = entry.type == "task" ? "📌" : entry.type == "event" ? "🥳" : "📝"
         shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
@@ -341,7 +347,7 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry();
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
 
@@ -379,7 +385,7 @@ export default class Entry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = newEntry();
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
     
@@ -398,7 +404,7 @@ export default class Entry extends HTMLElement{
                 //Moving the bulle made the moved from ec empty
                 if (parent.children.length == 0){ 
                     //Attach empty entry if no entries 
-                    let entryComponent = document.createElement('entry-comp'); 
+                    let entryComponent = new Entry(); 
                     entryComponent.entry = { 
                         journal_id: null,
                         body: null,
@@ -527,7 +533,7 @@ export default class Entry extends HTMLElement{
                 //used to change onscreen bullet type since the above only changes backend
                 let symbol = "";
                 if(symbol == "") {
-                    symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
+                    symbol = entry.className == "task" ? "📌" : entry.className == "event" ? "🥳" : "📝"
                 }
                 shadow.getElementById("symbol").textContent = symbol;
                 
@@ -614,7 +620,7 @@ export default class Entry extends HTMLElement{
                     //Empty funcionality 
                     if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
                         //Attach empty entry if no entries 
-                        let entryComponent = document.createElement('entry-comp'); 
+                        let entryComponent = new Entry(); 
                         entryComponent.entry = { 
                             journal_id: null,
                             body: null,
