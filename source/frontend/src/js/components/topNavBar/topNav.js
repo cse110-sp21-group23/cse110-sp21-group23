@@ -14,7 +14,7 @@ export default class TopNav extends HTMLElement {
 		
 		<header class="header">
 		
-			<h1 class="logo"><a href="/daily">23AndMe</a></h1>
+			<h1 class="logo"><a href="/daily"><span style="color: #6d766c">23</span><span style="color: #444c57">And</span><span style="color: #846c67">Me</span></a></h1>
 
 			<button class="email-button" id="email"></button>
 			
@@ -25,9 +25,14 @@ export default class TopNav extends HTMLElement {
         let style = document.createElement('style');
 
 		style.textContent = `
-
+		@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
 		* {
 			box-sizing: border-box;
+		}
+
+		span{
+			font-family: 'Lato', sans-serif;
+			font-weight: 400;
 		}
 
 		h2,
@@ -44,11 +49,11 @@ export default class TopNav extends HTMLElement {
 		}
 		
 		.logo a {
-			padding: 10px 15px;
-			text-transform: uppercase;
+			padding: 25px;
 			text-align: center;
 			display: block;
 			font-family: 'Lato', sans-serif;
+			font-weight: 400;
 		}
 
 		button{
@@ -66,7 +71,6 @@ export default class TopNav extends HTMLElement {
 			text-decoration: none;
 			text-align: center;
 			font-family: 'Lato', sans-serif;
-			font-weight: 500;
 		}
 
 		.email-button{
