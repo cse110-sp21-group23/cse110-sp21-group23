@@ -16,37 +16,27 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-
-  <p align="center">
-    <b>Developed by: Kent Utomo, Christopher Yoon, Daniel Huynh, Caroline Xiong, Sophia Lui, Yuchen Jin, Wen Tian, Bas Beeuwsaert, Michael Fu</b>
+    <b>Developed by: Kent Utomo, Christopher Yoon, Daniel Huynh, Caroline Xiong, Sophia Lui, Yuchen Jin, Wen Tian, Michael Fu, Bas Beeuwsaert</b>
 </p>
 
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+<h2 style="display: inline-block">Table of Contents</h2>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
+    <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#documentation">Documentation</a></li>
-    <li><a href="#video">Video</a></li>
+    <li><a href="#videos">Videos</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
-</details>
 
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-
-This application is our design of the Bullet Journal
-
-
-### Built With
+This application is our design of an online Bullet Journal!
+It was built with
 * HTML
 * CSS
 * Javascript
@@ -67,7 +57,9 @@ This application is our design of the Bullet Journal
 ## Documentation
 <!-- Quick Access List -->
 <ol>
-    <a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1">23andMe Kanban Board</a>
+    <a href="https://miro.com/welcomeonboard/SjsaQU5Q3LCVZQPhq81IR2yN1RHCWzbGWgAXyK9Sq25iJnY8NT2LoxtaEmlyG5I4">Brainstorming </a> <br>
+    <a href="https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1">23andMe Kanban Board</a> <br>
+    <a href="https://www.figma.com/file/3mEECEQI6Sy9Pa2iL8quqD/Bullet-Journal?node-id=0%3A1">Low and High fidelty prototypes </a> <br>
 
 </ol>
 
