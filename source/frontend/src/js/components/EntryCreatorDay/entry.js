@@ -145,7 +145,7 @@ export default class Entry extends HTMLElement{
             /* Modal Content/Box */
             .modal-content {
                 border-radius: 40px;
-                background-color: #C9CBB3;
+                background-color: #B3D4DB;
                 margin: 15% auto; /* 15% from the top and centered */
                 padding: 30px;
                 border: 5px solid #888;
@@ -534,7 +534,6 @@ export default class Entry extends HTMLElement{
                 //looks for the bullet type
                 for (const choice of choices) { 
                     if (choice.checked){ 
-                        console.log("choice = " + choice.value);
                         entry.className = choice.value;
                         choice.checked = false;
                         bulletChange.type = choice.value;
@@ -548,7 +547,7 @@ export default class Entry extends HTMLElement{
                 shadow.getElementById("symbol").textContent = symbol;
                 
                 //edits bullet in the backend and closes modal
-                await editBullet(bulletChange);
+                await editBullet(bulletChange, getHeader());
                 modal.style.display = "none";
             }; //end edit bullet method
             
@@ -599,7 +598,7 @@ export default class Entry extends HTMLElement{
 
                 //closes modal and updates bullet
                 modal.style.display = "none";
-                await editBullet(bulletChange);
+                await editBullet(bulletChange, getHeader());
             };    //end strikethrough function
 
             //Delete listener 
@@ -608,7 +607,7 @@ export default class Entry extends HTMLElement{
                 event.preventDefault();
 
                 //Delete the bullet in the server 
-                deleteBullet(this.internalEntry.id).then(()=> { 
+                deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
