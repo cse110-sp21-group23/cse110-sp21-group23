@@ -17,7 +17,7 @@ module.exports = options => {
           exclude: /node_modules/,
           loader: 'babel-loader',
           query: {
-            presets:[ 'stage-2' ]
+            presets:[ '@babel/preset-env' ]
           }
         }
       ]
