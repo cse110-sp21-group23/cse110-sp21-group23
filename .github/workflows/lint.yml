@@ -24,7 +24,6 @@ jobs:
           npm install --save-dev --save-exact prettier
           npm install babel-eslint --save-dev
           npm ci
-          prettier --fix
 
       - name: Lint Action
         uses: wearerequired/lint-action@v1.10.0
@@ -34,3 +33,6 @@ jobs:
         with:
           eslint: true
           prettier: true
+
+      - name: fix
+        run: prettier --fix
