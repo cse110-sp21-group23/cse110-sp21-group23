@@ -23,6 +23,7 @@ jobs:
           npm install eslint
           npm install --save-dev --save-exact prettier
           eslint --init
+          npm audit fix
 
       - name: Run linters
         uses: wearerequired/lint-action@v1
