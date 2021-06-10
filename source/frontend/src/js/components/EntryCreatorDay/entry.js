@@ -1,5 +1,5 @@
 
-import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
+import {updateSorting, deleteBullet, editBullet, getBulletsByDay} from "../../api/journal"
 import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
@@ -256,7 +256,6 @@ export default class Entry extends HTMLElement{
     set entry(entry){ 
         this.internalEntry = entry; 
         let shadow = this.shadowRoot; 
-        let entryImage = this.shadowRoot.querySelector(".entry-image");
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
@@ -264,19 +263,6 @@ export default class Entry extends HTMLElement{
         shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
-
-        
-        //Set necesary image content if the src isn't null
-        // if (entry.image != undefined) { 
-        //     entryImage.setAttribute("src", entry.image.src); 
-        //     entryImage.setAttribute("alt", entry.image.alt); 
-        // }
-        // //Set audio if applicable
-        // if (entry.audio != undefined){ 
-        //     let entryAudio = shadow.querySelector(".entry-audio"); 
-        //     entryAudio.setAttribute("src", entry.audio);
-        //     entryAudio.setAttribute("controls", true);
-        // }
     }
 
     get entry(){ 
@@ -343,8 +329,7 @@ export default class Entry extends HTMLElement{
             dragEc.swapIds(dragIndex, dOnIndex);
 
             //Update sorting in backend 
-            updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
-            console.log("Length unchanged " + dragEc.idOrder.length); 
+            updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
 
             //Remove the entry we're dragging from textbox UI
             parent.removeChild(dragSrcEl);
@@ -556,26 +541,20 @@ export default class Entry extends HTMLElement{
                 event.preventDefault();
 
                 //Delete the bullet in the server 
-                deleteBullet(this.internalEntry.id).then(()=> { 
+                deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
                     //Update ec id list 
+
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
-                    
-                    let date; 
-                    //daily 
-                    if (ec.currDate == undefined){ 
-                        date = getDate(); 
-                    }
-                    //weekly
-                    else { 
-                        date = ec.currDate; 
-                    }
+                    let date = ec.date; 
+
                     //Update list in backend
-                    updateSorting(getJournal(), new Date(date), ec.idOrder); 
+                    updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
+                    //Remove
                     this.remove(); 
 
-                    //Empty funcionality 
+                    //If list is now completely empty 
                     if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
                         //Attach empty entry if no entries 
                         let entryComponent = document.createElement('entry-comp'); 
@@ -603,64 +582,3 @@ export default class Entry extends HTMLElement{
 
 //Define the custom element 
 customElements.define('entry-comp', Entry); 
-
-            //Don't have the same shadow root
-            // else { 
-            //     parent = dragSrcEl.parentNode;
-
-            //     //Set date on dragSrcEl to date it was dragged to in server
-            //     let movedBullet = dragSrcEl.entry; 
-            //     movedBullet.date = draggedOnEc.date;  
-
-            //     //Update bullet date in server
-            //     editBullet(movedBullet).then(
-            //     );
-
-            //     //Remove draggedB from its ec id list
-            //     dragEc.idOrder.splice(dragIndex, 1)
-
-            //     //Insert draggedB into draggedOn's ec id list 
-            //     draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
-
-            //     //Update sorting in backend 
-            //     updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
-            //     updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
-
-            //     //UI visuals   
-            //     parent.removeChild(dragSrcEl);            
-            //     //Recreate the element with stored data in DataTransfer object
-            //     let dropElement = document.createElement('entry-comp');
-            //     //let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
-            //     dropElement.entry = dragSrcEl.entry; 
-    
-            //     //If dragged to bottom, insert at bottom 
-            //     if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
-            //         event.target.insertAdjacentElement('afterend', dropElement); 
-            //     }
-            //     else{ 
-            //         event.target.insertAdjacentElement('beforebegin', dropElement); 
-            //     }
-            //     //Empty cases
-            //     if (event.target.entry.journal_id == null){ 
-            //         let otherParent = event.target.parentNode; 
-            //         otherParent.removeChild(event.target); 
-            //     }
-            //     //Moving the bulle made the moved from ec empty
-            //     if (parent.children.length == 0){ 
-            //         //Attach empty entry if no entries 
-            //         let entryComponent = document.createElement('entry-comp'); 
-            //         entryComponent.entry = { 
-            //             journal_id: null,
-            //             body: null,
-            //             type: null,
-            //             priority: 1,
-            //             mood: 1,
-            //             date: null,
-            //         };
-            //         //Make it invisible 
-            //         let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
-            //         entryComponent.shadowRoot.querySelector('li').className = "empty";
-            //         textBox.appendChild(entryComponent); 
-            //     }
-            // }
-       // }

@@ -2,7 +2,6 @@ import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
 import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
 import Entry from "./entry";
-import EntryComponent from './entry'
 
 /**
  * Creates a new Entry Creator Component for the Daily View Page
