@@ -63,7 +63,7 @@ let dayInd = currDate.getDay();
 
 describe("Date Picker Tests", () => {
   beforeAll(async () => {
-    jest.setTimeout(100000);
+    jest.setTimeout(20000);
     await page.goto(loginURL);
     await page.waitForTimeout(500);
     // Login first
@@ -85,7 +85,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector("#month-text").innerHTML;
     });
     expect(monthText).toBe(days[dayInd]);
-  }, 100000);
+  }, 20000);
 
   it("Test 2: Check if date-picker has correct date-text", async () => {
     const dateText = await page.evaluate(() => {
@@ -95,7 +95,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
     expect(dateText).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
-  }, 100000);
+  }, 20000);
 
   it("Test 3: Check if clicking on right-arrow changes month-text to next day correctly", async () => {
     currDate = new Date(year, monthInd, dateInd + 1);
@@ -122,7 +122,7 @@ describe("Date Picker Tests", () => {
     });
 
     expect(nextMT).toBe(days[dayInd]);
-  }, 100000);
+  }, 20000);
 
   it("Test 4: Check if clicking on right-arrow changes date-text to next day correctly", async () => {
     const nextDT = await page.evaluate(() => {
@@ -133,7 +133,7 @@ describe("Date Picker Tests", () => {
     });
 
     expect(nextDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
-  }, 100000);
+  }, 20000);
 
   it("Test 5: Check if clicking on left-arrow changes month-text to prev day correctly", async () => {
     //Calc new date
@@ -164,7 +164,7 @@ describe("Date Picker Tests", () => {
     });
 
     expect(prevMT).toBe(days[dayInd]);
-  }, 100000);
+  }, 20000);
 
   it("Test 6: Check if clicking on left-arrow changes date-text to prev day correctly", async () => {
 
@@ -176,7 +176,7 @@ describe("Date Picker Tests", () => {
     });
 
     expect(prevDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
-  }, 100000);
+  }, 20000);
 });
 
 // const datePicker = await page.$eval('#datePickerDiv');
