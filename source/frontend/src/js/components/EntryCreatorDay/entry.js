@@ -64,169 +64,165 @@ export default class Entry extends HTMLElement{
         </div>`
 
         let style = document.createElement('style');
-        
-         /**
-         * This will render the style sheet for daily bullets
-         */
        
-            //Add styling for bullet points 
-            style.textContent = 
-            `
-            .bullet-container {
-                border: none;
-                background-color: rgba(255,255,255,0.3);
-                border-radius: 1rem;
-                color: white;
-                text-align: left;
-                padding: 1em;
-                margin: 0.25em;
-            }
-            
-            .content-container { 
-                display: flex;  
-                align-items: center; 
-                justify-content: space-between; 
-            }
-            li {
-                align-item: left;
-                position: relative;
-                list-style-type: none;
-                border-style: solid;
-                border-width: 1pt;
-                border-color: #6a828d;
-                border-radius: 10px;
-                box-shadow: 1px 1px 3px #6a828d;
-                left: 80px;
-                margin: 0.7em;
-                margin-bottom: -0.25em;
-                margin-left: -0.5em;
-                position: relative;
-                background: #transparent;
-                border-radius: 20px;
-                overflow: hidden;
-                box-shadow: 1px 1px 3px #6a828d;
-                transition: 0.5s;
-            }
+        //Add styling for bullet points 
+        style.textContent = 
+        `
+        .bullet-container {
+            border: none;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 1rem;
+            color: white;
+            text-align: left;
+            padding: 1em;
+            margin: 0.25em;
+        }
+        
+        .content-container { 
+            display: flex;  
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        li {
+            align-item: left;
+            position: relative;
+            list-style-type: none;
+            border-style: solid;
+            border-width: 1pt;
+            border-color: #6a828d;
+            border-radius: 10px;
+            box-shadow: 1px 1px 3px #6a828d;
+            left: 80px;
+            margin: 0.7em;
+            margin-bottom: -0.25em;
+            margin-left: -0.5em;
+            position: relative;
+            background: #transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 1px 1px 3px #6a828d;
+            transition: 0.5s;
+        }
 
-            li:hover {
-                background-color: rgba(255,255,255, 0.25);
-                transform: scale(1.05);
-                opacity: 1;
-            }
+        li:hover {
+            background-color: rgba(255,255,255, 0.25);
+            transform: scale(1.05);
+            opacity: 1;
+        }
 
-            li button:hover {
-                background-color: #f9f9f8;
-            }        
-            
-            p { 
-                display: inline; 
-                font-size: 20px;
-                font-family: 'Lato', sans-serif;
-            }
+        li button:hover {
+            background-color: #f9f9f8;
+        }        
+        
+        p { 
+            display: inline; 
+            font-size: 20px;
+            font-family: 'Lato', sans-serif;
+        }
 
-            img{ 
-                height: 0px; 
-                width: auto; 
-            }
+        img{ 
+            height: 0px; 
+            width: auto; 
+        }
 
-            .modal {
-                display: none; /* Hidden by default */
-                position: fixed; /* Stay in place */
-                z-index: 1; /* Sit on top */
-                left: 0;
-                top: 0;
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
-                overflow: auto; /* Enable scroll if needed */
-                background-color: rgb(0,0,0); /* Fallback color */
-                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            }
-            
-            /* Modal Content/Box */
-            .modal-content {
-                border-radius: 40px;
-                background-color: #B3D4DB;
-                margin: 15% auto; /* 15% from the top and centered */
-                padding: 30px;
-                border: 5px solid #888;
-                width: 75%; /* Could be more or less, depending on screen size */
-                height: 33%;
-            }
-            #modal-words {
-                padding: 10px; 
-                width: 50vw; 
-                box-sizing: border-box; 
-                font-size: 16pt;
-                border-radius: 10px;
-            }
-            [contenteditable] {
-                outline: 2px solid;
-            }
-            /* The Close Button */
-            .close {
-                color: #aaa;
-                float: right;
-                font-size: 50px;
-                font-weight: bold;
-            }
-            
-            .close:hover,
-            .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-            input[type='radio'] {
-                transform: scale(1.4);
-                margin-top: 18px;
-            }
-            
-            #editButton {
-                border-radius: 10px;
-                margin-top:20px;
-                padding: 10px;
-                width: 90px;
-                height: 90px;
-                font-size: 18px;
-            }
-            #doneButton {
-                border-radius: 10px;
-                margin-top:20px;
-                padding: 10px;
-                width: 90px;
-                height: 90px;
-                font-size: 18px;
-            }
-            
-            #deleteButton { 
-                border-radius: 10px;
-                margin-top:20px;
-                padding: 10px;
-                width: 90px;
-                height: 90px;
-                font-size: 18px;
-                float: right
-            }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content/Box */
+        .modal-content {
+            border-radius: 40px;
+            background-color: #B3D4DB;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 30px;
+            border: 5px solid #888;
+            width: 75%; /* Could be more or less, depending on screen size */
+            height: 33%;
+        }
+        #modal-words {
+            padding: 10px; 
+            width: 50vw; 
+            box-sizing: border-box; 
+            font-size: 16pt;
+            border-radius: 10px;
+        }
+        [contenteditable] {
+            outline: 2px solid;
+        }
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 50px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        input[type='radio'] {
+            transform: scale(1.4);
+            margin-top: 18px;
+        }
+        
+        #editButton {
+            border-radius: 10px;
+            margin-top:20px;
+            padding: 10px;
+            width: 90px;
+            height: 90px;
+            font-size: 18px;
+        }
+        #doneButton {
+            border-radius: 10px;
+            margin-top:20px;
+            padding: 10px;
+            width: 90px;
+            height: 90px;
+            font-size: 18px;
+        }
+        
+        #deleteButton { 
+            border-radius: 10px;
+            margin-top:20px;
+            padding: 10px;
+            width: 90px;
+            height: 90px;
+            font-size: 18px;
+            float: right
+        }
 
-            label {
-                font-size: 20px;
-            }
+        label {
+            font-size: 20px;
+        }
 
-            .empty { 
-                opacity: .01;
-                height:100%; 
-                width: 500px;
-                padding-left: -30px; 
-            }
+        .empty { 
+            opacity: .01;
+            height:100%; 
+            width: 500px;
+            padding-left: -30px; 
+        }
 
-            .modal-title {
-                text-align: center;
-                font-size: 25px;
-                text-decoration: underline;
-                position: relative;
-                height: 10px;
-                margin-top: 5px
-            }`;
+        .modal-title {
+            text-align: center;
+            font-size: 25px;
+            text-decoration: underline;
+            position: relative;
+            height: 10px;
+            margin-top: 5px
+        }`;
     
 
         //Attach shadow 
@@ -285,11 +281,6 @@ export default class Entry extends HTMLElement{
             return; 
         }
 
-       // event.dataTransfer.effectAllowed = 'move';
-
-        //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-       // event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
-
         event.target.classList.add('dragElem'); 
     }
 
@@ -298,9 +289,7 @@ export default class Entry extends HTMLElement{
             event.preventDefault(); // Necessary. Allows us to drop.
         }
         event.target.classList.add('over');
-      
-     //   event.dataTransfer.dropEffect = 'move';  
-      
+          
         return false;
     }
 
@@ -358,14 +347,12 @@ export default class Entry extends HTMLElement{
 
                 //Recreate the element with stored data in DataTransfer object in UI
 
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry();
                 let entry = dragSrcEl.entry; 
-                //JSON.parse(event.dataTransfer.getData('text/plain'));
-
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (up2Down){ 
+                if (dOnIndex + 1 == dragEc.idOrder.length){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Dragged object was below the one it's dropped on
@@ -398,8 +385,7 @@ export default class Entry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry();
                 let entry = dragSrcEl.entry; 
                 //JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 

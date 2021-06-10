@@ -112,13 +112,6 @@ export default class EntryCreatorWeek extends HTMLElement{
             date: null,
         };
 
-        //Get the type of bullet it'll be 
-        // let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
-        // for (const choice of choices) {
-        //     if (choice.checked) {
-        //         entry.type = choice.value;
-        //     }
-        // }
         //By default on weekly page, entry.type is task 
         entry.type = "task"; 
 
@@ -137,7 +130,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             entry.id = value.id; 
             
             //Update sorting in backend only after idList has been updated 
-            updateSorting(getJournal(), new Date(this.currDate), this.idList); 
+            updateSorting(getJournal(), new Date(this.currDate), this.idList, getHeader()); 
             return value; 
         });
         return entry; 
@@ -174,9 +167,8 @@ export default class EntryCreatorWeek extends HTMLElement{
                     date: null,
                 };
                 //Make it invisible 
-                //entryComponent.shadowRoot.querySelector('li').className = "empty";
-                //textBox.appendChild(entryComponent); 
-
+                entryComponent.shadowRoot.querySelector('li').className = "empty";
+                textBox.appendChild(entryComponent); 
                 return;
             };
 
@@ -213,7 +205,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            //let entryComponent = new WeeklyEntry;
+            let entryComponent = new WeeklyEntry;
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry(); 
