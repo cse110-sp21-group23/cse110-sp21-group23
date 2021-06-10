@@ -46,7 +46,7 @@ export default class TopNav extends HTMLElement {
 
 		#header-bujo {
 			font-size: 0.6em;
-			color: #384E5E;
+			color: #1d5b72;;
 		}
 
 		h2,
@@ -91,8 +91,8 @@ export default class TopNav extends HTMLElement {
 		.email-button{
 			border-radius: 3em;
 			background-color: transparent;
-			border-color: #4c444c;
-			color: ##4c444c;
+			border-color: #1d5b72;
+			color: #1d5b72;
 		}
 		
 		.header {
