@@ -72,7 +72,7 @@ export default class WeekPicker extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.shadowRoot.appendChild(style);    
         
-        this.dateEnd.setDate(this.dateStart.getDate() + 6); 
+        this.dateEnd.setDate(this.dateStart.getDate() + 7); 
         let startText = this.dateStart.toLocaleString('default', {month: 'long'}) + " " + this.dateStart.getDate() + ", " + this.dateStart.getFullYear(); 
         let endText = this.dateEnd.toLocaleString('default', {month: 'long'}) + " " + this.dateEnd.getDate() + ", " + this.dateEnd.getFullYear(); 
 
