@@ -377,24 +377,24 @@ export default class EntryCreator extends HTMLElement {
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(index1, index2, direction) {
+    swapIds(index1, index2) {
         //Remove dragged element 
         let dragged = this.idList[index1];
         this.idList.splice(index1, 1);
 
-        //Dragged element was above 
-        if (direction) {
-            //Case we're dragging to last element 
-            if (index2 + 1 == this.idList.length) {
-                this.idList.push(dragged);
-            }
-            else {
-                this.idList.splice(index2, 0, dragged);
-            }
+        //Dragged to the last element so insert at last 
+        if (index2 == this.idList.length){ 
+            this.idList.push(dragged); 
         }
-        //Dragged element was below 
-        else {
-            this.idList.splice(index2, 0, dragged);
+        else { 
+            //Deleted element above dragged element 
+            if (index1 < index2){ 
+                this.idList.splice(index2 - 1, 0, dragged);
+            }
+            //Deleted element below dragged element 
+            else { 
+                this.idList.splice(index2, 0, dragged); 
+            }
         }
     }
 
