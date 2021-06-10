@@ -39,19 +39,6 @@ export default class EntryCreator extends HTMLElement {
                     </div>
                     </li>
                     
-                    <!--
-                    <li>
-                    <label for="image-input">Insert Image</label>
-                    <input type="file" name="image" id="image-input" accept="image/*"> <br>
-                    </li>
-                    -->
-                    
-                    <!--
-                    <li>
-                    <label for="audio-input">Insert Audio</label>
-                    <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
-                    </li>
-                    -->
                     <div class="bottom-div">
                         <!--Where they'll log their stuff-->
                         <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
