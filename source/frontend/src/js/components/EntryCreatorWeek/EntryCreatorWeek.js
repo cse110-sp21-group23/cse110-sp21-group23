@@ -113,12 +113,14 @@ export default class EntryCreatorWeek extends HTMLElement{
         };
 
         //Get the type of bullet it'll be 
-        let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
-        for (const choice of choices) {
-            if (choice.checked) {
-                entry.type = choice.value;
-            }
-        }
+        // let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
+        // for (const choice of choices) {
+        //     if (choice.checked) {
+        //         entry.type = choice.value;
+        //     }
+        // }
+        //By default on weekly page, entry.type is task 
+        entry.type = "task"; 
 
         //Get the text they wrote 
         let text = this.shadowRoot.querySelector("#entryBox").value;
@@ -128,7 +130,7 @@ export default class EntryCreatorWeek extends HTMLElement{
         entry.journalId = getJournal();
 
         //Append the entry in the backend and to the internal list
-        await addBullet(entry).then((value) => { 
+        await addBullet(entry, getHeader()).then((value) => { 
             //Append bullet to internal list 
             this.idList.push(value.id); 
 
@@ -216,6 +218,12 @@ export default class EntryCreatorWeek extends HTMLElement{
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry(); 
             entryComponent.entry = entry;
+
+            //empty case 
+            let firstchild = textBox.children[0]; 
+            if (firstchild.entry.journal_id == null){ 
+                firstchild.remove(); 
+            }; 
 
             //Add the entry component to the text box        
             textBox.appendChild(entryComponent);
