@@ -24,8 +24,6 @@ export default class WeeklyEntry extends HTMLElement{
         //Create the template and insert html 
         const template = document.createElement('template');
 
-        
-
         template.innerHTML = `
             <li id="type" draggable="true" class="type-name">
                 <div class="bullet-container">
@@ -242,7 +240,6 @@ export default class WeeklyEntry extends HTMLElement{
     set entry(entry){ 
         this.internalEntry = entry; 
         let shadow = this.shadowRoot; 
-        let entryImage = this.shadowRoot.querySelector(".entry-image");
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
@@ -251,19 +248,8 @@ export default class WeeklyEntry extends HTMLElement{
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
 
-        
-        //Set necesary image content if the src isn't null
-        if (entry.image != undefined) { 
-            entryImage.setAttribute("src", entry.image.src); 
-            entryImage.setAttribute("alt", entry.image.alt); 
-        }
-        //Set audio if applicable
-        if (entry.audio != undefined){ 
-            let entryAudio = shadow.querySelector(".entry-audio"); 
-            entryAudio.setAttribute("src", entry.audio);
-            entryAudio.setAttribute("controls", true);
-        }
     }
+
     /**
      * Function which will return the entry property of Entry
      * @returns The entry property of Entry
@@ -290,7 +276,6 @@ export default class WeeklyEntry extends HTMLElement{
             event.preventDefault(); // Necessary. Allows us to drop.
         }
         event.target.classList.add('over'); 
-      
         return false;
     }
 
@@ -327,19 +312,15 @@ export default class WeeklyEntry extends HTMLElement{
             //Case of dragging on non empty entry 
             else{ 
                 dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
-            }
-
-            //Set direction
-            let up2Down = dragIndex < dOnIndex;  
+            } 
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
                 //Swap positions of elements in id lists
-                dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+                dragEc.swapIds(dragIndex, dOnIndex);
     
-
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
 
@@ -352,7 +333,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (up2Down){ 
+                if (dOnIndex == ec.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Dragged object was below the one it's dropped on
@@ -606,19 +587,11 @@ export default class WeeklyEntry extends HTMLElement{
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
-                    
-                    let date; 
-                    //daily 
-                    if (ec.currDate == undefined){ 
-                        date = getDate(); 
-                    }
-                    //weekly
-                    else { 
-                        date = ec.currDate; 
-                    }
+                    let date = ec.date; 
 
                     //Update list in backend
                     updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
+                    //Remove 
                     this.remove(); 
 
                     //Empty funcionality 

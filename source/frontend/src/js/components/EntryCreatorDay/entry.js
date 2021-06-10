@@ -265,6 +265,10 @@ export default class Entry extends HTMLElement{
         shadow.querySelector("#content").innerHTML = entry.body; 
     }
 
+    /**
+     * Function which will return the entry property of Entry
+     * @returns The entry property of Entry
+     */
     get entry(){ 
         return this.internalEntry; 
     }
@@ -302,16 +306,16 @@ export default class Entry extends HTMLElement{
             event.stopPropagation(); // Stops some browsers from redirecting.
         }
 
-        //Get containers
-        let dragEc = dragSrcEl.getRootNode().host;
-        let draggedOnEc = event.target.getRootNode().host; 
+        //Get container
+        let ec = dragSrcEl.getRootNode().host;
+       // let draggedOnEc = event.target.getRootNode().host; 
 
         // Don't do anything if dropping the same column we're dragging.
         if (!(dragSrcEl.isSameNode(event.target))) {
-            let parent; 
+            let parent = event.target.parentNode;
 
             //Get indices of dragged and dropped on entries 
-            let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dragIndex = ec.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
             let dOnIndex; 
 
             //Case of dragging on empty 
@@ -320,16 +324,14 @@ export default class Entry extends HTMLElement{
             }
             //Case of dragging on non empty entry 
             else{ 
-                dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+                dOnIndex = ec.idOrder.findIndex((element) => element == event.target.entry.id);
             }
 
-            parent = event.target.parentNode;
-
             //Swap positions of elements in id lists
-            dragEc.swapIds(dragIndex, dOnIndex);
+            ec.swapIds(dragIndex, dOnIndex);
 
             //Update sorting in backend 
-            updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
+            updateSorting(getJournal(), new Date(getDate()), ec.idOrder, getHeader());
 
             //Remove the entry we're dragging from textbox UI
             parent.removeChild(dragSrcEl);
@@ -339,7 +341,7 @@ export default class Entry extends HTMLElement{
             dropElement.entry = dragSrcEl.entry; 
 
             //Case where you drag to last position 
-            if (dOnIndex == dragEc.idOrder.length - 1){ 
+            if (dOnIndex == ec.idOrder.length - 1){ 
                 event.target.insertAdjacentElement('afterend', dropElement);
             }
             //Always insert on top
@@ -553,24 +555,6 @@ export default class Entry extends HTMLElement{
                     updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
                     //Remove
                     this.remove(); 
-
-                    //If list is now completely empty 
-                    if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
-                        //Attach empty entry if no entries 
-                        let entryComponent = document.createElement('entry-comp'); 
-                        entryComponent.entry = { 
-                            journal_id: null,
-                            body: null,
-                            type: null,
-                            priority: 1,
-                            mood: 1,
-                            date: null,
-                        };
-                        //Make it invisible 
-                        let textBox =  ec.shadowRoot.querySelector("#entryContainer");
-                        entryComponent.shadowRoot.querySelector('li').className = "empty";
-                        textBox.appendChild(entryComponent); 
-                    }
                 }); 
             });
 
