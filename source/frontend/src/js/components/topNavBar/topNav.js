@@ -17,7 +17,7 @@ export default class TopNav extends HTMLElement {
 		
 		<header class="header">
 		
-			<h1 class="logo"><a href="/daily"><span style="color: #6d766c">23</span><span style="color: #444c57">And</span><span style="color: #846c67">Me</span><span> BuJo</span></a></h1>
+			<h1 class="logo"><a href="/daily"><span style="color: #6d766c">23</span><span style="color: #444c57">And</span><span style="color: #846c67">Me</span><span id="header-bujo"> Bullet Journal</span></a></h1>
 
 			<button class="email-button" id="email"></button>
 			
@@ -42,6 +42,11 @@ export default class TopNav extends HTMLElement {
 		span{
 			font-family: 'Chalkduster', fantasy;
 			font-weight: 100;
+		}
+
+		#header-bujo {
+			font-size: 0.6em;
+			color: #384E5E;
 		}
 
 		h2,
@@ -72,21 +77,22 @@ export default class TopNav extends HTMLElement {
 			cursor: pointer;
 			display: flex;
 			align-self: center;
-			font-size: 20px;
+			font-size: 15px;
 			font-weight: 400;
 			line-height: 1;
-			margin: 0px;
-			padding: 1.0em 1.0em;
+			margin-right: 15px;
+			margin-top: 5px;
+			padding: 0.6em 0.6em;
 			text-decoration: none;
 			text-align: center;
-			font-family: 'Lato', sans-serif;
+			font-family: 'Chalkduster', fantasy;
 		}
 
 		.email-button{
 			border-radius: 3em;
 			background-color: transparent;
-			border-color: transparent;
-			color: #444C57;
+			border-color: #4c444c;
+			color: ##4c444c;
 		}
 		
 		.header {
