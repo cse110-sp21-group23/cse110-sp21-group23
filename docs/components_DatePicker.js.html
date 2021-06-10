@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/DatePicker.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/DatePicker.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {setDate} from "../utils/localStorage"
+import Calendar from './calendar'
+// July 9, 2021
+const dates = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
+    "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; 
+
+let myDate = new Date();
+let year;
+let month;
+let day;
+let date;
+let dateText;
+
+/**
+ * Creates a new Date Picker that attaches to the daily view to allow users to choose which date
+ * @class 
+ * */
+export default class DatePicker extends HTMLElement {
+    constructor() {
+
+        year = myDate.getFullYear();
+        month = myDate.getMonth();
+        day = myDate.getDay();
+        date = myDate.getDate();
+
+        dateText = months[month] + " " + dates[date] + " " + year;
+
+        super();
+
+        this.attachShadow({ mode: 'open' })
+
+        const template = document.createElement('template');
+
+        template.innerHTML = `
+            &lt;div class="full-date">
+                &lt;i class='left-arrow' id="prev">&lt;/i>
+                &lt;h2 id="month-text">&lt;/h2>
+                &lt;h1 id="date-text">test&lt;/h1>
+                &lt;div id="date">&lt;/div>
+                &lt;i class='right-arrow' id="next">&lt;/i>
+            &lt;/div>
+        `
+        let style = document.createElement('style');
+
+        style.textContent = `
+            #date-text{
+                color: white;
+                font-family: 'Lato', sans-serif;
+                font-weight: 300;
+            }
+            #month-text{
+                color: white;
+                font-family: 'Lato', sans-serif;
+                font-weight: lighter;
+                margin-bottom: 1.5em;
+                padding-right: 0.25em;
+            }
+            .full-date {
+                display: flex;
+                flex-direction: row;
+                position: relative;
+                top: 45px;
+                left: 100px;
+                align-items: center;
+                justify-content: center;
+                padding-top: 3.0rem;
+                margin-bottom: 1.4rem;
+            }
+            .left-arrow {
+                color: white;
+                border-style: solid;
+                border-width: 1px 1px 0 0;
+                content: '';
+                display: inline-block;
+                height: 1.5em;
+                width: 1.5em;
+                position: sticky;
+                vertical-align: top;
+                margin-right: 10em;
+                transform: rotate(-135deg);
+            }
+            .right-arrow{
+                color: white;
+                border-style: solid;
+                border-width: 1px 1px 0 0;
+                content: '';
+                display: inline-block;
+                height: 1.5em;
+                width: 1.5em;
+                position: sticky;
+                vertical-align: top;
+                margin-left: 10em;
+                transform: rotate(45deg);
+            }
+            #date {
+                display: flex;
+                position: sticky;
+                margin-left: 0.5em;
+                align-items: center;
+            }
+        `
+
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.shadowRoot.appendChild(style);
+        let calendar = document.createElement('calendar-picker');
+
+        this.shadowRoot.getElementById("date").append(calendar)
+
+        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+
+        //Store the date into local storage 
+        setDate(myDate); 
+
+        this.shadowRoot.getElementById("next").addEventListener('click', (e) => {
+            this.next();
+            setDate(myDate); 
+            document.dispatchEvent(new CustomEvent("dateChange", {
+                detail: myDate
+            }))
+        });
+
+        this.shadowRoot.getElementById("prev").addEventListener('click', (e) => {
+            this.prev();
+            setDate(myDate); 
+            document.dispatchEvent(new CustomEvent("dateChange", {
+                detail: myDate
+            }))
+        });
+
+        document.addEventListener('calendarDateChanged', e => {
+            myDate = e.detail
+            myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
+            month = myDate.getMonth();
+            date = myDate.getDate();
+            day = myDate.getDay();
+            year = myDate.getFullYear();
+            //This portion re-renders the current date string and appends it to the h1 tag
+            dateText = months[month] + " " + dates[date] + " " + year;
+            this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+            this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+            setDate(myDate);
+            document.dispatchEvent(new CustomEvent("dateChange", {
+                detail: e.detail
+            }))
+        })
+
+    }
+
+    expandComponent(e) {
+        let content = e.nextElementSibling;
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    }
+
+    next() {
+        myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
+        year = myDate.getFullYear();
+        month = myDate.getMonth();
+        day = myDate.getDay();
+        date = myDate.getDate();
+        this.shadowRoot.querySelector('calendar-picker').date = myDate
+
+        //This portion re-renders the current date string and appends it to the h1 tag
+        dateText = months[month] + " " + dates[date] + " " + year;
+        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+    }
+
+    prev() {
+        myDate = new Date(myDate - 86400000);
+        year = myDate.getFullYear();
+        month = myDate.getMonth();
+        day = myDate.getDay();
+        date = myDate.getDate();
+        this.shadowRoot.querySelector('calendar-picker').date = myDate
+        
+        //This portion re-renders the current date string and appends it to the h1 tag
+        dateText = months[month] + " " + dates[date] + " " + year;
+        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
+    }
+    
+    get date() { 
+        return myDate; 
+    }
+
+}
+
+window.customElements.define('date-picker', DatePicker);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

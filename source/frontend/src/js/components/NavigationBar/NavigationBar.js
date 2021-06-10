@@ -1,6 +1,11 @@
 // <navigation-bar> custom web component
 import { store } from '../../store';
 import { loadRoute } from '../../actions'
+
+/**
+ * Creates a new Side Navigation Bar for to load on every page 
+ * @class 
+ * */
 class NavigationBar extends HTMLElement {
     constructor(custom) {
       super();
@@ -31,10 +36,11 @@ class NavigationBar extends HTMLElement {
             .sidebar-entry {
                 display: block;
                 border: none;
+                height: 70px;
                 width: 230px;
                 text-decoration: none;
                 background-color: #97b1ba;
-                margin: 0px 0px 10px 0px;
+                margin: 0px 0px 20px 0px;
                 padding: 20px 0px 20px 50px;
                 font-size: 22px;
                 color: #fff;
@@ -82,7 +88,6 @@ class NavigationBar extends HTMLElement {
                 <button class="sidebar-entry" data-page="daily">Day</button>
                 <button class="sidebar-entry" data-page="weekly">Week</button>
                 <hr id="splitline">
-                <button class="sidebar-entry">Mood Tracker</button>
           </div>
 
           

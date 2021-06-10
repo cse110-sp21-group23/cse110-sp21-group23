@@ -3,6 +3,10 @@ import { NavigationBar } from './components/NavigationBar/NavigationBar'
 import { getEmail } from './utils/localStorage'
 import { getToken } from './utils/localStorage'
 import TopNav from './components/topNavBar/topNav'
+/**
+ * Delph Page with configurations to allow routing through the website
+ * @class 
+ * */
 export class Delph {
 
   constructor(config) {

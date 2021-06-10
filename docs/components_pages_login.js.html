@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/pages/login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/pages/login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { login, register } from "../../api/user";
+import { getJournals } from '../../api/journal'
+import { store } from '../../store'
+import { loadRoute } from '../../actions'
+import { setToken, setEmail, setJournal } from '../../utils/localStorage'
+import getHeader from '../../utils/header'
+/**
+ * Creates a new login page and renders it
+ * @class 
+ * */
+export class LoginPage extends HTMLElement {
+
+    connectedCallback() {
+        this.render();
+    }
+
+    render() {
+        this.innerHTML = (`
+        &lt;style>
+        body{
+            display: block;
+            color: #E4E8EB;
+            background-color: #384E5E;
+            font:600 16px/18px 'Open Sans',sans-serif;
+        }
+        *,:after,:before{box-sizing:border-box}
+        .clearfix:after,.clearfix:before{content:'';display:table}
+        .clearfix:after{clear:both;display:block}
+        a{color:inherit;text-decoration:none}
+        
+        h1 {
+            color:#fff;
+            margin-top: -60px;
+            margin-bottom: 120px;
+            font-size: 30px;
+            user-select: none;
+            text-align: center;
+            text-shadow: 2px 2px #384E5E;
+        }
+        
+        .login-wrap{
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-bottom: -50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+            max-width:525px;
+            min-height:670px;
+            background:url(https://live.staticflickr.com/7177/13535412304_8571d152b8_b.jpg) no-repeat center;
+            box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+            border-radius: 1em;
+        }
+        .login-html{
+            width:100%;
+            height:100%;
+            position:absolute;
+            padding:90px 70px 50px 70px;
+            background:rgba(111,132,153,0.65);
+            border-radius: 1em;
+        }
+        .login-html .sign-in-htm,
+        .login-html .sign-up-htm{
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            position:absolute;
+            transform:rotateY(180deg);
+            backface-visibility:hidden;
+            transition:all .4s linear;
+        }
+        .login-html .sign-in,
+        .login-html .sign-up,
+        .login-form .group .check{
+            display:none;
+        }
+        .login-html .tab,
+        .login-form .group .label,
+        .login-form .group .button{
+            text-transform:uppercase;
+            user-select: none;
+        }
+        .login-html .tab{
+            font-size:22px;
+            margin-right:15px;
+            padding-bottom: 15px;
+            margin:0 15px 10px 0;
+            display:inline-block;
+            border-bottom:2px solid transparent;
+            text-shadow: 2px 1px #7A8B8E;
+        }
+        .login-html .sign-in:checked + .tab,
+        .login-html .sign-up:checked + .tab{
+            color:#fff;
+            border-color:rgba(255,255,255,0.75);
+        }
+        .login-form{
+            min-height:345px;
+            position:relative;
+            perspective:1000px;
+            transform-style:preserve-3d;
+        }
+        .login-form .group{
+            margin-bottom:15px;
+        }
+        .login-form .group .label,
+        .login-form .group .input,
+        .login-form .group .button{
+            width:100%;
+            color:#fff;
+            display:block;
+            text-shadow: 1px 1px #7A8B8E;
+        }
+        .login-form .group .input,
+        .login-form .group .button{
+            border:none;
+            padding:15px 20px;
+            border-radius:25px;
+            background:rgba(227,231,241,.8);
+        }
+        .login-form .group input[data-type="password"]{
+            text-security:circle;
+            -webkit-text-security:circle;
+        }
+        .login-form .group .label{
+            color:#fff;
+            font-size:12px;
+        }
+        .login-form .group .button{
+            margin-top: 3em;
+            background: rgba(227,231,241,1);
+            color: #444C57;
+        }
+        
+        .login-form .group .button:active{
+            background: #93A6B2;
+            color: #444C57;
+            box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+        
+        }
+        
+        .login-form .group label .icon{
+            width:15px;
+            height:15px;
+            border-radius:2px;
+            position:relative;
+            display:inline-block;
+            background:rgba(192,192,192,.1);
+        }
+        .login-form .group label .icon:before,
+        .login-form .group label .icon:after{
+            content:'';
+            width:10px;
+            height:2px;
+            background:#fff;
+            position:absolute;
+            transition:all .2s ease-in-out 0s;
+        }
+        .login-form .group label .icon:before{
+            left:3px;
+            width:5px;
+            bottom:6px;
+            transform:scale(0) rotate(0);
+        }
+        .login-form .group label .icon:after{
+            top:6px;
+            right:0;
+            transform:scale(0) rotate(0);
+        }
+        .login-form .group .check:checked + label{
+            color:#fff;
+        }
+        .login-form .group .check:checked + label .icon{
+            background:blue;
+        }
+        .login-form .group .check:checked + label .icon:before{
+            transform:scale(1) rotate(45deg);
+        }
+        .login-form .group .check:checked + label .icon:after{
+            transform:scale(1) rotate(-45deg);
+        }
+        .login-html .sign-in:checked + .tab + .sign-up + .tab + .login-form .sign-in-htm{
+            transform:rotate(0);
+        }
+        .login-html .sign-up:checked + .tab + .login-form .sign-up-htm{
+            transform:rotate(0);
+        }
+        
+        .hr{
+            height:2px;
+            margin:60px 0 50px 0;
+            background:rgba(192,192,192,0.8);
+        }
+        .foot-lnk{
+            text-align:center;
+            color:#fff;
+        }
+        &lt;/style>
+
+            &lt;head>
+                &lt;meta charset="utf-8">
+                &lt;meta http-equiv="X-UA-Compatible" content="IE=edge">
+                &lt;title>23am Bullet Journal - Home&lt;/title>
+                &lt;meta name="description" content="">
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1">
+                &lt;!-- Log-in Page Script Functions-->
+                &lt;script src="/source/frontend/src/js/components/login.js">&lt;/script>
+                &lt;script src="/source/frontend/src/js/api/user.js">&lt;/script>
+                &lt;script src="/source/frontend/src/js/scripts/loginPageScripts.js">&lt;/script>
+            &lt;/head>
+        
+            &lt;!-- Start of Log In Page HTML-->
+            &lt;div class="login-wrap">
+                &lt;div class="login-html">
+                    &lt;h1>📝 Bullet Journal 📝&lt;/h1>
+                    &lt;input id="tab-1" type="radio" name="tab" class="sign-in" checked>&lt;label for="tab-1" class="tab">Sign In&lt;/label>
+                    &lt;input id="tab-2" type="radio" name="tab" class="sign-up">&lt;label for="tab-2" class="tab">Sign Up&lt;/label>
+                    &lt;div class="login-form">
+        
+                        &lt;!-- Start of Sign In Form-->
+                        &lt;div class="sign-in-htm">
+                            &lt;div class="group">
+                                &lt;label for="user" class="label">Email Address&lt;/label>
+                                &lt;input id="username-input" type="text" class="input">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;label for="pass" class="label">Password&lt;/label>
+                                &lt;input id="password-input" type="password" class="input" data-type="password">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;button id="signin-button" type="submit" class="button">Sign In&lt;/button>
+                            &lt;/div>
+                            &lt;div class="hr">&lt;/div>
+                        &lt;/div>
+                        
+                        &lt;!-- Start of Sign Up Form-->
+                        &lt;div class="sign-up-htm">
+                            &lt;div class="group">
+                                &lt;label for="user" class="label">Email Address&lt;/label>
+                                &lt;input id="username-signup-input" type="text" class="input">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;label for="pass" class="label">Password&lt;/label>
+                                &lt;input id="password-signup-input" type="password" class="input" data-type="password">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;label for="passconfirm" class="label">Confirm Password&lt;/label>
+                                &lt;input id="password-signup-confirm" type="password" class="input" data-type="password">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;button id="signup-button" type="submit" class="button">Sign Up&lt;/button>
+                            &lt;/div>
+                            &lt;div class="hr">&lt;/div>
+                            &lt;div class="foot-lnk">
+                                &lt;label for="tab-1">Already have an account?&lt;/a>
+                            &lt;/div>
+                            &lt;!-- End of Sign Up Form-->
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+            &lt;script src="/source/frontend/src/js/components/login.js">&lt;/script>
+            `)
+    }
+}
+
+
+/**
+ * Function waits for DOM to load before fetching components
+ */
+window.onload = function () {
+    var signinbutton = document.getElementById('signin-button');
+    var signupbutton = document.getElementById('signup-button');
+    if (signinbutton &amp;&amp; signupbutton) {
+        signinbutton.addEventListener('click', signinFunction);
+        signupbutton.addEventListener('click', signupFunction);
+    }
+}
+
+
+document.onkeydown=function(){
+    if(window.event.keyCode=='13'){
+        var signinbutton = document.getElementById('tab-1');
+        if(signinbutton.checked == true)
+            signinFunction();
+        else
+            signupFunction();
+    }
+}
+
+
+/**
+ * Function that triggers when Sign In button is clicked
+ */
+function signinFunction() {
+    var username = document.getElementById('username-input').value;
+    var password = document.getElementById('password-input').value;
+    signIn(username, password)
+}
+
+
+/**
+ * Function that triggers when Sign Up button is clicked
+ */
+function signupFunction() {
+    var username = document.getElementById('username-signup-input').value;
+    var password = document.getElementById('password-signup-input').value;
+    var confirmpassword = document.getElementById('password-signup-confirm').value;
+
+    if (password == confirmpassword) {
+        register(username, password)
+            .then(() => {
+                signIn(username, password)
+            });
+    }
+    else {
+        window.alert("Passwords do not match");
+    }
+}
+
+function signIn(username, password) {
+    login(username, password)
+        .then(token => {
+            setEmail(username);
+            setToken(token)
+            getJournals(getHeader()).then((value) => {
+                setJournal(value[0].id);
+                store.dispatch(loadRoute({ path: 'daily' }))
+            });
+        })
+        .catch(err => {
+            window.alert(err)
+        })
+}
+
+customElements.define('login-page', LoginPage);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

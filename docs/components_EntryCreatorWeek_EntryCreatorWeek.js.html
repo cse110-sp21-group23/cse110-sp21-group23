@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/EntryCreatorWeek/EntryCreatorWeek.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/EntryCreatorWeek/EntryCreatorWeek.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { getBulletsByDay, addBullet, updateSorting, deleteBullet } from '../../api/journal'
+import getHeader from '../../utils/header';
+import { getJournal } from "../../utils/localStorage"
+import WeeklyEntry from './weekly-entry';
+
+/**
+ * Creates a new Entry Creator for the Weekly View Page
+ * @class 
+ * */
+export default class EntryCreatorWeek extends HTMLElement{
+    //Stores bullets by id's 
+    idList = [];
+    //Date of this particular entry creator 
+    currDate;
+
+    constructor() {
+        super();
+        //Create template and insert html
+        //Grab the template 
+        const template = document.createElement('template');
+        template.innerHTML = `
+            &lt;div id="wrapper">
+                &lt;div id="textBox"> 
+                    &lt;form id="entryCreator">
+                        &lt;div class="entry-input">
+                            &lt;input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
+                            &lt;button type="submit" id="addButton"> Add &lt;/button> 
+                        &lt;/div>
+                    &lt;/form>
+                    &lt;ul id="entryContainer">
+                    &lt;/ul> 
+                &lt;/div>
+            &lt;/div>
+        `
+
+        this.attachShadow({ mode: "open" });
+
+        //Add styling (Temporary for proof of concept)
+        let style = document.createElement('style');
+        style.textContent = `
+        #wrapper{ 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-start; 
+        }
+
+        #addButton {
+            display:none;
+        }
+
+        .entry-input {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #textBox{
+            width: 100%; 
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #entryCreator { 
+            margin-top: 0px; 
+            margin-bottom: 0px; 
+            margin-left: -10px; 
+        }
+        #radio1 { 
+            margin-bottom: 10px; 
+        }
+        #image-input, #audio-input { 
+            margin-top: 10px; 
+            margin-bottom: 10px; 
+        }
+        #entryBox {
+            border: 1px solid;
+            border-radius: 10px;
+            border-color: #6a828d;
+            margin: 0px auto 0px 15px; 
+            padding: 12px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            font-size: 12pt;
+            font-family: 'Lato', sans-serif;
+        }
+
+        ul {
+            margin-top: -0.25em;
+            list-style-type: none;
+            position: relative;
+            width: 100%;
+            padding-left: 20px;
+            display: flex-column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }`;
+
+        //Attach the template and style to this shadow root
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.shadowRoot.appendChild(style);
+    }
+
+    /**
+     * Function which will taken in the input from the form and return an entry object 
+     * @returns {Object} - The entry object which will contain all properties of the user's 
+     * entry. This can includes text, type of entry, and potentially images or audio. This 
+     * will presumably be used to create an Entry web component. 
+     */
+    async createEntry() { 
+        let entry ={ 
+            journalId: null,
+            body: null,
+            type: null,
+            priority: 1,
+            mood: 1,
+            date: null,
+        };
+
+        //Get the type of bullet it'll be 
+        // let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
+        // for (const choice of choices) {
+        //     if (choice.checked) {
+        //         entry.type = choice.value;
+        //     }
+        // }
+        //By default on weekly page, entry.type is task 
+        entry.type = "task"; 
+
+        //Get the text they wrote 
+        let text = this.shadowRoot.querySelector("#entryBox").value;
+        entry.body = text;
+        
+        entry.date = formatDate(this.currDate);
+        entry.journalId = getJournal();
+
+        //Append the entry in the backend and to the internal list
+        await addBullet(entry, getHeader()).then((value) => { 
+            //Append bullet to internal list 
+            this.idList.push(value.id); 
+
+            entry.id = value.id; 
+            
+            //Update sorting in backend only after idList has been updated 
+            updateSorting(getJournal(), new Date(this.currDate), this.idList); 
+            return value; 
+        });
+        return entry; 
+    }
+
+    /**
+     * Function which renders all bullets from the backend in the order they are stored for the passed in date
+     * @param {Date} date - The date in which you want to render bullets from 
+     */
+    renderBullets(date) {
+        //Grab journal id from local storage 
+        let journalId = getJournal();
+
+        //Get bullets for that day from the backend and populate bulletArray
+        getBulletsByDay(journalId, new Date(date), getHeader()).then((value) => {
+
+            //Clear the textbox 
+            let textBox = this.shadowRoot.querySelector("#entryContainer");
+            textBox.innerHTML = "";
+
+            //Clear the internal list of bullets 
+            this.idList = [];
+
+            //No bullets for that day, return
+            if (value.length == 0) {
+                //Attach empty entry if no entries 
+                let entryComponent = new WeeklyEntry(); 
+                entryComponent.entry = { 
+                    journal_id: null,
+                    body: null,
+                    type: null,
+                    priority: 1,
+                    mood: 1,
+                    date: null,
+                };
+                //Make it invisible 
+                entryComponent.shadowRoot.querySelector('li').className = "empty";
+                textBox.appendChild(entryComponent); 
+
+                return;
+            };
+
+            //Create entry components for each and populate entry-creator
+            value.forEach((element) => {
+                this.idList.push(element.id);
+
+                //Make an entry component 
+                let entryComponent = new WeeklyEntry(); 
+
+                //Append the component to the page 
+                entryComponent.entry = element;
+                textBox.appendChild(entryComponent);
+            });
+        });
+    }
+
+    connectedCallback(){ 
+        this.render(); 
+    }
+
+    /**
+     * Function which renders the entryComponent on the page.
+     */
+    render() {
+        //Get the form in entry-creator
+        const form = this.shadowRoot.getElementById("entryCreator");
+
+        //Attach submit event listener to ec form 
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            //Obtain the text box in component
+            let textBox = this.shadowRoot.querySelector("#entryContainer");
+
+            //Make an entry component 
+            let entryComponent = new WeeklyEntry();
+
+            //Create entry object using entry-creator and use to set entry-component
+            let entry = await this.createEntry(); 
+            entryComponent.entry = entry;
+
+            //empty case 
+            let firstchild = textBox.children[0]; 
+            if (firstchild.entry.journal_id == null){ 
+                firstchild.remove(); 
+            }; 
+
+            //Add the entry component to the text box        
+            textBox.appendChild(entryComponent);
+            form.reset();
+        });
+    }
+
+    /**
+     * @param {Array} - The array of bullets to be stored by their id's. 
+     */
+    set idOrder(list) {
+        this.idList = list;
+    }
+
+    /**
+     * @returns {Array} - Returns an array of the bullets in order by id
+     */
+    get idOrder() {
+        return this.idList;
+    }
+
+    /**
+     * Helper function which swaps the positions of the two ids passed in within 
+     * the id array 
+     * @param {Object} dragged - First bullet to be swapped
+     * @param {Object} droppedOn - Second bullet to be swapped
+     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
+     * dropped-on element was above. 
+     */
+    swapIds(index1, index2, direction) {
+        let dragged = this.idList[index1];
+        //Remove dragged element 
+        this.idList.splice(index1, 1);
+
+        //Dragged element was above 
+        if (direction) {
+            //Case we're dragging to last element 
+            if (index2 + 1 == this.idList.length) {
+                this.idList.push(dragged);
+            }
+            else {
+                this.idList.splice(index2, 0, dragged);
+            }
+        }
+        //Dragged element was below 
+        else {
+            this.idList.splice(index2, 0, dragged);
+        }
+    }
+
+    /**
+     * Function inserts the dragged bullet into this container's idList
+     * @param {int} index2 - Index of the bullet in this container that the 
+     * dragged bullet was dropped on
+     * @param {Object} dBullet - the dragged bullet 
+     */
+    diffListIns(index2, dBullet) {
+        //Case drag is dragged on last element in this list 
+        if (index2 + 1 >= this.idList.length) {
+            this.idList.push(dBullet.id);
+        }
+        //Insert normally
+        else {
+            this.idList.splice(index2, 0, dBullet.id);
+        }
+    }
+
+    /**
+     * @param {String} date - The date of this ec creator as a string 
+     */
+    set date(date) {
+        this.currDate = date;
+    }
+
+    /**
+     * @return {String} - Returns a string of this entry creator's internal date
+     */
+    get date() {
+        return this.currDate;
+    }
+}
+
+/**
+ * Helper function to format the dates correctly 
+ * @param {Date} date 
+ * @returns a string with the date formatted correctly 
+ */
+function formatDate(date) {
+    let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length &lt; 2)
+        month = '0' + month;
+    if (day.length &lt; 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+//Make custom element 
+customElements.define('entry-creator-week', EntryCreatorWeek);
+
+{/* &lt;form id="entryCreator">
+&lt;ul>
+&lt;!--Determine type of bullet point it'll be-->
+    &lt;li>
+    &lt;div id="radio1">
+        &lt;input type="radio" name="entryType" id="task" value="task" required>
+        &lt;label for="task">Task&lt;/label>
+        &lt;input type="radio" name="entryType" id="event" value="event"> 
+        &lt;label for="event">Event &lt;/label>
+        &lt;input type="radio" name="entryType" id="note" value="note"> 
+        &lt;label for="note">Note &lt;/label> 
+    &lt;/div>
+    &lt;/li>
+    &lt;!--Image input-->
+    &lt;li>
+    &lt;label for="image-input">Insert Image&lt;/label>
+    &lt;input type="file" name="image" id="image-input" accept="image/*"> &lt;br>
+    &lt;/li>
+    
+    &lt;!--Audio input-->
+    &lt;li>
+    &lt;label for="audio-input">Insert Audio&lt;/label>
+    &lt;input type="file" name="audio" id="audio-input" accept="audio/*">&lt;br>
+    &lt;/li>
+    
+    &lt;!--Where they'll log their stuff-->
+    &lt;li>
+    &lt;input type="text" name="entryBox" id="entryBox" placeholder="Your entry" required>
+    &lt;/li>
+    
+
+    &lt;!--Add button-->
+    &lt;li>
+    &lt;button type="submit" id="addButton"> Add &lt;/button> 
+    &lt;/li>
+&lt;/ul>
+&lt;/form>
+&lt;/div> */}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

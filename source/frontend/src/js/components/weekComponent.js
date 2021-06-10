@@ -1,3 +1,7 @@
+/**
+ * Creates a new Weekly Component that generates the days of the week
+ * @class 
+ * */
 export default class WeeklyComponent extends HTMLElement {
     constructor() {
         super();

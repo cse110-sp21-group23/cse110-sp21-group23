@@ -3,6 +3,11 @@ import { getDate, getJournal, setJournal } from '../../utils/localStorage'
 import getHeader from '../../utils/header'
 import EntryCreator from '../EntryCreatorDay/EntryCreator'
 import DatePicker from '../DatePicker'
+
+/**
+ * Creates a new daily page and renders it
+ * @class 
+ * */
 export class DailyPage extends HTMLElement {
     connectedCallback() {
         this.render();
@@ -26,18 +31,30 @@ export class DailyPage extends HTMLElement {
         const ec = new EntryCreator()
         const dp = new DatePicker()
 
-        this.shadowRoot.querySelector('#datePickerDiv').append(dp);
-        this.shadowRoot.querySelector('#entryCreatorDiv').append(ec);
-
-        //Store the user's journal id into local storage
         getJournals(getHeader()).then((value) => {
             setJournal(value[0].id);
+
+            this.shadowRoot.querySelector('#datePickerDiv').append(dp);
+            this.shadowRoot.querySelector('#entryCreatorDiv').append(ec);
+    
+            // Listen to Date changes from date picker
+            document.addEventListener('dateChange', e => {
+                ec.renderBullets(getDate());
+            })
         });
 
-        // Listen to Date changes from date picker
-        document.addEventListener('dateChange', e => {
-            ec.renderBullets(getDate());
-        })
+        // this.shadowRoot.querySelector('#datePickerDiv').append(dp);
+        // this.shadowRoot.querySelector('#entryCreatorDiv').append(ec);
+
+        // //Store the user's journal id into local storage
+        // getJournals(getHeader()).then((value) => {
+        //     setJournal(value[0].id);
+        // });
+
+        // // Listen to Date changes from date picker
+        // document.addEventListener('dateChange', e => {
+        //     ec.renderBullets(getDate());
+        // })
 
     }
 }

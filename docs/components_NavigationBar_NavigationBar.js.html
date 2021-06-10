@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/NavigationBar/NavigationBar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/NavigationBar/NavigationBar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// &lt;navigation-bar> custom web component
+import { store } from '../../store';
+import { loadRoute } from '../../actions'
+
+/**
+ * Creates a new Side Navigation Bar for to load on every page 
+ * @class 
+ * */
+class NavigationBar extends HTMLElement {
+    constructor(custom) {
+      super();
+  
+      // templated HTML content
+      const template = document.createElement('template');
+  
+      template.innerHTML = `
+          &lt;style>
+            @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&amp;display=swap');
+            
+            .sidebar {
+              position: fixed;
+              height: 100vh;
+              width: 230px;
+              z-index: 1;
+              left: -10px;
+              top: 50px;
+              background-color: #769daa;
+              -webkit-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
+              -moz-box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
+              box-shadow: 0px 14px 14px 0px rgba(0,0,0,0.75);
+              -webkit-border-radius: 0px;
+              -moz-border-radius: 0px;
+              border-radius: 0px;
+            }
+            
+            .sidebar-entry {
+                display: block;
+                border: none;
+                height: 70px;
+                width: 230px;
+                text-decoration: none;
+                background-color: #97b1ba;
+                margin: 0px 0px 20px 0px;
+                padding: 20px 0px 20px 50px;
+                font-size: 22px;
+                color: #fff;
+                font-family: 'Lato', sans-serif;
+                text-align: left;
+            }
+            
+            .sidebar-entry:hover {
+                cursor: pointer;
+                background-color: #437587 !important;
+            }
+
+            
+            #splitline{
+                border: 1px solid #495560;
+                margin: 30px 0px 30px 0px;
+            }
+
+
+            #hide{
+                display: block;
+                border: none;
+                border-radius: 10px;
+                width: 25px;
+                height: 25px;
+                text-decoration: none;
+                background-color: #97b1ba;
+                margin: 5px 0px 5px 200px;
+                font-size: 20px;
+                color: #7C8578;
+                font-family: 'Lato', sans-serif;
+            }
+
+            #hide:hover {
+                cursor: pointer;
+                background-color: #437587;
+            }
+
+
+
+          &lt;/style>
+
+          &lt;div class="sidebar">
+                &lt;button id="hide">&lt;&lt;/button>
+                &lt;button class="sidebar-entry" data-page="daily">Day&lt;/button>
+                &lt;button class="sidebar-entry" data-page="weekly">Week&lt;/button>
+                &lt;hr id="splitline">
+          &lt;/div>
+
+          
+          `;
+
+
+      this.setAttribute('custom', custom);
+      this.attachShadow({ mode: 'open' })
+      this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+      custom.forEach(element => {
+        let newLog = document.createElement('button');
+        newLog.className = "sidebar-entry";
+        newLog.innerHTML = element;
+        this.shadowRoot.querySelector('#customLogs').append(newLog);
+      });
+
+
+      var elem = this.shadowRoot.querySelector(".sidebar");
+      var hidebutton = this.shadowRoot.querySelector("#hide");
+      var id = null;
+      var hiding = false;
+      this.shadowRoot.querySelector("#hide").onclick = function(){ 
+        if(!hiding){
+            var pos = -20;
+            clearInterval(id);
+            id = setInterval(frame, 1);
+            function frame() {
+              if (pos == -200) {
+                clearInterval(id);
+              } else {
+                pos--;  
+                elem.style.left = pos + "px"; 
+              }
+            }
+            hiding = !hiding;
+            hidebutton.innerHTML = ">";
+        }else{
+            var pos = -200;
+            clearInterval(id);
+            id = setInterval(frame, 1);
+            function frame() {
+              if (pos == -20) {
+                clearInterval(id);
+              } else {
+                pos++;  
+                elem.style.left = pos + "px"; 
+              }
+            }
+            hiding = !hiding;
+            hidebutton.innerHTML = "&lt;";
+        }
+      };
+
+      var entries = this.shadowRoot.querySelectorAll(".sidebar-entry");
+      for(var i = 0; i &lt; entries.length; i++){
+          entries[i].onclick = function(e){
+            store.dispatch(loadRoute({ path: this.dataset.page }))
+            for(var j = 0; j &lt; entries.length; j++){
+                entries[j].style.backgroundColor = '#97b1ba';
+            }
+            e.target.style.backgroundColor = "#437587";
+          };
+      }
+
+    }
+  
+    
+    /**
+     * Function which will return the custom attribute from the NavigationBar class
+     * @returns The custom attribute from the NavigationBar class
+     */
+    get custom() {
+      return this.getAttribute('custom');
+    }
+
+    
+    /**
+     * Function which sets the custom attribute from the NavigationBar class
+     * @param  {} custom
+     */
+    set custom(custom) {
+        custom.forEach(element => {
+            let newLog = document.createElement('button');
+            newLog.className = "sidebar-entry";
+            newLog.innerHTML = element;
+            this.shadowRoot.querySelector('#custonLogs').append(newLog);
+        });
+      this.setAttribute('custom', custom);
+    }
+
+    //Infinite loop?
+    connectedCallback(){ 
+      this.render();
+    }
+
+    render() {
+      /*
+      let newBar;
+      let custom = []
+      newBar = new NavigationBar(custom);
+      let main = document.querySelector("main");
+      main.append(newBar);
+      */
+    }
+
+
+}
+  customElements.define('navigation-bar', NavigationBar);
+
+  
+  export { NavigationBar };</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

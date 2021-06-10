@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --coverage --runInBand",
     "dev": "webpack-dev-server --config webpack/webpack.config.js --open",
     "dev-test": "webpack-dev-server --config webpack/webpack.config.js",
     "build": "./node_modules/webpack/bin/webpack.js --config webpack/webpack.prod.config.js && npm run copy-files",
@@ -10,6 +10,7 @@
     "prod": "npm run build && node server.js"
   },
   "dependencies": {
+    "@babel/core": "^7.14.3",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.14.4",
     "axios": "^0.21.1",

@@ -1,3 +1,7 @@
+/**
+ * Creates a new Week Picker on the Weekly view page to allow users to choose which week they want
+ * @class 
+ * */
 export default class WeekPicker extends HTMLElement {
 
     //Hold the current date end and date starts

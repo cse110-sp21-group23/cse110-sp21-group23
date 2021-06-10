@@ -1,6 +1,10 @@
 import WeeklyKanban from '../WeeklyKanban/WeeklyKanban'
 import WeekPicker from '../WeekPicker'
 
+/**
+ * Creates a new weekly view page and renders it
+ * @class 
+ * */
 export class WeeklyPage extends HTMLElement {
     connectedCallback() {
         this.render();

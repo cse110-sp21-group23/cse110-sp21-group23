@@ -15,6 +15,10 @@ let day;
 let date;
 let dateText;
 
+/**
+ * Creates a new Date Picker that attaches to the daily view to allow users to choose which date
+ * @class 
+ * */
 export default class DatePicker extends HTMLElement {
     constructor() {
 
