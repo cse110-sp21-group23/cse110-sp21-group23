@@ -49,11 +49,17 @@ export default class Entry extends HTMLElement{
                   <input type="text" id="modal-words" placeholder="Your entry">
                   <div id="radioEdit">
                     <input type="radio" name="entryTypeEdit" id="task" value="task">
-                    <label for="task">Task</label>
+                    <label for="task">
+                    <span>task 📌</span>
+                    </label>
                     <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-                    <label for="event">Event </label>
+                    <label for="event">
+                    <span>event 🥳</span>
+                    </label>
                     <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-                    <label for="note">Note </label> 
+                    <label for="note">                          
+                        <span>note 📝</span> 
+                    </label> 
                   </div>
                   <button id="editButton"> Confirm Edit </button>
                   <button id="doneButton"> Finish Bullet </button>
@@ -512,6 +518,22 @@ export default class Entry extends HTMLElement{
                     }
                 }
             });
+
+            //If the previous await didn't work (sometimes bugs on daily), use this if statement to get bullet (mostly for daily view)
+            if(bulletChange == null) {
+                theDate = getDate();
+                await getBulletsByDay(journalId,new Date(theDate), getHeader()).then((value) =>{
+                    for(let i = 0; i < value.length; i++) {
+    
+                        //found the bullet
+                        if(value[i].body == shadow.getElementById("content").textContent ||
+                          value[i].body == shadow.getElementById("content").innerHTML    &&
+                          value[i].type == this.shadowRoot.querySelector("#type").className) {
+                            bulletChange = value[i];
+                        }
+                    }
+                });
+            }
 
             //makes sure that the bullet has an is_done value
             if(bulletChange.is_done == null) {
