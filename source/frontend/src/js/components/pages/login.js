@@ -2,7 +2,8 @@ import { login, register } from "../../api/user";
 import { getJournals } from '../../api/journal'
 import { store } from '../../store'
 import { loadRoute } from '../../actions'
-import { setToken, setEmail } from '../../utils/localStorage'
+import { setToken, setEmail, setJournal } from '../../utils/localStorage'
+import getHeader from '../../utils/header'
 export class LoginPage extends HTMLElement {
 
     connectedCallback() {
@@ -14,8 +15,8 @@ export class LoginPage extends HTMLElement {
         <style>
         body{
             display: block;
-            color: #c0c0c0;
-            background-color: #F0D6C7;
+            color: #E4E8EB;
+            background-color: #384E5E;
             font:600 16px/18px 'Open Sans',sans-serif;
         }
         *,:after,:before{box-sizing:border-box}
@@ -30,15 +31,19 @@ export class LoginPage extends HTMLElement {
             font-size: 30px;
             user-select: none;
             text-align: center;
-            text-shadow: 1px 1px #747c71;
+            text-shadow: 2px 2px #384E5E;
         }
         
         .login-wrap{
-            width:100%;
-            margin: 20em auto;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-bottom: -50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
             max-width:525px;
             min-height:670px;
-            position:relative;
             background:url(https://live.staticflickr.com/7177/13535412304_8571d152b8_b.jpg) no-repeat center;
             box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
             border-radius: 1em;
@@ -48,7 +53,7 @@ export class LoginPage extends HTMLElement {
             height:100%;
             position:absolute;
             padding:90px 70px 50px 70px;
-            background:rgba(201,203,179,0.7);
+            background:rgba(111,132,153,0.65);
             border-radius: 1em;
         }
         .login-html .sign-in-htm,
@@ -80,7 +85,7 @@ export class LoginPage extends HTMLElement {
             margin:0 15px 10px 0;
             display:inline-block;
             border-bottom:2px solid transparent;
-            text-shadow: 1px 1px #747c71;
+            text-shadow: 2px 1px #7A8B8E;
         }
         .login-html .sign-in:checked + .tab,
         .login-html .sign-up:checked + .tab{
@@ -102,14 +107,14 @@ export class LoginPage extends HTMLElement {
             width:100%;
             color:#fff;
             display:block;
-            text-shadow: 1px 1px #747c71;
+            text-shadow: 1px 1px #7A8B8E;
         }
         .login-form .group .input,
         .login-form .group .button{
             border:none;
             padding:15px 20px;
             border-radius:25px;
-            background:rgba(218,212,196,.8);
+            background:rgba(227,231,241,.8);
         }
         .login-form .group input[data-type="password"]{
             text-security:circle;
@@ -121,12 +126,12 @@ export class LoginPage extends HTMLElement {
         }
         .login-form .group .button{
             margin-top: 3em;
-            background: #d9dbca;
+            background: rgba(227,231,241,1);
             color: #444C57;
         }
         
         .login-form .group .button:active{
-            background: #ABB696;
+            background: #93A6B2;
             color: #444C57;
             box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
         
@@ -271,6 +276,17 @@ window.onload = function () {
 }
 
 
+document.onkeydown=function(){
+    if(window.event.keyCode=='13'){
+        var signinbutton = document.getElementById('tab-1');
+        if(signinbutton.checked == true)
+            signinFunction();
+        else
+            signupFunction();
+    }
+}
+
+
 /**
  * Function that triggers when Sign In button is clicked
  */
@@ -305,7 +321,10 @@ function signIn(username, password) {
         .then(token => {
             setEmail(username);
             setToken(token)
-            store.dispatch(loadRoute({ path: 'daily' }))
+            getJournals(getHeader()).then((value) => {
+                setJournal(value[0].id);
+                store.dispatch(loadRoute({ path: 'daily' }))
+            });
         })
         .catch(err => {
             window.alert(err)
