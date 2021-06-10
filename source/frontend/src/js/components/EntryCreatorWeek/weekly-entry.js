@@ -1,4 +1,5 @@
 import { updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay } from "../../api/journal"
+import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -23,8 +24,6 @@ export default class WeeklyEntry extends HTMLElement{
         //Create the template and insert html 
         const template = document.createElement('template');
 
-        
-
         template.innerHTML = `
             <li id="type" draggable="true" class="type-name">
                 <div class="bullet-container">
@@ -42,24 +41,30 @@ export default class WeeklyEntry extends HTMLElement{
             <div class="modal-content">
               <div class = "modal-header"> 
                 <span class="close" id = "close">&times;</span>
-                <h4 class = "modal-title"> Edit bullet </h4>
-              </div>
-              <form id="edit">
-                <ul>
-                  <input type="text" id="modal-words" placeholder="Your entry">
-                  <div id="radioEdit">
-                    <input type="radio" name="entryTypeEdit" id="task" value="task">
-                    <label for="task">Task</label>
-                    <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-                    <label for="event">Event </label>
-                    <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-                    <label for="note">Note </label> 
-                  </div>
-                  <button id="editButton"> Confirm Edit </button>
-                  <button id="doneButton"> Finish Bullet </button>
-                  <button id="deleteButton">Delete Bullet </button> 
-                </ul>
-              </form>
+                <h4 class = "modal-title"> Edit entry</h4>
+                </div>
+                <form id="edit">
+                  <ul>
+                    <div id="radioEdit">
+                      <input type="radio" name="entryTypeEdit" id="task" value="task">
+                          <label for="task">
+                              <span>task 📌</span>
+                          </label>
+                      <input type="radio" name="entryTypeEdit" id="event" value="event"> 
+                          <label for="event">
+                              <span>event 🥳</span>
+                          </label>
+                      <input type="radio" name="entryTypeEdit" id="note" value="note"> 
+                          <label for="note">                          
+                              <span>note 📝</span> 
+                          </label> 
+                    </div>
+                    <input type="text" id="modal-words" placeholder="Your entry">
+                    <button id="deleteButton">Delete Entry 🗑</button> 
+                    <button id="editButton"> Confirm Edit </button>
+                    <button id="doneButton"> Mark entry as finished </button>
+                  </ul>
+                </form>
             </div> 
           </div>
               
@@ -70,7 +75,22 @@ export default class WeeklyEntry extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = 
         `
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+        button{
+            width:100%;
+            color:#fff;
+            display:flex;
+            text-shadow: 1px 1px #7A8B8E;
+            font-size: 20px;
+            padding:15px 20px;
+            border-radius:25px;
+            background: rgba(227,231,241,1);
+            margin-top: 5px;
+            margin: 5px;
+            color: #444C57;
+            margin-bottom: 5px;
+            float: left;
+        }
+
         .bullet-container {
             border: none;
             background-color: rgba(255,255,255,0.3);
@@ -79,6 +99,19 @@ export default class WeeklyEntry extends HTMLElement{
             text-align: left;
             padding: 0.1em;
             margin: 0.1em;
+        }
+        button:active{
+            background: #93A6B2;
+            color: #444C57;
+            box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+        }
+        h4{
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            margin: auto;
+            font-size: 32px;
+            color: white;
+            text-shadow: 2px 1px #444C57;
         }
         
         .content-container { 
@@ -106,11 +139,11 @@ export default class WeeklyEntry extends HTMLElement{
             transition: 0.5s;
         }
 
-        li:hover {
-            background-color: rgba(255,255,255, 0.25);
-            transform: scale(1.05);
-            opacity: 1;
-        }
+        // li:hover {
+        //     background-color: rgba(255,255,255, 0.25);
+        //     transform: scale(1.05);
+        //     opacity: 1;
+        // }
 
         li button:hover {
             background-color: #f9f9f8;
@@ -127,6 +160,11 @@ export default class WeeklyEntry extends HTMLElement{
             width: auto; 
         }
 
+        input{
+            font-family: 'Lato', sans-serif;
+            padding: 10px;
+        }
+
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -138,21 +176,29 @@ export default class WeeklyEntry extends HTMLElement{
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            border: 1px solid; 
+            border-radius: 20px;
+            border-color: #6a828d;
+            margin-left: auto; 
+            margin-right: auto; 
+            align-items: center; 
         }
         
         /* Modal Content/Box */
         .modal-content {
             border-radius: 40px;
-            background-color: #C9CBB3;
+            background-color: rgba(106, 130, 141, 0.95);
             margin: 15% auto; /* 15% from the top and centered */
             padding: 30px;
             border: 5px solid #888;
             width: 75%; /* Could be more or less, depending on screen size */
-            height: 33%;
+            overflow: auto;
         }
         #modal-words {
-            padding: 10px; 
-            width: 50vw; 
+            margin-top: 15px;
+            margin-bottom: 2rem;
+            padding: 15px; 
+            width: 100%; 
             box-sizing: border-box; 
             font-size: 16pt;
             border-radius: 10px;
@@ -180,35 +226,134 @@ export default class WeeklyEntry extends HTMLElement{
         }
         
         #editButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
+            width: auto;
+            display:block;
+            text-shadow: 1px 1px #7A8B8E;
+            border:none;
+            padding:15px 20px;
+            border-radius:25px;
+            background:rgba(227,231,241,1);
+            color: #444C57;
+            float: right;
         }
         #doneButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
+            width: auto;
+            color:#fff;
+            display:block;
+            text-shadow: 1px 1px #7A8B8E;
+            border:none;
+            padding:15px 20px;
+            border-radius:25px;
+            background: rgba(227,231,241,1);
+            color: #444C57;
+            float: right;
         }
         
         #deleteButton { 
             border-radius: 10px;
-            margin-top:20px;
+            display: block;
             padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-            float: right
+            width: auto;
+            height: auto;
+            font-size: 24px;
+            float: left;
+            color: #444C57;
+            text-decoration: underline;
         }
 
         label {
             font-size: 20px;
         }
+
+        /* Basic styles */
+        input[type="checkbox"],
+        input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+        }
+        label {
+            font-family: 'Lato', sans-serif;
+            color: white;
+            font-weight: 100;
+            position: relative;
+            display: inline-block;
+            padding: 0 0 0 2em;
+            height: 1.5em;
+            line-height: 1.5;
+            cursor: pointer;
+            margin-right: 0.2em;
+        }
+        label::before,
+        label::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        label::before {
+            content: " ";
+            border: 2px solid #bdc3c7;
+            border-radius: 20%;
+        }
+
+        /* Checkbox */
+        input[type="checkbox"] + label::after {
+            content: "2714";
+            color: #2c3e50;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Radio */
+        input[type="radio"] + label::before {
+            border-radius: 50%;
+            background: #4C444C;
+        }
+
+        input[type=radio] + label::after {
+            content: " ";
+            top: .2em;
+            left: .2em;
+            width: 1em;
+            height: 1em;
+            background: #b3d4db;
+            border: .2em solid #2eb7eb;
+            border-radius: 50%;
+        }
+    
+        /* :checked */
+        input[type="checkbox"]:checked + label::before,
+        input[type="radio"]:checked + label::before {
+            background: #4C444C;
+            border-color: #4C444C;
+        }
+
+        input[type="checkbox"] + label::after,
+        input[type=radio] + label::after {
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            -o-transform: scale(0);
+            transform: scale(0);
+        }
+
+        input[type="checkbox"]:checked + label::after,
+        input[type=radio]:checked + label::after {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            -o-transform: scale(1);
+            transform: scale(1);
+        }
+
+        /* Transition */
+        label::before,
+        label::after {
+            -webkit-transition: .25s all ease;
+            -o-transition: .25s all ease;
+            transition: .25s all ease;
 
         .modal-title {
             text-align: center;
@@ -217,7 +362,15 @@ export default class WeeklyEntry extends HTMLElement{
             position: relative;
             height: 10px;
             margin-top: 5px
-        }`;
+        }
+        
+        .empty { 
+            opacity: .01;
+            height:100%; 
+            width: 500px;
+            padding-left: -30px; 
+        }`
+        ;
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -233,7 +386,6 @@ export default class WeeklyEntry extends HTMLElement{
     set entry(entry){ 
         this.internalEntry = entry; 
         let shadow = this.shadowRoot; 
-        let entryImage = this.shadowRoot.querySelector(".entry-image");
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
@@ -242,20 +394,12 @@ export default class WeeklyEntry extends HTMLElement{
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
 
-        
-        //Set necesary image content if the src isn't null
-        if (entry.image != undefined) { 
-            entryImage.setAttribute("src", entry.image.src); 
-            entryImage.setAttribute("alt", entry.image.alt); 
-        }
-        //Set audio if applicable
-        if (entry.audio != undefined){ 
-            let entryAudio = shadow.querySelector(".entry-audio"); 
-            entryAudio.setAttribute("src", entry.audio);
-            entryAudio.setAttribute("controls", true);
-        }
     }
 
+    /**
+     * Function which will return the entry property of Entry
+     * @returns The entry property of Entry
+     */
     get entry(){ 
         return this.internalEntry; 
     }
@@ -265,11 +409,10 @@ export default class WeeklyEntry extends HTMLElement{
 
         // Keep track of element we're dragging
         dragSrcEl = event.target; 
-
-        event.dataTransfer.effectAllowed = 'move';
-
-        //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-        event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
+        //Make sure you can't drag empty entries 
+        if (event.target.entry.journal_id == null){ 
+            return; 
+        }
 
         event.target.classList.add('dragElem'); 
     }
@@ -278,10 +421,7 @@ export default class WeeklyEntry extends HTMLElement{
         if (event.preventDefault) {
             event.preventDefault(); // Necessary. Allows us to drop.
         }
-        event.target.classList.add('over');
-      
-        event.dataTransfer.dropEffect = 'move';  
-      
+        event.target.classList.add('over'); 
         return false;
     }
 
@@ -309,31 +449,36 @@ export default class WeeklyEntry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
-            let dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
-            //Set direction
-            let up2Down = dragIndex < dOnIndex;  
-
+            
+            //Case of dragging on empty 
+            let dOnIndex;
+            if (event.target.entry.journal_id == null){ 
+                dOnIndex = 0; 
+            }
+            //Case of dragging on non empty entry 
+            else{ 
+                dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+            } 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
                 //Swap positions of elements in id lists
-                dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+                dragEc.swapIds(dragIndex, dOnIndex);
     
-
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
 
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
                 let dropElement = new WeeklyEntry();
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                let entry = dragSrcEl.entry; 
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (up2Down){ 
+                if (dOnIndex == dragEc.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Dragged object was below the one it's dropped on
@@ -344,16 +489,14 @@ export default class WeeklyEntry extends HTMLElement{
             //Don't have the same shadow root
             else { 
                 parent = dragSrcEl.parentNode;
-                console.log(dragSrcEl.entry.id); 
 
                 //Set date on dragSrcEl to date it was dragged to in server
                 let movedBullet = dragSrcEl.entry; 
                 movedBullet.date = draggedOnEc.date;  
 
                 //Update bullet date in server
-                editBullet(movedBullet).then(
-                    console.log("movedbullet")
-                )
+                editBullet(movedBullet, getHeader()).then(
+                ); 
 
                 //Remove draggedB from its ec id list
                 dragEc.idOrder.splice(dragIndex, 1)
@@ -362,22 +505,47 @@ export default class WeeklyEntry extends HTMLElement{
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
 
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
-                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
+                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder, getHeader());
 
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = new WeeklyEntry();
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                let entry = dragSrcEl.entry; 
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length-1){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 
                     event.target.insertAdjacentElement('beforebegin', dropElement); 
+                }
+
+                //Empty cases
+                if (event.target.entry.body == null){ 
+                    let otherParent = event.target.parentNode; 
+                    //Remove empty child 
+                    otherParent.removeChild(event.target); 
+                }
+                
+                //Moving the bullet made the moved from ec empty
+                if (parent.children.length == 0){ 
+                    //Attach empty entry if no entries 
+                    let entryComponent = new WeeklyEntry(); 
+                    entryComponent.entry = { 
+                        journal_id: null,
+                        body: null,
+                        type: null,
+                        priority: 1,
+                        mood: 1,
+                        date: null,
+                    };
+                    //Make it invisible 
+                    let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
+                    entryComponent.shadowRoot.querySelector('li').className = "empty";
+                    textBox.appendChild(entryComponent); 
                 }
             }
         }
@@ -441,10 +609,10 @@ export default class WeeklyEntry extends HTMLElement{
 
             //used in getBulletsByDay
             let journalId = getJournal(); 
-            let theDate = getDate();
+            let theDate = this.getRootNode().host.date; 
 
             //Get bullets for that day from the backend to find the one to edit
-            await getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+            await getBulletsByDay(journalId,new Date(theDate), getHeader()).then((value) =>{
                 for(let i = 0; i < value.length; i++) {
 
                     //found the bullet
@@ -559,26 +727,36 @@ export default class WeeklyEntry extends HTMLElement{
                 event.preventDefault();
 
                 //Delete the bullet in the server 
-                deleteBullet(this.internalEntry.id).then(()=> { 
+                deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
 
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
-                    
-                    let date; 
-                    //daily 
-                    if (ec.currDate == undefined){ 
-                        date = getDate(); 
-                    }
-                    //weekly
-                    else { 
-                        date = ec.currDate; 
-                    }
+                    let date = ec.date; 
 
                     //Update list in backend
-                    updateSorting(getJournal(), new Date(date), ec.idOrder); 
+                    updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
+                    //Remove 
                     this.remove(); 
+
+                    //Empty funcionality 
+                    if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
+                        //Attach empty entry if no entries 
+                        let entryComponent = new WeeklyEntry(); 
+                        entryComponent.entry = { 
+                            journal_id: null,
+                            body: null,
+                            type: null,
+                            priority: 1,
+                            mood: 1,
+                            date: null,
+                        };
+                        //Make it invisible 
+                        let textBox =  ec.shadowRoot.querySelector("#entryContainer");
+                        entryComponent.shadowRoot.querySelector('li').className = "empty";
+                        textBox.appendChild(entryComponent); 
+                    }
                 }); 
             });
 
