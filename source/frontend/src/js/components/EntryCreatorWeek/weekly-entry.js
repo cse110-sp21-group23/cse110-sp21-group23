@@ -1,4 +1,5 @@
 import { updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay } from "../../api/journal"
+import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
@@ -22,8 +23,6 @@ export default class WeeklyEntry extends HTMLElement{
 
         //Create the template and insert html 
         const template = document.createElement('template');
-
-        
 
         template.innerHTML = `
             <li id="type" draggable="true" class="type-name">
@@ -106,11 +105,11 @@ export default class WeeklyEntry extends HTMLElement{
             transition: 0.5s;
         }
 
-        li:hover {
-            background-color: rgba(255,255,255, 0.25);
-            transform: scale(1.05);
-            opacity: 1;
-        }
+        // li:hover {
+        //     background-color: rgba(255,255,255, 0.25);
+        //     transform: scale(1.05);
+        //     opacity: 1;
+        // }
 
         li button:hover {
             background-color: #f9f9f8;
@@ -217,7 +216,15 @@ export default class WeeklyEntry extends HTMLElement{
             position: relative;
             height: 10px;
             margin-top: 5px
-        }`;
+        }
+        
+        .empty { 
+            opacity: .01;
+            height:100%; 
+            width: 500px;
+            padding-left: -30px; 
+        }`
+        ;
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -233,7 +240,6 @@ export default class WeeklyEntry extends HTMLElement{
     set entry(entry){ 
         this.internalEntry = entry; 
         let shadow = this.shadowRoot; 
-        let entryImage = this.shadowRoot.querySelector(".entry-image");
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
@@ -242,20 +248,12 @@ export default class WeeklyEntry extends HTMLElement{
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
 
-        
-        //Set necesary image content if the src isn't null
-        if (entry.image != undefined) { 
-            entryImage.setAttribute("src", entry.image.src); 
-            entryImage.setAttribute("alt", entry.image.alt); 
-        }
-        //Set audio if applicable
-        if (entry.audio != undefined){ 
-            let entryAudio = shadow.querySelector(".entry-audio"); 
-            entryAudio.setAttribute("src", entry.audio);
-            entryAudio.setAttribute("controls", true);
-        }
     }
 
+    /**
+     * Function which will return the entry property of Entry
+     * @returns The entry property of Entry
+     */
     get entry(){ 
         return this.internalEntry; 
     }
@@ -265,11 +263,10 @@ export default class WeeklyEntry extends HTMLElement{
 
         // Keep track of element we're dragging
         dragSrcEl = event.target; 
-
-        event.dataTransfer.effectAllowed = 'move';
-
-        //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-        event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
+        //Make sure you can't drag empty entries 
+        if (event.target.entry.journal_id == null){ 
+            return; 
+        }
 
         event.target.classList.add('dragElem'); 
     }
@@ -278,10 +275,7 @@ export default class WeeklyEntry extends HTMLElement{
         if (event.preventDefault) {
             event.preventDefault(); // Necessary. Allows us to drop.
         }
-        event.target.classList.add('over');
-      
-        event.dataTransfer.dropEffect = 'move';  
-      
+        event.target.classList.add('over'); 
         return false;
     }
 
@@ -309,31 +303,37 @@ export default class WeeklyEntry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
-            let dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
-            //Set direction
-            let up2Down = dragIndex < dOnIndex;  
+            
+            //Case of dragging on empty 
+            let dOnIndex;
+            if (event.target.entry.journal_id == null){ 
+                dOnIndex = 0; 
+            }
+            //Case of dragging on non empty entry 
+            else{ 
+                dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+            } 
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
                 //Swap positions of elements in id lists
-                dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+                dragEc.swapIds(dragIndex, dOnIndex);
     
-
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
+                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
 
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
                 let dropElement = new WeeklyEntry();
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                let entry = dragSrcEl.entry; 
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (up2Down){ 
+                if (dOnIndex == ec.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Dragged object was below the one it's dropped on
@@ -344,16 +344,14 @@ export default class WeeklyEntry extends HTMLElement{
             //Don't have the same shadow root
             else { 
                 parent = dragSrcEl.parentNode;
-                console.log(dragSrcEl.entry.id); 
 
                 //Set date on dragSrcEl to date it was dragged to in server
                 let movedBullet = dragSrcEl.entry; 
                 movedBullet.date = draggedOnEc.date;  
 
                 //Update bullet date in server
-                editBullet(movedBullet).then(
-                    console.log("movedbullet")
-                )
+                editBullet(movedBullet, getHeader()).then(
+                ); 
 
                 //Remove draggedB from its ec id list
                 dragEc.idOrder.splice(dragIndex, 1)
@@ -362,22 +360,46 @@ export default class WeeklyEntry extends HTMLElement{
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
 
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
-                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
+                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder, getHeader());
 
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
                 let dropElement = new WeeklyEntry();
-                let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+                let entry = dragSrcEl.entry; 
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 
                     event.target.insertAdjacentElement('beforebegin', dropElement); 
+                }
+
+                //Empty cases
+                if (event.target.entry.journal_id == null){ 
+                    let otherParent = event.target.parentNode; 
+                    otherParent.removeChild(event.target); 
+                }
+                
+                //Moving the bulle made the moved from ec empty
+                if (parent.children.length == 0){ 
+                    //Attach empty entry if no entries 
+                    let entryComponent = new WeeklyEntry(); 
+                    entryComponent.entry = { 
+                        journal_id: null,
+                        body: null,
+                        type: null,
+                        priority: 1,
+                        mood: 1,
+                        date: null,
+                    };
+                    //Make it invisible 
+                    let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
+                    entryComponent.shadowRoot.querySelector('li').className = "empty";
+                    textBox.appendChild(entryComponent); 
                 }
             }
         }
@@ -441,10 +463,10 @@ export default class WeeklyEntry extends HTMLElement{
 
             //used in getBulletsByDay
             let journalId = getJournal(); 
-            let theDate = getDate();
+            let theDate = this.getRootNode().host.date; 
 
             //Get bullets for that day from the backend to find the one to edit
-            await getBulletsByDay(journalId,new Date(theDate)).then((value) =>{
+            await getBulletsByDay(journalId,new Date(theDate), getHeader()).then((value) =>{
                 for(let i = 0; i < value.length; i++) {
 
                     //found the bullet
@@ -559,26 +581,36 @@ export default class WeeklyEntry extends HTMLElement{
                 event.preventDefault();
 
                 //Delete the bullet in the server 
-                deleteBullet(this.internalEntry.id).then(()=> { 
+                deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
 
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
-                    
-                    let date; 
-                    //daily 
-                    if (ec.currDate == undefined){ 
-                        date = getDate(); 
-                    }
-                    //weekly
-                    else { 
-                        date = ec.currDate; 
-                    }
+                    let date = ec.date; 
 
                     //Update list in backend
-                    updateSorting(getJournal(), new Date(date), ec.idOrder); 
+                    updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
+                    //Remove 
                     this.remove(); 
+
+                    //Empty funcionality 
+                    if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
+                        //Attach empty entry if no entries 
+                        let entryComponent = new WeeklyEntry(); 
+                        entryComponent.entry = { 
+                            journal_id: null,
+                            body: null,
+                            type: null,
+                            priority: 1,
+                            mood: 1,
+                            date: null,
+                        };
+                        //Make it invisible 
+                        let textBox =  ec.shadowRoot.querySelector("#entryContainer");
+                        entryComponent.shadowRoot.querySelector('li').className = "empty";
+                        textBox.appendChild(entryComponent); 
+                    }
                 }); 
             });
 

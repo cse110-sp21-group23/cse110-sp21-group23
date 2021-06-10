@@ -116,13 +116,6 @@ export default class EntryCreatorWeek extends HTMLElement{
             date: null,
         };
 
-        //Get the type of bullet it'll be 
-        // let choices = this.shadowRoot.querySelectorAll("input[name='entryType']");
-        // for (const choice of choices) {
-        //     if (choice.checked) {
-        //         entry.type = choice.value;
-        //     }
-        // }
         //By default on weekly page, entry.type is task 
         entry.type = "task"; 
 
@@ -141,7 +134,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             entry.id = value.id; 
             
             //Update sorting in backend only after idList has been updated 
-            updateSorting(getJournal(), new Date(this.currDate), this.idList); 
+            updateSorting(getJournal(), new Date(this.currDate), this.idList, getHeader()); 
             return value; 
         });
         return entry; 
@@ -178,9 +171,8 @@ export default class EntryCreatorWeek extends HTMLElement{
                     date: null,
                 };
                 //Make it invisible 
-                //entryComponent.shadowRoot.querySelector('li').className = "empty";
-                //textBox.appendChild(entryComponent); 
-
+                entryComponent.shadowRoot.querySelector('li').className = "empty";
+                textBox.appendChild(entryComponent); 
                 return;
             };
 
@@ -217,7 +209,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            //let entryComponent = new WeeklyEntry;
+            let entryComponent = new WeeklyEntry;
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry(); 
@@ -254,27 +246,25 @@ export default class EntryCreatorWeek extends HTMLElement{
      * the id array 
      * @param {Object} dragged - First bullet to be swapped
      * @param {Object} droppedOn - Second bullet to be swapped
-     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
-     * dropped-on element was above. 
      */
-    swapIds(index1, index2, direction) {
+    swapIds(index1, index2) {
         let dragged = this.idList[index1];
         //Remove dragged element 
         this.idList.splice(index1, 1);
 
-        //Dragged element was above 
-        if (direction) {
-            //Case we're dragging to last element 
-            if (index2 + 1 == this.idList.length) {
-                this.idList.push(dragged);
-            }
-            else {
-                this.idList.splice(index2, 0, dragged);
-            }
+        //Case of dragging to end 
+        if (index2 == this.idList.length){ 
+            this.idList.push(dragged); 
         }
-        //Dragged element was below 
-        else {
-            this.idList.splice(index2, 0, dragged);
+        else { 
+            //Deleted element above dragged element 
+            if (index1 < index2){ 
+                this.idList.splice(index2 - 1, 0, dragged);
+            }
+            //Deleted element below dragged element 
+            else { 
+                this.idList.splice(index2, 0, dragged); 
+            }  
         }
     }
 
