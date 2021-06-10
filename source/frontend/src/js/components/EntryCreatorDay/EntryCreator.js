@@ -294,7 +294,6 @@ export default class EntryCreator extends HTMLElement {
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate), getHeader()).then((value) => {
             //Clear the textbox
-
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
 
@@ -337,7 +336,7 @@ export default class EntryCreator extends HTMLElement {
         //Attach submit event listener to ec form 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            console.log('submit')
+
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
@@ -346,7 +345,6 @@ export default class EntryCreator extends HTMLElement {
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry();
-
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
@@ -380,36 +378,20 @@ export default class EntryCreator extends HTMLElement {
         let dragged = this.idList[index1];
         this.idList.splice(index1, 1);
 
-        console.log(index2); 
-        //Case of dragging to end 
-        if (index2 == this.idList.length){ 
-            this.idList.push(dragged); 
-            console.log("insert end")
-        }
-        else { 
-            //Deleted element above dragged element 
-            if (index1 < index2){ 
-                this.idList.splice(index2 - 1, 0, dragged);
+        //Dragged element was above 
+        if (direction) {
+            //Case we're dragging to last element 
+            if (index2 + 1 == this.idList.length) {
+                this.idList.push(dragged);
             }
-            //Deleted element below dragged element 
-            else { 
-                this.idList.splice(index2, 0, dragged); 
-            }  
+            else {
+                this.idList.splice(index2, 0, dragged);
+            }
         }
-        console.log(this.idList); 
-        // if (direction) {
-        //     //Case we're dragging to last element 
-        //     if (index2 + 1 == this.idList.length) {
-        //         this.idList.push(dragged);
-        //     }
-        //     else {
-        //         this.idList.splice(index2, 0, dragged);
-        //     }
-        // }
-        // //Dragged element was below 
-        // else {
-        //     this.idList.splice(index2, 0, dragged);
-        // }
+        //Dragged element was below 
+        else {
+            this.idList.splice(index2, 0, dragged);
+        }
     }
 
     /**

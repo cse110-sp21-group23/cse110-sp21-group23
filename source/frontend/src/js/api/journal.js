@@ -100,7 +100,6 @@ export const editBullet = async (bullet, header) => {
  */
 export const updateSorting = async (journalId, date, array, header) => {
     try {
-        console.log(date.toDateString())
         return (
             await axios.patch(
                 `journal/${journalId}/day/${date.toDateString()}`,
@@ -111,7 +110,20 @@ export const updateSorting = async (journalId, date, array, header) => {
             )
         ).data
     } catch (err) {
-        console.log(err)
         throw err
+    }
+}
+
+/**
+ * Function which will return the content-type header used HTTP requests with axios
+ * @returns content-type header used HTTP requests with axios
+ */
+const getHeader = () => {
+    const token = getToken()
+    return {
+        headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
+        }
     }
 }
