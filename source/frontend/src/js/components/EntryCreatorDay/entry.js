@@ -409,7 +409,7 @@ export default class Entry extends HTMLElement{
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
-        const symbol = entry.type == "task" ? "☐" : entry.type == "event" ? "○" : "\u2022"
+        const symbol = entry.type == "task" ? "📌" : entry.type == "event" ? "🥳" : "📝"
         shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
@@ -628,7 +628,7 @@ export default class Entry extends HTMLElement{
                 //used to change onscreen bullet type since the above only changes backend
                 let symbol = "";
                 if(symbol == "") {
-                    symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
+                    symbol = entry.className == "task" ? "📌" : entry.className == "event" ? "🥳" : "📝"
                 }
                 shadow.getElementById("symbol").textContent = symbol;
                 
