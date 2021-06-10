@@ -172,7 +172,6 @@ export default class EntryCreatorWeek extends HTMLElement{
                 };
                 //Make it invisible 
                 entryComponent.shadowRoot.querySelector('li').className = "empty";
-   //             entryComponent.innerHTML = ""; 
                 textBox.appendChild(entryComponent); 
                 return;
             };
