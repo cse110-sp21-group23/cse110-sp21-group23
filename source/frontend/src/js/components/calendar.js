@@ -99,10 +99,11 @@ export default class Calendar extends HTMLElement {
     set date(d) {
         date = d
         this.shadowRoot.querySelector('#today').value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + '-' + date.getDate().toString().padStart(2, 0);
+        document.dispatchEvent(new CustomEvent("calendarDateChanged", {
+            detail: new Date(this.shadowRoot.querySelector('#today').value)
+        }))
     }
 
-    
-    
     /**
      * Function which returns the current date
      * @returns The current date

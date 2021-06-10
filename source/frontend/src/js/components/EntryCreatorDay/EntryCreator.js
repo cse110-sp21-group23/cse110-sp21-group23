@@ -38,11 +38,10 @@ export default class EntryCreator extends HTMLElement {
                         </label> 
                     </div>
                     </li>
-
+                    
                     <div class="bottom-div">
                         <!--Where they'll log their stuff-->
                         <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
-
                         <!--Add button-->
                         <button type="submit" id="addButton"> Add </button> 
                     </div>
@@ -59,11 +58,9 @@ export default class EntryCreator extends HTMLElement {
         //Add styling (Temporary for proof of concept)
         let style = document.createElement('style');
         style.textContent = `
-
         #addButton {
             display:none;
         }
-
         #wrapper{ 
             position: relative;
             top: 45px;
@@ -79,13 +76,11 @@ export default class EntryCreator extends HTMLElement {
             align-items: center; 
             width: 60%; 
         }
-
         .bottom-div {
             display: flex;
             flex-direction: row;
             justify-content: center;
         }
-
         #textBox{
             margin-left: auto; 
             margin-right: auto; 
@@ -157,13 +152,11 @@ export default class EntryCreator extends HTMLElement {
             width: 1.5em;
             height: 1.5em;
         }
-
         label::before {
             content: " ";
             border: 2px solid #bdc3c7;
             border-radius: 20%;
         }
-
         /* Checkbox */
         input[type="checkbox"] + label::after {
             content: "2714";
@@ -171,13 +164,11 @@ export default class EntryCreator extends HTMLElement {
             line-height: 1.5;
             text-align: center;
         }
-
         /* Radio */
         input[type="radio"] + label::before {
             border-radius: 50%;
             background: #4C444C;
         }
-
         input[type=radio] + label::after {
             content: " ";
             top: .2em;
@@ -188,14 +179,12 @@ export default class EntryCreator extends HTMLElement {
             border: .2em solid #2eb7eb;
             border-radius: 50%;
         }
-
         /* :checked */
         input[type="checkbox"]:checked + label::before,
         input[type="radio"]:checked + label::before {
             background: #4C444C;
             border-color: #4C444C;
         }
-
         input[type="checkbox"] + label::after,
         input[type=radio] + label::after {
             -webkit-transform: scale(0);
@@ -203,7 +192,6 @@ export default class EntryCreator extends HTMLElement {
             -o-transform: scale(0);
             transform: scale(0);
         }
-
         input[type="checkbox"]:checked + label::after,
         input[type=radio]:checked + label::after {
             -webkit-transform: scale(1);
@@ -211,7 +199,6 @@ export default class EntryCreator extends HTMLElement {
             -o-transform: scale(1);
             transform: scale(1);
         }
-
         /* Transition */
         label::before,
         label::after {
@@ -284,6 +271,7 @@ export default class EntryCreator extends HTMLElement {
         //Get bullets for that day from the backend and populate bulletArray
         getBulletsByDay(journalId, new Date(theDate), getHeader()).then((value) => {
             //Clear the textbox
+
             let textBox = this.shadowRoot.querySelector("#entryContainer");
             textBox.innerHTML = "";
 
@@ -326,7 +314,7 @@ export default class EntryCreator extends HTMLElement {
         //Attach submit event listener to ec form 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-
+            console.log('submit')
             //Obtain the text box in component
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
@@ -335,6 +323,7 @@ export default class EntryCreator extends HTMLElement {
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry();
+
             entryComponent.entry = entry;
 
             //Add the entry component to the text box        
@@ -368,19 +357,19 @@ export default class EntryCreator extends HTMLElement {
         let dragged = this.idList[index1];
         this.idList.splice(index1, 1);
 
-        //Dragged element was above 
-        if (direction) {
-            //Case we're dragging to last element 
-            if (index2 + 1 == this.idList.length) {
-                this.idList.push(dragged);
-            }
-            else {
-                this.idList.splice(index2, 0, dragged);
-            }
+        //Case of dragging to end 
+        if (index2 == this.idList.length){ 
+            this.idList.push(dragged); 
         }
-        //Dragged element was below 
-        else {
-            this.idList.splice(index2, 0, dragged);
+        else { 
+            //Deleted element above dragged element 
+            if (index1 < index2){ 
+                this.idList.splice(index2 - 1, 0, dragged);
+            }
+            //Deleted element below dragged element 
+            else { 
+                this.idList.splice(index2, 0, dragged); 
+            }  
         }
     }
 
