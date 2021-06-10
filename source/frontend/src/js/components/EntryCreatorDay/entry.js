@@ -277,18 +277,12 @@ export default class Entry extends HTMLElement{
 
     //DnD stuff 
     handleDragStart(event) {
-
         // Keep track of element we're dragging
         dragSrcEl = event.target;
         //Make sure you can't drag empty entries 
         if (event.target.entry.journal_id == null){ 
             return; 
         }
-
-       // event.dataTransfer.effectAllowed = 'move';
-
-        //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-       // event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
 
         event.target.classList.add('dragElem'); 
     }
@@ -298,8 +292,6 @@ export default class Entry extends HTMLElement{
             event.preventDefault(); // Necessary. Allows us to drop.
         }
         event.target.classList.add('over');
-      
-     //   event.dataTransfer.dropEffect = 'move';  
       
         return false;
     }
@@ -328,9 +320,12 @@ export default class Entry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dOnIndex; 
 
             //Case of dragging on empty 
-            let dOnIndex; 
+
+            console.log(event.target.entry.journalId); 
+            console.log(event.target.entry.journal_id); 
             if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
@@ -340,15 +335,16 @@ export default class Entry extends HTMLElement{
             }
 
             //Set direction
+            console.log("DonIndex: " + dOnIndex); 
             let up2Down = dragIndex < dOnIndex;   
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
+                console.log(dragEc.idOrder); 
                 //Swap positions of elements in id lists
                 dragEc.swapIds(dragIndex, dOnIndex, up2Down);
-    
 
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
@@ -366,7 +362,7 @@ export default class Entry extends HTMLElement{
                 if (up2Down){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
-                //Dragged object was below the one it's dropped on
+                //Always insert on top
                 else {
                     event.target.insertAdjacentElement('beforebegin', dropElement);
                 }

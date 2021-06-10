@@ -31,18 +31,12 @@ describe('Authentication flow', () => {
         expect(page.url()).toBe(`${baseURL}/`)
     })
 
-    // it('Test4: Login - check if page changes after successful login', async () => {
-    //     try {
-    //         await page.$eval('#username-input', e => e.value = "e@gmail.com")
-    //         await page.$eval('#password-input', e => e.value = "asd")
-    //         await page.$eval('#signin-button', e => e.click())
-    //         await page.waitForTimeout(1000);
-    //         console.log()
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-
-    //     expect(true).toBe(true)
-    // }, 10000)
+    it('Test4: Login - check if page changes after successful login', async () => {
+        await page.$eval('#username-input', e => e.value = "e@gmail.com")
+        await page.$eval('#password-input', e => e.value = "asd")
+        await page.$eval('#signin-button', e => e.click())
+        await page.waitForTimeout(500);
+        await expect(page.url()).toMatch(/\/daily/)
+    }, 10000)
 })
 
