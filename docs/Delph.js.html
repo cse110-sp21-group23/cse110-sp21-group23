@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Delph.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Delph.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { loadRoute } from './actions'
+import { NavigationBar } from './components/NavigationBar/NavigationBar'
+import { getEmail } from './utils/localStorage'
+import { getToken } from './utils/localStorage'
+import TopNav from './components/topNavBar/topNav'
+/**
+ * Delph Page with configurations to allow routing through the website
+ * @class 
+ * */
+export class Delph {
+
+  constructor(config) {
+    this.routes = config.routes;
+    this.routerOutlet = document.createElement('div')
+    document.body.appendChild(this.routerOutlet)
+    config.store.subscribe(this.render.bind(this));
+    config.store.dispatch(loadRoute({ path: config.path }))
+    this.handleBackButton(config.store)
+  }
+
+  
+  /**
+   * Function which will handle the implementation of the back button
+   * @param  {Object} store
+   */
+  handleBackButton = (store) => {
+    window.onpopstate = (event) => {
+      let content = "";
+      if (event.state) {
+        content = event.state.page;
+        store.dispatch(loadRoute({ path: content, back: true }))
+      }
+    }
+  }
+
+  
+  /**
+   * Function which will render the new page
+   * @param  {Object} previousState
+   * @param  {Object} state
+   */
+  render(previousState, state) {
+    if (previousState.route.path != state.route.path) {
+      if (state.route.path != "" &amp;&amp; getToken() == null) {
+        location.href = ""
+        return;
+      }
+      let page = state.route.path
+      let back = state.route.back
+
+      //load navBar for every page not login
+      if (state.route.path != '') {
+        //creates side navBar and top navBar
+        let main = document.querySelector("main");
+        let topNavBar = document.querySelector("topNavBar")
+        //attaches topNavBar to topNavBar element
+        if (topNavBar.childNodes[0] == null) {
+          let topNav = new TopNav();
+          topNavBar.append(topNav);
+        }
+        if(main.childNodes[0] == null) {
+          //Creates navigation bar and appends it to main
+          let custom = []
+          let navBar = new NavigationBar(custom);
+          main.append(navBar);
+        }
+
+      }
+
+      let route = this.routes.find((route) => route.path === page)
+
+      while (this.routerOutlet.firstChild) {
+        this.routerOutlet.removeChild(this.routerOutlet.firstChild);
+      }
+      if (!back) {
+        history.pushState({ page }, null, `/${page}`);
+      }
+      const c = new route.component;
+      this.routerOutlet.appendChild(new route.component)
+    }
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 var field;
 var date;
+/**
+ * Creates a new Calendar for the Daily View Page
+ * @class 
+ * */
 export default class Calendar extends HTMLElement {
     constructor() {
         super();
