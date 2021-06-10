@@ -138,6 +138,9 @@ export default class WeeklyEntry extends HTMLElement{
             box-shadow: 1px 1px 3px #6a828d;
             transition: 0.5s;
         }
+        .empty { 
+            opacity:.01;
+        }
 
         // li:hover {
         //     background-color: rgba(255,255,255, 0.25);
@@ -206,6 +209,7 @@ export default class WeeklyEntry extends HTMLElement{
         [contenteditable] {
             outline: 2px solid;
         }
+
         /* The Close Button */
         .close {
             color: #aaa;
@@ -362,14 +366,6 @@ export default class WeeklyEntry extends HTMLElement{
             position: relative;
             height: 10px;
             margin-top: 5px
-        }
-        
-        .empty { 
-            opacity: .01;
-            height:100%; 
-            width: 500px;
-            padding-left: -30px; 
-
         }`
         ;
 
