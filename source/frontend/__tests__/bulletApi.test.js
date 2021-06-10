@@ -53,10 +53,7 @@ test('Test3: Edit bullet', async () => {
     }
     const date = new Date("2069-01-04")
     date.setDate(date.getDate() + 1)
-        7,
-        date,
-        header
-    ))
+
     await editBullet(
         {
             "id": (await getBulletsByDay(
