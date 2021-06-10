@@ -174,8 +174,8 @@ export default class EntryCreatorWeek extends HTMLElement{
                     date: null,
                 };
                 //Make it invisible 
-                entryComponent.shadowRoot.querySelector('li').className = "empty";
-                textBox.appendChild(entryComponent); 
+                //entryComponent.shadowRoot.querySelector('li').className = "empty";
+                //textBox.appendChild(entryComponent); 
 
                 return;
             };
@@ -213,7 +213,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = new WeeklyEntry();
+            //let entryComponent = new WeeklyEntry;
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry(); 

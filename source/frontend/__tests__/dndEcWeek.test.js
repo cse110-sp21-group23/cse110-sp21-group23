@@ -45,8 +45,7 @@ const baseURL = 'http://127.0.0.1:5000'
         target.dispatchEvent(event);
     }, source, target); 
 }
-//To run this test, you need exactly one element in the first day and at least one element in the third day
-//You also need day 6 to be empty 
+
 describe('E2E testing for dragging/dropping between different lists', ()=> { 
     beforeAll(async () => {
         await jest.setTimeout(30000)
@@ -76,6 +75,8 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         let dateSplit = await page.evaluate(()=> { 
             let dateTitle = document.querySelector("weekly-page").shadowRoot.querySelector("week-picker").shadowRoot.querySelector("#date").innerHTML; 
             return dateTitle.split(' '); 
+            let dateNew = dateSplit[0] + ' ' + dateSplit[1] + ' ' +  dateSplit[2]; 
+            return dateNew;
         }); 
 
         //Click on next 3 times 
@@ -101,74 +102,26 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         expect(dateAfter).toEqual(currDate); 
     }, 30000); 
 
-    it ('Test3: Drag first element from first day to first element on third day', async()=> { 
+    it ('Test3: Drag first element from first day to second element on third day', async()=> { 
         //Grab first entry content in first day
         let entry1Body = await page.evaluate(() =>{ 
             let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
             return content; 
         }); 
-        //Grab first entry content in third day
+        //Grab second entry content in third day
         let entry2Body = await page.evaluate(()=> { 
-            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
-            return content; 
+            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML; 
         });
 
         //Grab entries to DnD
         let entry1 = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)")`)); 
-        let entry2 = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)")`)); 
+        let entry2 = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(2)")`)); 
         await page.waitForTimeout(2000); 
-
-        //DnD
         dragAndDrop(entry1, entry2); 
         await page.waitForTimeout(1000); 
 
-        //Check everything's alright 
-        let entry1BodyAfter = await page.evaluate(() => { 
-            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML;
-            return content; 
-        }); 
+        
 
-        let entry2BodyAfter = await page.evaluate(()=> { 
-            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML;
-            return content; 
-        }); 
+    }); 
 
-        await page.waitForTimeout(1000);
-        expect(entry1Body).toBe(entry1BodyAfter); 
-        expect(entry2Body).toBe(entry2BodyAfter); 
-    }, 10000); 
-
-    it ('Test4: Move the first entry from 3rd day back into the first day which should only contain the empty entry', async ()=> { 
-        //Grab first entry content in third day
-        let entry1Body = await page.evaluate(()=> { 
-            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
-            return content; 
-        });
-
-         //Grab entries to DnD
-         let entry1 = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)")`));
-         //The empty entry
-         let emptyEntry = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)")`)); 
-         await page.waitForTimeout(2000); 
-
-         //DnD
-         dragAndDrop(entry1, emptyEntry); 
-         await page.waitForTimeout(1000); 
-
-        //Check entry 1 is in the first day 
-        let entry1BodyAfter = await page.evaluate(() => { 
-            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML;
-            return content; 
-        }); 
-        await page.waitForTimeout(1000); 
-        expect(entry1Body).toBe(entry1BodyAfter); 
-
-        //Check list length of day 1 is 1
-        let day1List = await page.evaluate(()=> { 
-            let numChildren = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("#entryContainer").children.length; 
-            return numChildren;
-        }); 
-        await page.waitForTimeout(1000); 
-        expect(day1List).toEqual(1); 
-    }, 10000); 
 })
