@@ -142,11 +142,11 @@ export default class WeeklyEntry extends HTMLElement{
             opacity:.01;
         }
 
-        // li:hover {
-        //     background-color: rgba(255,255,255, 0.25);
-        //     transform: scale(1.05);
-        //     opacity: 1;
-        // }
+        .task:hover, .event:hover, .note:hover{
+            background-color: rgba(255,255,255, 0.25);
+            transform: scale(1.05);
+            opacity: 1;
+        }
 
         li button:hover {
             background-color: #f9f9f8;
