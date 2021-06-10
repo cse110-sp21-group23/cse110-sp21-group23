@@ -74,7 +74,7 @@ export default class WeeklyKanban extends HTMLElement {
             min-height: 30rem;
             padding-top: 2rem;
             margin: 1rem;
-            width:90%;
+            width:87%;
         }
         
         .d4 {
