@@ -53,7 +53,7 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         await page.waitForTimeout(500);
     });
 
-    it('Test1: Login and go to July 7, 1950', async () => {
+    it('Test1: Login', async () => {
         //Login 
         await page.$eval('#username-input', e => e.value = "e@gmail.com")
         await page.$eval('#password-input', e => e.value = "asd")

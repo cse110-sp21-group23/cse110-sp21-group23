@@ -387,7 +387,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 
