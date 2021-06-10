@@ -73,16 +73,16 @@ describe("Date Picker Tests", () => {
     await page.$eval("#signin-button", (e) => e.click());
 
     await page.waitForNavigation();
-    console.log(page.url());
+   
   }, 20000);
 
   it("Test 1: Check if date-picker has correct month-text", async () => {
-
+    await page.waitForTimeout(1000);
     const monthText = await page.evaluate(() => {
       return document
         .querySelector("daily-page")
         .shadowRoot.querySelector("date-picker")
-        .shadowRoot.querySelector(".full-date > h2").innerHTML;
+        .shadowRoot.querySelector("#month-text").innerHTML;
     });
     expect(monthText).toBe(days[dayInd]);
   }, 100000);
