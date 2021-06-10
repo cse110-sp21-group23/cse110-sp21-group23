@@ -381,6 +381,7 @@ export default class WeeklyEntry extends HTMLElement{
                 //Empty cases
                 if (event.target.entry.body == null){ 
                     let otherParent = event.target.parentNode; 
+                    //Remove empty child 
                     otherParent.removeChild(event.target); 
                 }
                 
