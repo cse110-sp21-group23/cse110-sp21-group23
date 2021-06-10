@@ -111,6 +111,7 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         //Grab second entry content in third day
         let entry2Body = await page.evaluate(()=> { 
             let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML; 
+            return content; 
         });
 
         //Grab entries to DnD
@@ -120,6 +121,18 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         dragAndDrop(entry1, entry2); 
         await page.waitForTimeout(1000); 
 
-    }); 
+        //entry1 should be at second index of day 3
+        let entry1BodyAfter = await page.evaluate(() => { 
+            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML; 
+            return content; 
+        }); 
+        //Entry2 should be at 3rd index of day 3
+        let entry2BodyAfter = await page.evaluate(()=> { 
+            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("entry-comp:nth-child(3)").shadowRoot.querySelector("#content").innerHTML;
+            return content; 
+        }); 
 
+        expect(entry1BodyAfter).tobe(entry1Body); 
+        expect(entry2BodyAfter).tobe(entry2Body); 
+    }); 
 })

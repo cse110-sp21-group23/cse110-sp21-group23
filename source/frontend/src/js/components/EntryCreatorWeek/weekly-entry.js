@@ -379,12 +379,12 @@ export default class WeeklyEntry extends HTMLElement{
                 }
 
                 //Empty cases
-                if (event.target.entry.journal_id == null){ 
+                if (event.target.entry.body == null){ 
                     let otherParent = event.target.parentNode; 
                     otherParent.removeChild(event.target); 
                 }
                 
-                //Moving the bulle made the moved from ec empty
+                //Moving the bullet made the moved from ec empty
                 if (parent.children.length == 0){ 
                     //Attach empty entry if no entries 
                     let entryComponent = new WeeklyEntry(); 
