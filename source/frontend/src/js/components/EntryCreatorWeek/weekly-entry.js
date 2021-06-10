@@ -220,9 +220,6 @@ export default class WeeklyEntry extends HTMLElement{
         
         .empty { 
             opacity: .01;
-            height:100%; 
-            width: 500px;
-            padding-left: -30px; 
         }`
         ;
 
@@ -313,7 +310,6 @@ export default class WeeklyEntry extends HTMLElement{
             else{ 
                 dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
             } 
-
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
@@ -322,7 +318,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dragEc.swapIds(dragIndex, dOnIndex);
     
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
 
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
@@ -333,7 +329,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (dOnIndex == ec.idOrder.length - 1){ 
+                if (dOnIndex == dragEc.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Dragged object was below the one it's dropped on
@@ -371,7 +367,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length-1){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 
@@ -379,12 +375,13 @@ export default class WeeklyEntry extends HTMLElement{
                 }
 
                 //Empty cases
-                if (event.target.entry.journal_id == null){ 
+                if (event.target.entry.body == null){ 
                     let otherParent = event.target.parentNode; 
+                    //Remove empty child 
                     otherParent.removeChild(event.target); 
                 }
                 
-                //Moving the bulle made the moved from ec empty
+                //Moving the bullet made the moved from ec empty
                 if (parent.children.length == 0){ 
                     //Attach empty entry if no entries 
                     let entryComponent = new WeeklyEntry(); 

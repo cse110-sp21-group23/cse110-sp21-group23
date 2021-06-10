@@ -217,7 +217,7 @@ export default class EntryCreatorWeek extends HTMLElement{
 
             //empty case 
             let firstchild = textBox.children[0]; 
-            if (firstchild.entry.journal_id == null){ 
+            if (firstchild.entry.body == null){ 
                 firstchild.remove(); 
             }; 
 
@@ -265,7 +265,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             else { 
                 this.idList.splice(index2, 0, dragged); 
             }  
-        }
+        } 
     }
 
     /**
