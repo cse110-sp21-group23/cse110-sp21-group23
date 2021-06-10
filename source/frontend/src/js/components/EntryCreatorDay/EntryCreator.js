@@ -37,6 +37,7 @@ export default class EntryCreator extends HTMLElement {
                         </label> 
                     </div>
                     </li>
+
                     <div class="bottom-div">
                         <!--Where they'll log their stuff-->
                         <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>

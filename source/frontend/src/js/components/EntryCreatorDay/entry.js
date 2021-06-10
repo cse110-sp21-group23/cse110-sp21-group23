@@ -42,11 +42,10 @@ export default class Entry extends HTMLElement{
             <div class="modal-content">
               <div class = "modal-header"> 
                 <span class="close" id = "close">&times;</span>
-                <h4 class = "modal-title"> Edit bullet </h4>
+                <h4 class = "modal-title"> Edit entry</h4>
               </div>
               <form id="edit">
                 <ul>
-                  <input type="text" id="modal-words" placeholder="Your entry">
                   <div id="radioEdit">
                     <input type="radio" name="entryTypeEdit" id="task" value="task">
                         <label for="task">
@@ -61,9 +60,10 @@ export default class Entry extends HTMLElement{
                             <span>note 📝</span> 
                         </label> 
                   </div>
+                  <input type="text" id="modal-words" placeholder="Your entry">
+                  <button id="deleteButton">Delete Entry 🗑</button> 
                   <button id="editButton"> Confirm Edit </button>
-                  <button id="doneButton"> Finish Bullet </button>
-                  <button id="deleteButton">Delete Bullet </button> 
+                  <button id="doneButton"> Mark entry as finished </button>
                 </ul>
               </form>
             </div> 
@@ -89,158 +89,308 @@ export default class Entry extends HTMLElement{
          * This will render the style sheet for daily bullets
          */
        
-        //Add styling for bullet points 
-        style.textContent = 
-        `
-        .bullet-container {
-            border: none;
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 1rem;
-            color: white;
-            text-align: left;
-            padding: 1em;
-            margin: 0.25em;
-        }
-        
-        .content-container { 
-            display: flex;  
-            align-items: center; 
-            justify-content: space-between; 
-        }
-        li {
-            align-item: left;
-            position: relative;
-            list-style-type: none;
-            border-style: solid;
-            border-width: 1pt;
-            border-color: #6a828d;
-            border-radius: 10px;
-            box-shadow: 1px 1px 3px #6a828d;
-            left: 80px;
-            margin: 0.7em;
-            margin-bottom: -0.25em;
-            margin-left: -0.5em;
-            position: relative;
-            background: #transparent;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 1px 1px 3px #6a828d;
-            transition: 0.5s;
-        }
-        li:hover {
-            background-color: rgba(255,255,255, 0.25);
-            transform: scale(1.05);
-            opacity: 1;
-        }
-        li button:hover {
-            background-color: #f9f9f8;
-        }        
-        
-        p { 
-            display: inline; 
-            font-size: 20px;
-            font-family: 'Lato', sans-serif;
-        }
-        img{ 
-            height: 0px; 
-            width: auto; 
-        }
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-        
-        /* Modal Content/Box */
-        .modal-content {
-            border-radius: 40px;
-            background-color: #B3D4DB;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 30px;
-            border: 5px solid #888;
-            width: 75%; /* Could be more or less, depending on screen size */
-            height: 33%;
-        }
-        #modal-words {
-            padding: 10px; 
-            width: 50vw; 
-            box-sizing: border-box; 
-            font-size: 16pt;
-            border-radius: 10px;
-        }
-        [contenteditable] {
-            outline: 2px solid;
-        }
-        /* The Close Button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 50px;
-            font-weight: bold;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        input[type='radio'] {
-            transform: scale(1.4);
-            margin-top: 18px;
-        }
-        
-        #editButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-        }
-        #doneButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-        }
-        
-        #deleteButton { 
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-            float: right
-        }
-        label {
-            font-size: 20px;
-        }
-        .empty { 
-            opacity: .01;
-            height:100%; 
-            width: 500px;
-            padding-left: -30px; 
-        }
-        .modal-title {
-            text-align: center;
-            font-size: 25px;
-            text-decoration: underline;
-            position: relative;
-            height: 10px;
-            margin-top: 5px
-        }`;
+            //Add styling for bullet points 
+            style.textContent = 
+            `
+
+            ul{
+
+            }
+
+            button{
+                width:100%;
+                color:#fff;
+                display:flex;
+                text-shadow: 1px 1px #7A8B8E;
+                font-size: 20px;
+                padding:15px 20px;
+                border-radius:25px;
+                background: rgba(227,231,241,1);
+                margin-top: 5px;
+                margin: 5px;
+                color: #444C57;
+                margin-bottom: 5px;
+                float: left;
+            }
+
+            button:active{
+                background: #93A6B2;
+                color: #444C57;
+                box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+            }
+
+            h4{
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+                margin: auto;
+                font-size: 32px;
+                color: white;
+                text-shadow: 2px 1px #444C57;
+            }
+
+            .bullet-container {
+                border: none;
+                background-color: rgba(255,255,255,0.3);
+                border-radius: 1rem;
+                color: white;
+                text-align: left;
+                padding: 1em;
+                margin: 0.25em;
+            }
+            
+            .content-container { 
+                display: flex;  
+                align-items: center; 
+                justify-content: space-between; 
+            }
+            li {
+                align-item: left;
+                position: relative;
+                list-style-type: none;
+                border-style: solid;
+                border-width: 1pt;
+                border-color: #6a828d;
+                border-radius: 10px;
+                box-shadow: 1px 1px 3px #6a828d;
+                left: 80px;
+                margin: 0.7em;
+                margin-bottom: -0.25em;
+                margin-left: -0.5em;
+                position: relative;
+                background: #transparent;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 1px 1px 3px #6a828d;
+                transition: 0.5s;
+            }
+            li:hover {
+                background-color: rgba(255,255,255, 0.25);
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            li button:hover {
+                background-color: #f9f9f8;
+            }        
+            
+            p { 
+                display: inline; 
+                font-size: 20px;
+                font-family: 'Lato', sans-serif;
+            }
+
+            input{
+                font-family: 'Lato', sans-serif;
+                padding: 10px;
+            }
+
+
+            img{ 
+                height: 0px; 
+                width: auto; 
+            }
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+                border: 1px solid; 
+                border-radius: 20px;
+                border-color: #6a828d;
+                margin-left: auto; 
+                margin-right: auto; 
+                align-items: center; 
+            }
+            
+            /* Modal Content/Box */
+            .modal-content {
+                border-radius: 40px;
+                background-color: rgba(106, 130, 141, 0.95);
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 30px;
+                border: 5px solid #888;
+                width: 75%; /* Could be more or less, depending on screen size */
+                overflow: auto;
+            }
+            #modal-words {
+                margin-top: 15px;
+                margin-bottom: 2rem;
+                padding: 15px; 
+                width: 100%; 
+                box-sizing: border-box; 
+                font-size: 16pt;
+                border-radius: 10px;
+            }
+            [contenteditable] {
+                outline: 2px solid;
+            }
+            /* The Close Button */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 50px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            input[type='radio'] {
+                transform: scale(1.4);
+                margin-top: 18px;
+            }
+            
+            #editButton {
+                width: auto;
+                display:block;
+                text-shadow: 1px 1px #7A8B8E;
+                border:none;
+                padding:15px 20px;
+                border-radius:25px;
+                background:rgba(227,231,241,1);
+                color: #444C57;
+                float: right;
+            }
+            #doneButton {
+                width: auto;
+                color:#fff;
+                display:block;
+                text-shadow: 1px 1px #7A8B8E;
+                border:none;
+                padding:15px 20px;
+                border-radius:25px;
+                background: rgba(227,231,241,1);
+                color: #444C57;
+                float: right;
+            }
+            
+            #deleteButton { 
+                border-radius: 10px;
+                display: block;
+                padding: 10px;
+                width: auto;
+                height: auto;
+                font-size: 24px;
+                float: left;
+                color: #444C57;
+                text-decoration: underline;
+            }
+            label {
+                font-size: 20px;
+            }
+            .empty { 
+                opacity: .01;
+                height:100%; 
+                width: 500px;
+                padding-left: -30px; 
+            }
+
+            /* Basic styles */
+            input[type="checkbox"],
+            input[type="radio"] {
+                position: absolute;
+                opacity: 0;
+                z-index: -1;
+            }
+            label {
+                font-family: 'Lato', sans-serif;
+                color: white;
+                font-weight: 100;
+                position: relative;
+                display: inline-block;
+                padding: 0 0 0 2em;
+                height: 1.5em;
+                line-height: 1.5;
+                cursor: pointer;
+                margin-right: 0.2em;
+            }
+            label::before,
+            label::after {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                width: 1.5em;
+                height: 1.5em;
+            }
     
+            label::before {
+                content: " ";
+                border: 2px solid #bdc3c7;
+                border-radius: 20%;
+            }
+    
+            /* Checkbox */
+            input[type="checkbox"] + label::after {
+                content: "2714";
+                color: #2c3e50;
+                line-height: 1.5;
+                text-align: center;
+            }
+    
+            /* Radio */
+            input[type="radio"] + label::before {
+                border-radius: 50%;
+                background: #4C444C;
+            }
+    
+            input[type=radio] + label::after {
+                content: " ";
+                top: .2em;
+                left: .2em;
+                width: 1em;
+                height: 1em;
+                background: #b3d4db;
+                border: .2em solid #2eb7eb;
+                border-radius: 50%;
+            }
+    
+            /* :checked */
+            input[type="checkbox"]:checked + label::before,
+            input[type="radio"]:checked + label::before {
+                background: #4C444C;
+                border-color: #4C444C;
+            }
+    
+            input[type="checkbox"] + label::after,
+            input[type=radio] + label::after {
+                -webkit-transform: scale(0);
+                -ms-transform: scale(0);
+                -o-transform: scale(0);
+                transform: scale(0);
+            }
+    
+            input[type="checkbox"]:checked + label::after,
+            input[type=radio]:checked + label::after {
+                -webkit-transform: scale(1);
+                -ms-transform: scale(1);
+                -o-transform: scale(1);
+                transform: scale(1);
+            }
+    
+            /* Transition */
+            label::before,
+            label::after {
+                -webkit-transition: .25s all ease;
+                -o-transition: .25s all ease;
+                transition: .25s all ease;
+                
+            .modal-title {
+                text-align: center;
+                font-size: 25px;
+                text-decoration: underline;
+                position: relative;
+                height: 10px;
+                margin-top: 5px
+            }`;
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -277,7 +427,8 @@ export default class Entry extends HTMLElement{
     handleDragStart(event) {
         // Keep track of element we're dragging
         dragSrcEl = event.target;
-        //Make sure you can't drag empty entries 
+        //Make sure you can't drag 
+      entries 
         if (event.target.entry.journal_id == null){ 
             return; 
         }
@@ -447,10 +598,10 @@ export default class Entry extends HTMLElement{
 
             //Makes sure finish bullet button says the right text
             if(bulletChange.is_done == true) {
-                strike.firstChild.nodeValue = "Unfinish Bullet";
+                strike.firstChild.nodeValue = "Unfinish entry";
             }
             else {
-                strike.firstChild.nodeValue = "Finish Bullet";
+                strike.firstChild.nodeValue = "Mark entry as finished";
             }
 
             //shows modal
@@ -507,7 +658,7 @@ export default class Entry extends HTMLElement{
                     strikeT = strikeT.replace("</strike>",'');
 
                     //updates button txt
-                    strike.firstChild.nodeValue = "Finish Bullet";
+                    strike.firstChild.nodeValue = "Mark entry as finished";
 
                     //updates relevant bullet parts
                     bulletChange.isDone = false;
@@ -522,7 +673,7 @@ export default class Entry extends HTMLElement{
                     strikeT = "<strike>" + shadow.getElementById("content").innerHTML + "</strike>";
 
                     //updates button txt
-                    strike.firstChild.nodeValue = "Unfinish Bullet";
+                    strike.firstChild.nodeValue = "Unfinish entry";
 
                     //updates relevant bullet parts
                     bulletChange.body = strikeT;
