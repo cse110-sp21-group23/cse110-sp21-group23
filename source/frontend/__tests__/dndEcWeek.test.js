@@ -75,8 +75,6 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         let dateSplit = await page.evaluate(()=> { 
             let dateTitle = document.querySelector("weekly-page").shadowRoot.querySelector("week-picker").shadowRoot.querySelector("#date").innerHTML; 
             return dateTitle.split(' '); 
-            let dateNew = dateSplit[0] + ' ' + dateSplit[1] + ' ' +  dateSplit[2]; 
-            return dateNew;
         }); 
 
         //Click on next 3 times 

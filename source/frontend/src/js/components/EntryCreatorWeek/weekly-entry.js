@@ -313,7 +313,6 @@ export default class WeeklyEntry extends HTMLElement{
             else{ 
                 dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
             } 
-
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
@@ -322,7 +321,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dragEc.swapIds(dragIndex, dOnIndex);
     
                 //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
+                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
 
                 //Remove the entry we're dragging from textbox UI
                 parent.removeChild(dragSrcEl);
@@ -333,7 +332,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (dOnIndex == ec.idOrder.length - 1){ 
+                if (dOnIndex == dragEc.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
                 //Dragged object was below the one it's dropped on
@@ -371,7 +370,7 @@ export default class WeeklyEntry extends HTMLElement{
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length-1){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 

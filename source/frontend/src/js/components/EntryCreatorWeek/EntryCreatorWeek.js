@@ -172,6 +172,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 };
                 //Make it invisible 
                 entryComponent.shadowRoot.querySelector('li').className = "empty";
+   //             entryComponent.innerHTML = ""; 
                 textBox.appendChild(entryComponent); 
                 return;
             };
@@ -265,7 +266,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             else { 
                 this.idList.splice(index2, 0, dragged); 
             }  
-        }
+        } 
     }
 
     /**
