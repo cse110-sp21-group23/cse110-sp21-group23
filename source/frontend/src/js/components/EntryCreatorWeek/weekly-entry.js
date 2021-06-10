@@ -41,24 +41,30 @@ export default class WeeklyEntry extends HTMLElement{
             <div class="modal-content">
               <div class = "modal-header"> 
                 <span class="close" id = "close">&times;</span>
-                <h4 class = "modal-title"> Edit bullet </h4>
-              </div>
-              <form id="edit">
-                <ul>
-                  <input type="text" id="modal-words" placeholder="Your entry">
-                  <div id="radioEdit">
-                    <input type="radio" name="entryTypeEdit" id="task" value="task">
-                    <label for="task">Task</label>
-                    <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-                    <label for="event">Event </label>
-                    <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-                    <label for="note">Note </label> 
-                  </div>
-                  <button id="editButton"> Confirm Edit </button>
-                  <button id="doneButton"> Finish Bullet </button>
-                  <button id="deleteButton">Delete Bullet </button> 
-                </ul>
-              </form>
+                <h4 class = "modal-title"> Edit entry</h4>
+                </div>
+                <form id="edit">
+                  <ul>
+                    <div id="radioEdit">
+                      <input type="radio" name="entryTypeEdit" id="task" value="task">
+                          <label for="task">
+                              <span>task 📌</span>
+                          </label>
+                      <input type="radio" name="entryTypeEdit" id="event" value="event"> 
+                          <label for="event">
+                              <span>event 🥳</span>
+                          </label>
+                      <input type="radio" name="entryTypeEdit" id="note" value="note"> 
+                          <label for="note">                          
+                              <span>note 📝</span> 
+                          </label> 
+                    </div>
+                    <input type="text" id="modal-words" placeholder="Your entry">
+                    <button id="deleteButton">Delete Entry 🗑</button> 
+                    <button id="editButton"> Confirm Edit </button>
+                    <button id="doneButton"> Mark entry as finished </button>
+                  </ul>
+                </form>
             </div> 
           </div>
               
@@ -69,7 +75,22 @@ export default class WeeklyEntry extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = 
         `
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+        button{
+            width:100%;
+            color:#fff;
+            display:flex;
+            text-shadow: 1px 1px #7A8B8E;
+            font-size: 20px;
+            padding:15px 20px;
+            border-radius:25px;
+            background: rgba(227,231,241,1);
+            margin-top: 5px;
+            margin: 5px;
+            color: #444C57;
+            margin-bottom: 5px;
+            float: left;
+        }
+
         .bullet-container {
             border: none;
             background-color: rgba(255,255,255,0.3);
@@ -78,6 +99,19 @@ export default class WeeklyEntry extends HTMLElement{
             text-align: left;
             padding: 0.1em;
             margin: 0.1em;
+        }
+        button:active{
+            background: #93A6B2;
+            color: #444C57;
+            box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+        }
+        h4{
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            margin: auto;
+            font-size: 32px;
+            color: white;
+            text-shadow: 2px 1px #444C57;
         }
         
         .content-container { 
@@ -126,6 +160,11 @@ export default class WeeklyEntry extends HTMLElement{
             width: auto; 
         }
 
+        input{
+            font-family: 'Lato', sans-serif;
+            padding: 10px;
+        }
+
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -137,21 +176,29 @@ export default class WeeklyEntry extends HTMLElement{
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            border: 1px solid; 
+            border-radius: 20px;
+            border-color: #6a828d;
+            margin-left: auto; 
+            margin-right: auto; 
+            align-items: center; 
         }
         
         /* Modal Content/Box */
         .modal-content {
             border-radius: 40px;
-            background-color: #C9CBB3;
+            background-color: rgba(106, 130, 141, 0.95);
             margin: 15% auto; /* 15% from the top and centered */
             padding: 30px;
             border: 5px solid #888;
             width: 75%; /* Could be more or less, depending on screen size */
-            height: 33%;
+            overflow: auto;
         }
         #modal-words {
-            padding: 10px; 
-            width: 50vw; 
+            margin-top: 15px;
+            margin-bottom: 2rem;
+            padding: 15px; 
+            width: 100%; 
             box-sizing: border-box; 
             font-size: 16pt;
             border-radius: 10px;
@@ -179,35 +226,134 @@ export default class WeeklyEntry extends HTMLElement{
         }
         
         #editButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
+            width: auto;
+            display:block;
+            text-shadow: 1px 1px #7A8B8E;
+            border:none;
+            padding:15px 20px;
+            border-radius:25px;
+            background:rgba(227,231,241,1);
+            color: #444C57;
+            float: right;
         }
         #doneButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
+            width: auto;
+            color:#fff;
+            display:block;
+            text-shadow: 1px 1px #7A8B8E;
+            border:none;
+            padding:15px 20px;
+            border-radius:25px;
+            background: rgba(227,231,241,1);
+            color: #444C57;
+            float: right;
         }
         
         #deleteButton { 
             border-radius: 10px;
-            margin-top:20px;
+            display: block;
             padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-            float: right
+            width: auto;
+            height: auto;
+            font-size: 24px;
+            float: left;
+            color: #444C57;
+            text-decoration: underline;
         }
 
         label {
             font-size: 20px;
         }
+
+        /* Basic styles */
+        input[type="checkbox"],
+        input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+        }
+        label {
+            font-family: 'Lato', sans-serif;
+            color: white;
+            font-weight: 100;
+            position: relative;
+            display: inline-block;
+            padding: 0 0 0 2em;
+            height: 1.5em;
+            line-height: 1.5;
+            cursor: pointer;
+            margin-right: 0.2em;
+        }
+        label::before,
+        label::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        label::before {
+            content: " ";
+            border: 2px solid #bdc3c7;
+            border-radius: 20%;
+        }
+
+        /* Checkbox */
+        input[type="checkbox"] + label::after {
+            content: "2714";
+            color: #2c3e50;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Radio */
+        input[type="radio"] + label::before {
+            border-radius: 50%;
+            background: #4C444C;
+        }
+
+        input[type=radio] + label::after {
+            content: " ";
+            top: .2em;
+            left: .2em;
+            width: 1em;
+            height: 1em;
+            background: #b3d4db;
+            border: .2em solid #2eb7eb;
+            border-radius: 50%;
+        }
+    
+        /* :checked */
+        input[type="checkbox"]:checked + label::before,
+        input[type="radio"]:checked + label::before {
+            background: #4C444C;
+            border-color: #4C444C;
+        }
+
+        input[type="checkbox"] + label::after,
+        input[type=radio] + label::after {
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            -o-transform: scale(0);
+            transform: scale(0);
+        }
+
+        input[type="checkbox"]:checked + label::after,
+        input[type=radio]:checked + label::after {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            -o-transform: scale(1);
+            transform: scale(1);
+        }
+
+        /* Transition */
+        label::before,
+        label::after {
+            -webkit-transition: .25s all ease;
+            -o-transition: .25s all ease;
+            transition: .25s all ease;
 
         .modal-title {
             text-align: center;
@@ -220,6 +366,10 @@ export default class WeeklyEntry extends HTMLElement{
         
         .empty { 
             opacity: .01;
+            height:100%; 
+            width: 500px;
+            padding-left: -30px; 
+
         }`
         ;
 
