@@ -2,7 +2,6 @@ import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
 import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
 import Entry from "./entry";
-import EntryComponent from './entry'
 
 /**
  * Creates a new Entry Creator Component for the Daily View Page
@@ -38,7 +37,7 @@ export default class EntryCreator extends HTMLElement {
                         </label> 
                     </div>
                     </li>
-                    
+
                     <div class="bottom-div">
                         <!--Where they'll log their stuff-->
                         <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
@@ -349,10 +348,9 @@ export default class EntryCreator extends HTMLElement {
      * the id array 
      * @param {Object} dragged - First bullet to be bped
      * @param {Object} droppedOn - Second bullet to be swapped
-     * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 
      */
-    swapIds(index1, index2, direction) {
+    swapIds(index1, index2) {
         //Remove dragged element 
         let dragged = this.idList[index1];
         this.idList.splice(index1, 1);

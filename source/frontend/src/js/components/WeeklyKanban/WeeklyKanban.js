@@ -52,6 +52,10 @@ export default class WeeklyKanban extends HTMLElement {
                         <p class="title">Sun</p>
                         <div class="column-content"></div>
                     </div>
+                    <div class="day monday">
+                        <p class="title">Mon</p>
+                        <div class="column-content"></div>
+                    </div>
                 </div>
             </div>
         </div>`;

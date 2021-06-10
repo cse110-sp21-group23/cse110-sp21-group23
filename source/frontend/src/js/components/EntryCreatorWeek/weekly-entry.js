@@ -369,6 +369,7 @@ export default class WeeklyEntry extends HTMLElement{
             height:100%; 
             width: 500px;
             padding-left: -30px; 
+
         }`
         ;
 

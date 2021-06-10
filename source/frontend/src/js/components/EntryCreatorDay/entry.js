@@ -1,5 +1,5 @@
 
-import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
+import {updateSorting, deleteBullet, editBullet, getBulletsByDay} from "../../api/journal"
 import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
@@ -72,7 +72,18 @@ export default class Entry extends HTMLElement{
           </ul>
         </div>`
 
-        let style = document.createElement('style');
+        //Add styling for bullet points 
+        let style = document.createElement('style'); 
+        style.textContent =`
+        .bullet-container {
+            border: none;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 1rem;
+            color: white;
+            text-align: left;
+            padding: 0.5em;
+            margin: 0.25em;
+        }`
         
          /**
          * This will render the style sheet for daily bullets
@@ -380,7 +391,6 @@ export default class Entry extends HTMLElement{
                 height: 10px;
                 margin-top: 5px
             }`;
-    
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -396,30 +406,15 @@ export default class Entry extends HTMLElement{
     set entry(entry){ 
         this.internalEntry = entry; 
         let shadow = this.shadowRoot; 
-        let entryImage = this.shadowRoot.querySelector(".entry-image");
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
-        const symbol = entry.type == "task" ? "📌" : entry.type == "event" ? "🥳" : "📝"
+        const symbol = entry.type == "task" ? "☐" : entry.type == "event" ? "○" : "\u2022"
         shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
-
-        
-        //Set necesary image content if the src isn't null
-        if (entry.image != undefined) { 
-            entryImage.setAttribute("src", entry.image.src); 
-            entryImage.setAttribute("alt", entry.image.alt); 
-        }
-        //Set audio if applicable
-        if (entry.audio != undefined){ 
-            let entryAudio = shadow.querySelector(".entry-audio"); 
-            entryAudio.setAttribute("src", entry.audio);
-            entryAudio.setAttribute("controls", true);
-        }
     }
 
-    
     /**
      * Function which will return the entry property of Entry
      * @returns The entry property of Entry
@@ -432,11 +427,11 @@ export default class Entry extends HTMLElement{
     handleDragStart(event) {
         // Keep track of element we're dragging
         dragSrcEl = event.target;
-        //Make sure you can't drag empty entries 
+        //Make sure you can't drag 
+      entries 
         if (event.target.entry.journal_id == null){ 
             return; 
         }
-
         event.target.classList.add('dragElem'); 
     }
 
@@ -458,126 +453,51 @@ export default class Entry extends HTMLElement{
     }
 
     handleDrop(event) {
-        //event.target is the node that is being dropped on
         if (event.stopPropagation) {
             event.stopPropagation(); // Stops some browsers from redirecting.
         }
 
-        //Get containers
-        let dragEc = dragSrcEl.getRootNode().host;
-        let draggedOnEc = event.target.getRootNode().host; 
+        //Get container
+        let ec = dragSrcEl.getRootNode().host;
+       // let draggedOnEc = event.target.getRootNode().host; 
 
         // Don't do anything if dropping the same column we're dragging.
         if (!(dragSrcEl.isSameNode(event.target))) {
-            let parent; 
+            let parent = event.target.parentNode;
 
             //Get indices of dragged and dropped on entries 
-            let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dragIndex = ec.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
             let dOnIndex; 
 
             //Case of dragging on empty 
-
-            console.log(event.target.entry.journalId); 
-            console.log(event.target.entry.journal_id); 
             if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
             //Case of dragging on non empty entry 
             else{ 
-                dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
+                dOnIndex = ec.idOrder.findIndex((element) => element == event.target.entry.id);
             }
 
-            //Set direction
-            console.log("DonIndex: " + dOnIndex); 
-            let up2Down = dragIndex < dOnIndex;   
+            //Swap positions of elements in id lists
+            ec.swapIds(dragIndex, dOnIndex);
 
-            //If they have the same shadowroot
-            if (dragEc.isSameNode(draggedOnEc)) { 
-                parent = event.target.parentNode;
+            //Update sorting in backend 
+            updateSorting(getJournal(), new Date(getDate()), ec.idOrder, getHeader());
 
-                console.log(dragEc.idOrder); 
-                //Swap positions of elements in id lists
-                dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+            //Remove the entry we're dragging from textbox UI
+            parent.removeChild(dragSrcEl);
 
-                //Update sorting in backend 
-                updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
+            //Recreate the dropped element 
+            let dropElement = document.createElement('entry-comp');
+            dropElement.entry = dragSrcEl.entry; 
 
-                //Remove the entry we're dragging from textbox UI
-                parent.removeChild(dragSrcEl);
-
-                //Recreate the element with stored data in DataTransfer object in UI
-                let dropElement = new Entry(); 
-                let entry = dragSrcEl.entry; 
-
-                dropElement.entry = entry; 
-
-                //Dragged object was above the one it's dropped on
-                if (dOnIndex == dragEc.idOrder.length - 1) { 
-                    event.target.insertAdjacentElement('afterend', dropElement);
-                }
-                //Always insert on top
-                else {
-                    event.target.insertAdjacentElement('beforebegin', dropElement);
-                }
+            //Case where you drag to last position 
+            if (dOnIndex == ec.idOrder.length - 1){ 
+                event.target.insertAdjacentElement('afterend', dropElement);
             }
-            //Don't have the same shadow root
-            else { 
-                parent = dragSrcEl.parentNode;
-
-                //Set date on dragSrcEl to date it was dragged to in server
-                let movedBullet = dragSrcEl.entry; 
-                movedBullet.date = draggedOnEc.date;  
-
-                //Update bullet date in server
-                editBullet(movedBullet, getHeader()).then(
-                );
-
-                //Remove draggedB from its ec id list
-                dragEc.idOrder.splice(dragIndex, 1)
-
-                //Insert draggedB into draggedOn's ec id list 
-                draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
-                
-                //Update sorting in backend 
-                updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
-                updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder, getHeader());
-
-                //UI visuals   
-                parent.removeChild(dragSrcEl);            
-                //Recreate the element with stored data in DataTransfer object
-                let dropElement = new Entry(); 
-                let entry = dragSrcEl.entry; 
-                dropElement.entry = entry; 
-    
-                //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
-                    event.target.insertAdjacentElement('afterend', dropElement); 
-                }
-                else{ 
-                    event.target.insertAdjacentElement('beforebegin', dropElement); 
-                }
-                //Empty cases
-                if (event.target.entry.journal_id == null){ 
-                    let otherParent = event.target.parentNode; 
-                    otherParent.removeChild(event.target); 
-                }
-                //Moving the bulle made the moved from ec empty
-                if (parent.children.length == 0){ 
-                    //Attach empty entry if no entries 
-                    let entryComponent = new Entry(); 
-                    entryComponent.entry = { 
-                        journal_id: null,
-                        body: null,
-                        type: null,
-                        priority: 1,
-                        mood: 1,
-                        date: null,
-                    };
-                    //Make it invisible 
-                    let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
-                    entryComponent.shadowRoot.querySelector('li').className = "empty";
-                    textBox.appendChild(entryComponent); 
-                }
+            //Always insert on top
+            else {
+                event.target.insertAdjacentElement('beforebegin', dropElement);
             }
         }
         event.target.classList.remove('over');
@@ -700,6 +620,7 @@ export default class Entry extends HTMLElement{
                 //looks for the bullet type
                 for (const choice of choices) { 
                     if (choice.checked){ 
+                        console.log("choice = " + choice.value);
                         entry.className = choice.value;
                         choice.checked = false;
                         bulletChange.type = choice.value;
@@ -708,12 +629,12 @@ export default class Entry extends HTMLElement{
                 //used to change onscreen bullet type since the above only changes backend
                 let symbol = "";
                 if(symbol == "") {
-                    symbol = entry.className == "task" ? "📌" : entry.className == "event" ? "🥳" : "📝"
+                    symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
                 }
                 shadow.getElementById("symbol").textContent = symbol;
                 
                 //edits bullet in the backend and closes modal
-                await editBullet(bulletChange, getHeader());
+                await editBullet(bulletChange);
                 modal.style.display = "none";
             }; //end edit bullet method
             
@@ -764,7 +685,7 @@ export default class Entry extends HTMLElement{
 
                 //closes modal and updates bullet
                 modal.style.display = "none";
-                await editBullet(bulletChange, getHeader());
+                await editBullet(bulletChange);
             };    //end strikethrough function
 
             //Delete listener 
@@ -776,39 +697,15 @@ export default class Entry extends HTMLElement{
                 deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
                     //Update ec id list 
+
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
-                    
-                    let date; 
-                    //daily 
-                    if (ec.currDate == undefined){ 
-                        date = getDate(); 
-                    }
-                    //weekly
-                    else { 
-                        date = ec.currDate; 
-                    }
+                    let date = ec.date; 
+
                     //Update list in backend
                     updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
+                    //Remove
                     this.remove(); 
-
-                    //Empty funcionality 
-                    if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
-                        //Attach empty entry if no entries 
-                        let entryComponent = new Entry(); 
-                        entryComponent.entry = { 
-                            journal_id: null,
-                            body: null,
-                            type: null,
-                            priority: 1,
-                            mood: 1,
-                            date: null,
-                        };
-                        //Make it invisible 
-                        let textBox =  ec.shadowRoot.querySelector("#entryContainer");
-                        entryComponent.shadowRoot.querySelector('li').className = "empty";
-                        textBox.appendChild(entryComponent); 
-                    }
                 }); 
             });
 
