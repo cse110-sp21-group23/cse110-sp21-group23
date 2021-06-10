@@ -37,7 +37,7 @@ The full design documentation of our Bullet Journal Application is under **/spec
   - [Review](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/meetings/051821-sprint-1-review.md)
 - Sprint 2
   - [Retrospective](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/meetings/053021-retrospective.png)
-  - [Review]
+  - [Review](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/meetings/053021-sprint-2-review.md.pdf)
 
 ## Admins
 - The signed contract is included [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/admin/misc)
@@ -47,11 +47,11 @@ The full design documentation of our Bullet Journal Application is under **/spec
 - Our Team 23andMe Kanban board [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1)
 
 ## Source 
-[\source](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source) folder includes all source code and test code of Bullet Journal Application.\
-We separate the code in three part, css code in \css folder, java script code in \js folder, and the index.html is in the root of \source.
+The **[/source](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source)** folder includes all source code and test code of Bullet Journal Application.\
+We split our code into two, with the [frontend folder](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend)being about the frontend and holds all our different webcomponents while the [server folder](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/server) is the backend, where our server is held.
 
 ## Testing
-We mainly focus on the unit tests, and have some cypress test for the part that we cannot use unit test to test. We spent a lot of time on how to run both unit test and cypress test together and have an integrated test coverage, but it does not allow us to do it, so we have separated test coverages.
+We mainly focus on the unit tests, and have some cypress test for the part that we cannot use unit test to test. We spent a lot of time on how to run both unit test and Puppeteer test together and have an integrated test coverage, but it does not allow us to do it, so we have separated test coverages.
 - Unit test (Jest)
   - TODO  
    [TODO]()
@@ -70,7 +70,7 @@ We mainly focus on the unit tests, and have some cypress test for the part that 
    - You will now have your own local copy of our project and you can start working on it!
 ## Building the App
 1. Install the required npm modules
-   - In your terminal, type `npm init -y`. This will install the necessary things to build our app
+   - In your terminal, type `npm init`. This will install the necessary things to build our app
 ## Deploy the App
 1. Use `npm run dev` to deploy the app
    - In your terminal, navigate to the frontend folder (`cse110-sp21-group23/source/frontend`)
