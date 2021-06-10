@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/pages/weeklyPage.js</title>
+    <title>JSDoc: Source: components/pages/dailyPage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/pages/weeklyPage.js</h1>
+    <h1 class="page-title">Source: components/pages/dailyPage.js</h1>
 
     
 
@@ -26,37 +26,55 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import WeeklyKanban from '../WeeklyKanban/WeeklyKanban'
-import WeekPicker from '../WeekPicker'
+            <pre class="prettyprint source linenums"><code>import { getJournals } from '../../api/journal'
+import { getDate, getJournal, setJournal } from '../../utils/localStorage'
+import getHeader from '../../utils/header'
+import EntryCreator from '../EntryCreatorDay/EntryCreator'
+import DatePicker from '../DatePicker'
 
 /**
- * Creates a new weekly view page and renders it
+ * Creates a new daily page and renders it
  * @class 
  * */
-export class WeeklyPage extends HTMLElement {
+export class DailyPage extends HTMLElement {
     connectedCallback() {
         this.render();
     }
-
     render() {
+
 
         const template = document.createElement("template");
         this.attachShadow({ mode: 'open' });
 
         template.innerHTML = `
-            &lt;week-picker>&lt;/week-picker>
-            &lt;div id="weekly-kanban-div"> &lt;/div>
+            &lt;body>
+                &lt;div id="datePickerDiv">&lt;/div>
+                &lt;div id="entryCreatorDiv"> &lt;/div>
+            &lt;/body>
         `;
 
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        // Attach weekly kanban to template div 
-        const weeklyKanban = new WeeklyKanban()
-        this.shadowRoot.querySelector("#weekly-kanban-div").append(weeklyKanban);
+        //Attach entry creator and datepicker to template div 
+        const ec = new EntryCreator()
+        const dp = new DatePicker()
+
+        getJournals(getHeader()).then((value) => {
+            setJournal(value[0].id);
+
+            this.shadowRoot.querySelector('#datePickerDiv').append(dp);
+            this.shadowRoot.querySelector('#entryCreatorDiv').append(ec);
+    
+            // Listen to Date changes from date picker
+            document.addEventListener('dateChange', e => {
+                ec.renderBullets(getDate());
+            })
+        });
     }
 }
 
-customElements.define("weekly-page", WeeklyPage);</code></pre>
+customElements.define("daily-page", DailyPage);
+</code></pre>
         </article>
     </section>
 

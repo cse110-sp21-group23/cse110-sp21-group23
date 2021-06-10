@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/pages/weeklyPage.js</title>
+    <title>JSDoc: Class: DailyPage</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,48 +17,137 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/pages/weeklyPage.js</h1>
+    <h1 class="page-title">Class: DailyPage</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import WeeklyKanban from '../WeeklyKanban/WeeklyKanban'
-import WeekPicker from '../WeekPicker'
+        <h2><span class="attribs"><span class="type-signature"></span></span>DailyPage<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Creates a new daily page and renders it</div>
+        
+    
+</header>
 
-/**
- * Creates a new weekly view page and renders it
- * @class 
- * */
-export class WeeklyPage extends HTMLElement {
-    connectedCallback() {
-        this.render();
-    }
+<article>
+    <div class="container-overview">
+    
+        
 
-    render() {
+    
+    <h2>Constructor</h2>
+    
 
-        const template = document.createElement("template");
-        this.attachShadow({ mode: 'open' });
+    
+    <h4 class="name" id="DailyPage"><span class="type-signature"></span>new DailyPage<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
-        template.innerHTML = `
-            &lt;week-picker>&lt;/week-picker>
-            &lt;div id="weekly-kanban-div"> &lt;/div>
-        `;
+    
 
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        // Attach weekly kanban to template div 
-        const weeklyKanban = new WeeklyKanban()
-        this.shadowRoot.querySelector("#weekly-kanban-div").append(weeklyKanban);
-    }
-}
 
-customElements.define("weekly-page", WeeklyPage);</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_pages_dailyPage.js.html">components/pages/dailyPage.js</a>, <a href="components_pages_dailyPage.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
