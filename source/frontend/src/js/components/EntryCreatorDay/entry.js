@@ -49,17 +49,17 @@ export default class Entry extends HTMLElement{
                   <input type="text" id="modal-words" placeholder="Your entry">
                   <div id="radioEdit">
                     <input type="radio" name="entryTypeEdit" id="task" value="task">
-                    <label for="task">
-                    <span>task 📌</span>
-                    </label>
+                        <label for="task">
+                            <span>task 📌</span>
+                        </label>
                     <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-                    <label for="event">
-                    <span>event 🥳</span>
-                    </label>
+                        <label for="event">
+                            <span>event 🥳</span>
+                        </label>
                     <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-                    <label for="note">                          
-                        <span>note 📝</span> 
-                    </label> 
+                        <label for="note">                          
+                            <span>note 📝</span> 
+                        </label> 
                   </div>
                   <button id="editButton"> Confirm Edit </button>
                   <button id="doneButton"> Finish Bullet </button>
@@ -116,13 +116,11 @@ export default class Entry extends HTMLElement{
                 box-shadow: 1px 1px 3px #6a828d;
                 transition: 0.5s;
             }
-
             li:hover {
                 background-color: rgba(255,255,255, 0.25);
                 transform: scale(1.05);
                 opacity: 1;
             }
-
             li button:hover {
                 background-color: #f9f9f8;
             }        
@@ -132,12 +130,10 @@ export default class Entry extends HTMLElement{
                 font-size: 20px;
                 font-family: 'Lato', sans-serif;
             }
-
             img{ 
                 height: 0px; 
                 width: auto; 
             }
-
             .modal {
                 display: none; /* Hidden by default */
                 position: fixed; /* Stay in place */
@@ -216,18 +212,15 @@ export default class Entry extends HTMLElement{
                 font-size: 18px;
                 float: right
             }
-
             label {
                 font-size: 20px;
             }
-
             .empty { 
                 opacity: .01;
                 height:100%; 
                 width: 500px;
                 padding-left: -30px; 
             }
-
             .modal-title {
                 text-align: center;
                 font-size: 25px;
@@ -286,18 +279,12 @@ export default class Entry extends HTMLElement{
 
     //DnD stuff 
     handleDragStart(event) {
-
         // Keep track of element we're dragging
         dragSrcEl = event.target;
         //Make sure you can't drag empty entries 
         if (event.target.entry.journal_id == null){ 
             return; 
         }
-
-       // event.dataTransfer.effectAllowed = 'move';
-
-        //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-       // event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
 
         event.target.classList.add('dragElem'); 
     }
@@ -307,8 +294,6 @@ export default class Entry extends HTMLElement{
             event.preventDefault(); // Necessary. Allows us to drop.
         }
         event.target.classList.add('over');
-      
-     //   event.dataTransfer.dropEffect = 'move';  
       
         return false;
     }
@@ -337,9 +322,12 @@ export default class Entry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
+            let dOnIndex; 
 
             //Case of dragging on empty 
-            let dOnIndex; 
+
+            console.log(event.target.entry.journalId); 
+            console.log(event.target.entry.journal_id); 
             if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
@@ -349,15 +337,16 @@ export default class Entry extends HTMLElement{
             }
 
             //Set direction
+            console.log("DonIndex: " + dOnIndex); 
             let up2Down = dragIndex < dOnIndex;   
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
+                console.log(dragEc.idOrder); 
                 //Swap positions of elements in id lists
                 dragEc.swapIds(dragIndex, dOnIndex, up2Down);
-    
 
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
@@ -366,18 +355,16 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
-
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry(); 
                 let entry = dragSrcEl.entry; 
-                //JSON.parse(event.dataTransfer.getData('text/plain'));
 
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
-                if (up2Down){ 
+                if (dOnIndex == dragEc.idOrder.length - 1) { 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
-                //Dragged object was below the one it's dropped on
+                //Always insert on top
                 else {
                     event.target.insertAdjacentElement('beforebegin', dropElement);
                 }
@@ -407,10 +394,8 @@ export default class Entry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry(); 
                 let entry = dragSrcEl.entry; 
-                //JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
