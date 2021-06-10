@@ -105,8 +105,13 @@ export class LoginPage extends HTMLElement {
         .login-form .group{
             margin-bottom:15px;
         }
+        .login-form .group .input{
+            width:100%;
+            color:#000;
+            display:block;
+        }
+
         .login-form .group .label,
-        .login-form .group .input,
         .login-form .group .button{
             width:100%;
             color:#fff;
