@@ -365,11 +365,7 @@ export default class WeeklyEntry extends HTMLElement{
         }
         
         .empty { 
-            opacity: .01;
-            height:100%; 
-            width: 500px;
-            padding-left: -30px; 
-
+            opacity:.01;
         }`
         ;
 

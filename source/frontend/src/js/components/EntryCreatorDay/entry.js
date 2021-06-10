@@ -428,7 +428,6 @@ export default class Entry extends HTMLElement{
         // Keep track of element we're dragging
         dragSrcEl = event.target;
         //Make sure you can't drag 
-      entries 
         if (event.target.entry.journal_id == null){ 
             return; 
         }
