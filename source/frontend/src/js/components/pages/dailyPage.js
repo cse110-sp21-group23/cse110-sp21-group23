@@ -3,6 +3,11 @@ import { getDate, getJournal, setJournal } from '../../utils/localStorage'
 import getHeader from '../../utils/header'
 import EntryCreator from '../EntryCreatorDay/EntryCreator'
 import DatePicker from '../DatePicker'
+
+/**
+ * Creates a new daily page and renders it
+ * @class 
+ * */
 export class DailyPage extends HTMLElement {
     connectedCallback() {
         this.render();

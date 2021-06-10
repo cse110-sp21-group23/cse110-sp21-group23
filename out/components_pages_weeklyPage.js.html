@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: components/pages/weeklyPage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,48 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: components/pages/weeklyPage.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import WeeklyKanban from '../WeeklyKanban/WeeklyKanban'
+import WeekPicker from '../WeekPicker'
 
+/**
+ * Creates a new weekly view page and renders it
+ * @class 
+ * */
+export class WeeklyPage extends HTMLElement {
+    connectedCallback() {
+        this.render();
+    }
 
-    <h3> </h3>
+    render() {
 
+        const template = document.createElement("template");
+        this.attachShadow({ mode: 'open' });
 
+        template.innerHTML = `
+            &lt;week-picker>&lt;/week-picker>
+            &lt;div id="weekly-kanban-div"> &lt;/div>
+        `;
 
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        // Attach weekly kanban to template div 
+        const weeklyKanban = new WeeklyKanban()
+        this.shadowRoot.querySelector("#weekly-kanban-div").append(weeklyKanban);
+    }
+}
 
-
-
-
-
-
-    
-
-
-
-
-
+customElements.define("weekly-page", WeeklyPage);</code></pre>
+        </article>
+    </section>
 
 
 

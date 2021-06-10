@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: utils/header.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,32 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: utils/header.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { getToken } from './localStorage'
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Updates the order at which the bullets will be returned 
+ * @returns   {String} - header of requests
+ */
+export default function getHeader() {
+    const token = getToken()
+    return {
+        headers: {
+            Authorization: token,
+            'Content-Type': 'application/json'
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 

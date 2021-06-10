@@ -4,7 +4,10 @@ import getHeader from "../../utils/header";
 
 //Hold the dragged element
 var dragSrcEl = null; 
-
+/**
+ * Creates a new Weekly Entry Component for the Weekly Page lists for each day
+ * @class 
+ * */
 export default class WeeklyEntry extends HTMLElement{ 
 
     //Make the entry-comp element draggable when appended to DOM 

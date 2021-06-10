@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/topNavBar/topNav.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/topNavBar/topNav.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { getEmail } from '../../utils/localStorage'
+/**
+ * Creates a new Top Header Navgation Bar and renders it to display on every page
+ * @class 
+ * */
+export default class TopNav extends HTMLElement {
+    constructor() {
+
+        super();
+
+        this.attachShadow({ mode: 'open' })
+
+        const template = document.createElement('template');
+
+		template.innerHTML = `
+		&lt;script src="/source/frontend/src/js/components/topNavBar/topNav.js">&lt;/script>
+		
+		&lt;header class="header">
+		
+			&lt;h1 class="logo">&lt;a href="/daily">&lt;span style="color: #6d766c">23&lt;/span>&lt;span style="color: #444c57">And&lt;/span>&lt;span style="color: #846c67">Me&lt;/span>&lt;/a>&lt;/h1>
+
+			&lt;button class="email-button" id="email">&lt;/button>
+			
+		&lt;/header>
+		
+		&lt;script src="/source/frontend/src/js/components/topNavBar/topNav.js">&lt;/script>
+        `
+        let style = document.createElement('style');
+
+		style.textContent = `
+		@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&amp;display=swap');
+		* {
+			box-sizing: border-box;
+		}
+
+		span{
+			font-family: 'Rock Salt', cursive;
+			font-weight: 400;
+		}
+
+		h2,
+		h3,
+		a {
+			color: #444C57;
+			text-decoration: none;
+			font-family: 'Lato', sans-serif;
+		}
+
+		.logo {
+			margin: 0;
+			font-size: 32px;
+		}
+		
+		.logo a {
+			padding: 25px;
+			text-align: center;
+			display: block;
+			font-family: 'Lato', sans-serif;
+			font-weight: 400;
+		}
+
+		button{
+			appearance: none;
+			border-radius: 0.6em;
+			color: #000;
+			cursor: pointer;
+			display: flex;
+			align-self: center;
+			font-size: 20px;
+			font-weight: 400;
+			line-height: 1;
+			margin: 0px;
+			padding: 1.0em 1.0em;
+			text-decoration: none;
+			text-align: center;
+			font-family: 'Lato', sans-serif;
+		}
+
+		.email-button{
+			border-radius: 3em;
+			background-color: transparent;
+			border-color: transparent;
+			color: #444C57;
+		}
+		
+		.header {
+			position: fixed;
+			left:-8px;
+			right:-8px;
+			top: -5px;
+			z-index: 1;
+			height: 55px;
+			min-width:100vw;
+			background-color: #B3D4DB;
+			-webkit-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+			-moz-box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+			box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
+			-webkit-border-radius: 0px;
+			-moz-border-radius: 0px;
+			border-radius: 0px;
+		}
+			
+		@media (min-width: 769px) {
+			.header,
+			.main-nav {
+				display: flex;
+			}
+			.header {
+				flex-direction: column;
+				align-items: center;
+				.header{
+				width: 80%;
+				margin: 0 auto;
+				max-width: 1150px;
+			}
+			}
+		
+		}
+		
+		@media (min-width: 1025px) {
+			.header {
+				flex-direction: row;
+				justify-content: space-between;
+			}
+		
+		}
+        `
+
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+		this.shadowRoot.appendChild(style);
+		/**
+		 * Adds email information to the signout button on the right
+		 * Also adds an event listener to that button with function indicated below
+		 * Not yet implemented
+		 * */
+		let emailButton = this.shadowRoot.getElementById('email');
+		if (emailButton) {
+			emailButton.innerHTML = getEmail();
+			emailButton.addEventListener('click', emailButtonFunction());
+		}
+		
+    }
+}
+
+// document.getElementById('email').innerHTML = getEmail();
+
+ /**
+ * Function that triggers when Email button is clicked
+ * probably log out function of some sort
+ */
+function emailButtonFunction() {
+
+}
+
+window.customElements.define('top-navbar', TopNav);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 19:53:19 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/WeeklyKanban/WeeklyKanban.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/WeeklyKanban/WeeklyKanban.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import EntryCreatorWeek from "../EntryCreatorWeek/EntryCreatorWeek"
+import WeekPicker from "../WeekPicker"
+
+/**
+ * Creates a new Weekly Kanban View container to display days in
+ * @class 
+ * */
+export default class WeeklyKanban extends HTMLElement {
+    //Array of all entry-creator-day's in the component's days 
+    ecArray = [];
+    //Array of the days we're rendering
+    dayArray = [];
+
+    constructor() {
+        super();
+
+        // Create HTML of weekly kanban 
+        const template = document.createElement('template');
+        template.innerHTML = `
+        &lt;div class="container flex-container">
+            &lt;div class="column-container">
+                &lt;div class='d4'>
+                    &lt;div class="day monday">
+                        &lt;p class="title">Mon&lt;/p>
+
+                        &lt;div class="column-content">
+                        &lt;/div>
+                    &lt;/div>
+                    &lt;div class="day tuesday">
+                        &lt;p class="title">Tue&lt;/p>
+                        &lt;div class="column-content">&lt;/div>
+                    &lt;/div>
+                    &lt;div class="day wednesday">
+                        &lt;p class="title">Wed&lt;/p>
+                        &lt;div class="column-content">&lt;/div>
+                    &lt;/div>
+                    &lt;div class="day thursday">
+                        &lt;p class="title">Thur&lt;/p>
+                        &lt;div class="column-content">&lt;/div>
+                    &lt;/div>
+                &lt;/div>
+                &lt;div class='d4'>
+                    &lt;div class="day friday">
+                        &lt;p class="title">Fri&lt;/p>
+                        &lt;div class="column-content">&lt;/div>
+                    &lt;/div>
+                    &lt;div class="day saturday">
+                        &lt;p class="title">Sat&lt;/p>
+                        &lt;div class="column-content">&lt;/div>
+                    &lt;/div>
+                    &lt;div class="day sunday">
+                        &lt;p class="title">Sun&lt;/p>
+                        &lt;div class="column-content">&lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>`;
+
+        this.attachShadow({ mode: 'open' });
+
+        // Add styling to weeklyComponent
+        let style = document.createElement('style');
+        style.textContent = `
+        .flex-container {
+            display: flex;
+            position: relative;
+            left: 210px;
+            font-size: 2rem;
+            text-align: center;
+            min-height: 30rem;
+            padding-top: 2rem;
+            margin: 1rem;
+            width:90%;
+        }
+        
+        .d4 {
+            height: 50%;
+            display: flex;
+            flex-wrap: nowrap;
+            overflow: hidden;
+            overflow-x: auto;
+            flex-direction: row;
+        }
+        p {
+            color: white;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            font-size: 0.75em;
+            padding-top: 0rem;
+            padding-left: 2rem;
+            text-align: left;
+        }
+
+        .column-container {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow: hidden;
+            overflow-x: auto;
+            flex-direction: column;
+            width: 100%;
+            max-height: 100vh;
+            background-color: #384E5E;
+        }
+        
+        .day {
+            background: #384E5E;
+            border: 1px solid #2FC4F3;
+            width: 20rem;
+            min-height: 4rem;
+            flex-basis: 8rem;
+            min-width: 300px;
+            min-height: 750px;
+            flex-grow: 1;
+        }
+        
+        .column-content {
+            padding: 5px;
+            width: 95%;
+            height: 95%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            text-align:justify;
+            max-height: 75%;
+        }
+        
+        .column-content > button {
+          word-wrap: break-word;
+          font-size: 50%;
+        }
+        .bullet-entry {
+            border-style: solid;
+            border-width: 1pt;
+            border-color: #6a828d;
+            border-radius: 10px;
+            box-shadow: 1px 1px 3px #6a828d;
+            background-color: #;
+            text-align: left;
+            padding: 0.6em;
+            margin: auto;
+            width: 100%;
+            height: auto;
+        }
+        
+        .bullet-entry:hover {
+            background-color: #384E5E;
+            border-color: pink;
+        }`;
+
+        // Attach template and style to this shadowRoot
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.shadowRoot.appendChild(style);
+    }
+
+    connectedCallback() {
+        this.render();
+    }
+
+    render() {
+        //Get weekpicker on page 
+        let weekP = document.querySelector("weekly-page").shadowRoot.querySelector("week-picker");
+        this.dayArray = weekP.sendArray();
+
+        let colContent = this.shadowRoot.querySelectorAll(".column-content");
+        let titles = this.shadowRoot.querySelectorAll(".title"); 
+        for (let index = 0; index &lt; colContent.length; index++) {
+            //Append ecw to all days 
+            let ecWeek = document.createElement('entry-creator-week');
+            colContent[index].appendChild(ecWeek);
+            this.ecArray[index] = ecWeek;
+
+            //Render all respective bullets 
+            ecWeek.renderBullets(this.dayArray[index]);
+
+            //Set internal date 
+            ecWeek.date = this.dayArray[index];
+            //Rename title HTML of all days 
+            let date = new Date(this.dayArray[index]); 
+            let day = this.dayArray[index].split(' '); 
+            titles[index].innerHTML = day[0] + ' ' + date.toLocaleDateString ('default', {month: 'long'}) + " " + date.getDate(); 
+
+        }
+        //Event listener to update day array on week change event 
+        document.addEventListener('weekChange', () => {
+            this.dayArray = weekP.sendArray();
+            this.renderAllEc();
+        });
+    }
+
+    /**
+     * Will render the day for each of the boxes. 
+     */
+    renderAllEc() {
+        let colContent = this.shadowRoot.querySelectorAll(".column-content");
+
+        let titles = this.shadowRoot.querySelectorAll(".title"); 
+        for (let index = 0; index &lt; colContent.length; index++) {
+            this.ecArray[index].date = this.dayArray[index];  
+            this.ecArray[index].renderBullets(this.dayArray[index]);
+
+            //Rename title HTML of all days 
+            let date = new Date(this.dayArray[index]); 
+            let day = this.dayArray[index].split(' '); 
+            titles[index].innerHTML = day[0] + ' ' + date.toLocaleDateString ('default', {month: 'long'}) + " " + date.getDate();
+        }
+    }
+}
+
+customElements.define('weekly-kanban', WeeklyKanban);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 19:53:19 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

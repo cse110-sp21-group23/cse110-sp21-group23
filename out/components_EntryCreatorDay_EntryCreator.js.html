@@ -1,4 +1,32 @@
-import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/EntryCreatorDay/EntryCreator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/EntryCreatorDay/EntryCreator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
 import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
 import Entry from "./entry";
@@ -18,55 +46,55 @@ export default class EntryCreator extends HTMLElement {
         //Grab the template 
         const template = document.createElement('template');
         template.innerHTML = `
-        <div id="wrapper">
-            <form id="entryCreator">
-                <ul>
-                <!--Determine type of bullet point it'll be-->
-                    <li>
-                    <div id="radio1">
-                        <input type="radio" name="entryType" id="task" value="task" checked required>
-                        <label for="task">
-                            <span>task 📌</span>
-                        </label>
-                        <input type="radio" name="entryType" id="event" value="event"> 
-                        <label for="event">
-                            <span>event 🥳</span>
-                        </label>
-                        <input type="radio" name="entryType" id="note" value="note"> 
-                        <label for="note">
-                            <span>note 📝</span>
-                        </label> 
-                    </div>
-                    </li>
+        &lt;div id="wrapper">
+            &lt;form id="entryCreator">
+                &lt;ul>
+                &lt;!--Determine type of bullet point it'll be-->
+                    &lt;li>
+                    &lt;div id="radio1">
+                        &lt;input type="radio" name="entryType" id="task" value="task" checked required>
+                        &lt;label for="task">
+                            &lt;span>task 📌&lt;/span>
+                        &lt;/label>
+                        &lt;input type="radio" name="entryType" id="event" value="event"> 
+                        &lt;label for="event">
+                            &lt;span>event 🥳&lt;/span>
+                        &lt;/label>
+                        &lt;input type="radio" name="entryType" id="note" value="note"> 
+                        &lt;label for="note">
+                            &lt;span>note 📝&lt;/span>
+                        &lt;/label> 
+                    &lt;/div>
+                    &lt;/li>
                     
-                    <!--
-                    <li>
-                    <label for="image-input">Insert Image</label>
-                    <input type="file" name="image" id="image-input" accept="image/*"> <br>
-                    </li>
+                    &lt;!--
+                    &lt;li>
+                    &lt;label for="image-input">Insert Image&lt;/label>
+                    &lt;input type="file" name="image" id="image-input" accept="image/*"> &lt;br>
+                    &lt;/li>
                     -->
                     
-                    <!--
-                    <li>
-                    <label for="audio-input">Insert Audio</label>
-                    <input type="file" name="audio" id="audio-input" accept="audio/*"><br>
-                    </li>
+                    &lt;!--
+                    &lt;li>
+                    &lt;label for="audio-input">Insert Audio&lt;/label>
+                    &lt;input type="file" name="audio" id="audio-input" accept="audio/*">&lt;br>
+                    &lt;/li>
                     -->
 
-                    <div class="bottom-div">
-                        <!--Where they'll log their stuff-->
-                        <input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
+                    &lt;div class="bottom-div">
+                        &lt;!--Where they'll log their stuff-->
+                        &lt;input type="text" name="entryBox" id="entryBox" placeholder="Add a new entry..." required>
 
-                        <!--Add button-->
-                        <button type="submit" id="addButton"> Add </button> 
-                    </div>
-                </ul>
-            </form>
-        </div>
-        <div id="textBox"> 
-            <ul id="entryContainer">
-            </ul> 
-        </div>`
+                        &lt;!--Add button-->
+                        &lt;button type="submit" id="addButton"> Add &lt;/button> 
+                    &lt;/div>
+                &lt;/ul>
+            &lt;/form>
+        &lt;/div>
+        &lt;div id="textBox"> 
+            &lt;ul id="entryContainer">
+            &lt;/ul> 
+        &lt;/div>`
 
         this.attachShadow({ mode: "open" });
 
@@ -392,7 +420,7 @@ export default class EntryCreator extends HTMLElement {
         }
         else { 
             //Deleted element above dragged element 
-            if (index1 < index2){ 
+            if (index1 &lt; index2){ 
                 this.idList.splice(index2 - 1, 0, dragged);
             }
             //Deleted element below dragged element 
@@ -444,9 +472,9 @@ function formatDate(date) {
         day = '' + d.getDate(),
         year = d.getFullYear();
 
-    if (month.length < 2)
+    if (month.length &lt; 2)
         month = '0' + month;
-    if (day.length < 2)
+    if (day.length &lt; 2)
         day = '0' + day;
 
     return [year, month, day].join('-');
@@ -454,4 +482,26 @@ function formatDate(date) {
 
 
 //Make the custom element 
-customElements.define('entry-creator', EntryCreator);
+customElements.define('entry-creator', EntryCreator);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 19:53:19 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

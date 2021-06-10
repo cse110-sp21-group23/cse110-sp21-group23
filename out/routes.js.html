@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: routes.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,31 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: routes.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { LoginPage } from './components/pages/login'
+import { DailyPage } from "./components/pages/dailyPage"
+import { WeeklyPage } from "./components/pages/weeklyPage"
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Routes page that holds all the page information
+ * @class 
+ * */
+export const routes = [
+    {title: 'login', path: '', component: LoginPage},
+    {title: 'daily', path: 'daily', component: DailyPage},
+    {title: 'weekly', path: 'weekly', component: WeeklyPage}
+]
+</code></pre>
+        </article>
+    </section>
 
 
 

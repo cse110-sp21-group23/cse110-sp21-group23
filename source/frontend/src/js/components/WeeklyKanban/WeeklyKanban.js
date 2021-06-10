@@ -1,6 +1,10 @@
 import EntryCreatorWeek from "../EntryCreatorWeek/EntryCreatorWeek"
 import WeekPicker from "../WeekPicker"
 
+/**
+ * Creates a new Weekly Kanban View container to display days in
+ * @class 
+ * */
 export default class WeeklyKanban extends HTMLElement {
     //Array of all entry-creator-day's in the component's days 
     ecArray = [];
