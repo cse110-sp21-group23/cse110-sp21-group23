@@ -357,9 +357,9 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry(); 
                 let entry = dragSrcEl.entry; 
-                //JSON.parse(event.dataTransfer.getData('text/plain'));
+
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
@@ -396,9 +396,8 @@ export default class Entry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new Entry(); 
                 let entry = dragSrcEl.entry; 
-                //JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
