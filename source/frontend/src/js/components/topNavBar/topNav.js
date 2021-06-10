@@ -1,5 +1,8 @@
 import { getEmail } from '../../utils/localStorage'
-
+/**
+ * Creates a new Top Header Navgation Bar and renders it to display on every page
+ * @class 
+ * */
 export default class TopNav extends HTMLElement {
     constructor() {
 

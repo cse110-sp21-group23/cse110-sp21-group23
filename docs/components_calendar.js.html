@@ -1,4 +1,32 @@
-var field;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/calendar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/calendar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var field;
 var date;
 /**
  * Creates a new Calendar for the Daily View Page
@@ -13,7 +41,7 @@ export default class Calendar extends HTMLElement {
         const template = document.createElement('template');
 
         template.innerHTML = `
-        <style>
+        &lt;style>
         .datepicker-toggle {
             display: inline-block;
             position: relative;
@@ -51,15 +79,15 @@ export default class Calendar extends HTMLElement {
         span{
             font-size: 20px;
         }
-        </style>
-        <span class="datepicker-toggle">
-            <span class="datepicker-toggle-button">🗓</span>
-            <input
+        &lt;/style>
+        &lt;span class="datepicker-toggle">
+            &lt;span class="datepicker-toggle-button">🗓&lt;/span>
+            &lt;input
                 id="today" 
                 type="date"
                 class="datepicker-input" 
                 pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" placeholder="YYYY-MM-DD"/>
-        </span>
+        &lt;/span>
         `
         let style = document.createElement('style');
 
@@ -84,6 +112,8 @@ export default class Calendar extends HTMLElement {
         }
 
         this.shadowRoot.querySelector('#today').value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + '-' + date.getDate().toString().padStart(2, 0);
+        
+        
         this.shadowRoot.querySelector('#today').addEventListener('change', () => {
             document.dispatchEvent(new CustomEvent("calendarDateChanged", {
                 detail: new Date(this.shadowRoot.querySelector('#today').value)
@@ -133,4 +163,26 @@ export default class Calendar extends HTMLElement {
         return (input.value !== 'x');
     };
 }
-window.customElements.define('calendar-picker', Calendar);
+window.customElements.define('calendar-picker', Calendar);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

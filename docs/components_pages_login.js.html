@@ -1,4 +1,32 @@
-import { login, register } from "../../api/user";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/pages/login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/pages/login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { login, register } from "../../api/user";
 import { getJournals } from '../../api/journal'
 import { store } from '../../store'
 import { loadRoute } from '../../actions'
@@ -16,7 +44,7 @@ export class LoginPage extends HTMLElement {
 
     render() {
         this.innerHTML = (`
-        <style>
+        &lt;style>
         body{
             display: block;
             color: #E4E8EB;
@@ -197,71 +225,71 @@ export class LoginPage extends HTMLElement {
             text-align:center;
             color:#fff;
         }
-        </style>
+        &lt;/style>
 
-            <head>
-                <meta charset="utf-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <title>23am Bullet Journal - Home</title>
-                <meta name="description" content="">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <!-- Log-in Page Script Functions-->
-                <script src="/source/frontend/src/js/components/login.js"></script>
-                <script src="/source/frontend/src/js/api/user.js"></script>
-                <script src="/source/frontend/src/js/scripts/loginPageScripts.js"></script>
-            </head>
+            &lt;head>
+                &lt;meta charset="utf-8">
+                &lt;meta http-equiv="X-UA-Compatible" content="IE=edge">
+                &lt;title>23am Bullet Journal - Home&lt;/title>
+                &lt;meta name="description" content="">
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1">
+                &lt;!-- Log-in Page Script Functions-->
+                &lt;script src="/source/frontend/src/js/components/login.js">&lt;/script>
+                &lt;script src="/source/frontend/src/js/api/user.js">&lt;/script>
+                &lt;script src="/source/frontend/src/js/scripts/loginPageScripts.js">&lt;/script>
+            &lt;/head>
         
-            <!-- Start of Log In Page HTML-->
-            <div class="login-wrap">
-                <div class="login-html">
-                    <h1>📝 Bullet Journal 📝</h1>
-                    <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-                    <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
-                    <div class="login-form">
+            &lt;!-- Start of Log In Page HTML-->
+            &lt;div class="login-wrap">
+                &lt;div class="login-html">
+                    &lt;h1>📝 Bullet Journal 📝&lt;/h1>
+                    &lt;input id="tab-1" type="radio" name="tab" class="sign-in" checked>&lt;label for="tab-1" class="tab">Sign In&lt;/label>
+                    &lt;input id="tab-2" type="radio" name="tab" class="sign-up">&lt;label for="tab-2" class="tab">Sign Up&lt;/label>
+                    &lt;div class="login-form">
         
-                        <!-- Start of Sign In Form-->
-                        <div class="sign-in-htm">
-                            <div class="group">
-                                <label for="user" class="label">Email Address</label>
-                                <input id="username-input" type="text" class="input">
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Password</label>
-                                <input id="password-input" type="password" class="input" data-type="password">
-                            </div>
-                            <div class="group">
-                                <button id="signin-button" type="submit" class="button">Sign In</button>
-                            </div>
-                            <div class="hr"></div>
-                        </div>
+                        &lt;!-- Start of Sign In Form-->
+                        &lt;div class="sign-in-htm">
+                            &lt;div class="group">
+                                &lt;label for="user" class="label">Email Address&lt;/label>
+                                &lt;input id="username-input" type="text" class="input">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;label for="pass" class="label">Password&lt;/label>
+                                &lt;input id="password-input" type="password" class="input" data-type="password">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;button id="signin-button" type="submit" class="button">Sign In&lt;/button>
+                            &lt;/div>
+                            &lt;div class="hr">&lt;/div>
+                        &lt;/div>
                         
-                        <!-- Start of Sign Up Form-->
-                        <div class="sign-up-htm">
-                            <div class="group">
-                                <label for="user" class="label">Email Address</label>
-                                <input id="username-signup-input" type="text" class="input">
-                            </div>
-                            <div class="group">
-                                <label for="pass" class="label">Password</label>
-                                <input id="password-signup-input" type="password" class="input" data-type="password">
-                            </div>
-                            <div class="group">
-                                <label for="passconfirm" class="label">Confirm Password</label>
-                                <input id="password-signup-confirm" type="password" class="input" data-type="password">
-                            </div>
-                            <div class="group">
-                                <button id="signup-button" type="submit" class="button">Sign Up</button>
-                            </div>
-                            <div class="hr"></div>
-                            <div class="foot-lnk">
-                                <label for="tab-1">Already have an account?</a>
-                            </div>
-                            <!-- End of Sign Up Form-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script src="/source/frontend/src/js/components/login.js"></script>
+                        &lt;!-- Start of Sign Up Form-->
+                        &lt;div class="sign-up-htm">
+                            &lt;div class="group">
+                                &lt;label for="user" class="label">Email Address&lt;/label>
+                                &lt;input id="username-signup-input" type="text" class="input">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;label for="pass" class="label">Password&lt;/label>
+                                &lt;input id="password-signup-input" type="password" class="input" data-type="password">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;label for="passconfirm" class="label">Confirm Password&lt;/label>
+                                &lt;input id="password-signup-confirm" type="password" class="input" data-type="password">
+                            &lt;/div>
+                            &lt;div class="group">
+                                &lt;button id="signup-button" type="submit" class="button">Sign Up&lt;/button>
+                            &lt;/div>
+                            &lt;div class="hr">&lt;/div>
+                            &lt;div class="foot-lnk">
+                                &lt;label for="tab-1">Already have an account?&lt;/a>
+                            &lt;/div>
+                            &lt;!-- End of Sign Up Form-->
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+            &lt;script src="/source/frontend/src/js/components/login.js">&lt;/script>
             `)
     }
 }
@@ -273,7 +301,7 @@ export class LoginPage extends HTMLElement {
 window.onload = function () {
     var signinbutton = document.getElementById('signin-button');
     var signupbutton = document.getElementById('signup-button');
-    if (signinbutton && signupbutton) {
+    if (signinbutton &amp;&amp; signupbutton) {
         signinbutton.addEventListener('click', signinFunction);
         signupbutton.addEventListener('click', signupFunction);
     }
@@ -335,4 +363,26 @@ function signIn(username, password) {
         })
 }
 
-customElements.define('login-page', LoginPage);
+customElements.define('login-page', LoginPage);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

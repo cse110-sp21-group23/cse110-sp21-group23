@@ -1,14 +1,43 @@
-import { updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay } from "../../api/journal"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/EntryCreatorDay/entry.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/EntryCreatorDay/entry.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
 import getHeader from "../../utils/header";
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
 var dragSrcEl = null; 
 /**
- * Creates a new Weekly Entry Component for the Weekly Page lists for each day
+ * Creates a new Entry Component for the Daily View
  * @class 
  * */
-export default class WeeklyEntry extends HTMLElement{ 
+export default class Entry extends HTMLElement{ 
 
     //Make the entry-comp element draggable when appended to DOM 
     connectedCallback(){ 
@@ -24,209 +53,212 @@ export default class WeeklyEntry extends HTMLElement{
         //Create the template and insert html 
         const template = document.createElement('template');
 
-        
-
         template.innerHTML = `
-            <li id="type" draggable="true" class="type-name">
-                <div class="bullet-container">
-                    <div class="content-container">
-                        <div class="text-wrap">
-                            <p id="symbol"></p>
-                            <p id="content"></p><br>
-                        </div> 
-                        <img src="" alt="" class="entry-image"></img> <br>
-                        <audio src="" class="entry-audio"></audio>
-                    </div> 
-                </div>
-            </li>
-            <div id="myModal" class="modal">
-            <div class="modal-content">
-              <div class = "modal-header"> 
-                <span class="close" id = "close">&times;</span>
-                <h4 class = "modal-title"> Edit bullet </h4>
-              </div>
-              <form id="edit">
-                <ul>
-                  <input type="text" id="modal-words" placeholder="Your entry">
-                  <div id="radioEdit">
-                    <input type="radio" name="entryTypeEdit" id="task" value="task">
-                    <label for="task">Task</label>
-                    <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-                    <label for="event">Event </label>
-                    <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-                    <label for="note">Note </label> 
-                  </div>
-                  <button id="editButton"> Confirm Edit </button>
-                  <button id="doneButton"> Finish Bullet </button>
-                  <button id="deleteButton">Delete Bullet </button> 
-                </ul>
-              </form>
-            </div> 
-          </div>
+            &lt;li id="type" draggable="true" class="type-name">
+                &lt;div class="bullet-container">
+                    &lt;div class="content-container">
+                        &lt;div class="text-wrap">
+                            &lt;p id="symbol">&lt;/p>
+                            &lt;p id="content">&lt;/p>&lt;br>
+                        &lt;/div> 
+                        &lt;img src="" alt="" class="entry-image">&lt;/img> &lt;br>
+                        &lt;audio src="" class="entry-audio">&lt;/audio>
+                    &lt;/div> 
+                &lt;/div>
+            &lt;/li>
+            &lt;div id="myModal" class="modal">
+            &lt;div class="modal-content">
+              &lt;div class = "modal-header"> 
+                &lt;span class="close" id = "close">&amp;times;&lt;/span>
+                &lt;h4 class = "modal-title"> Edit bullet &lt;/h4>
+              &lt;/div>
+              &lt;form id="edit">
+                &lt;ul>
+                  &lt;input type="text" id="modal-words" placeholder="Your entry">
+                  &lt;div id="radioEdit">
+                    &lt;input type="radio" name="entryTypeEdit" id="task" value="task">
+                    &lt;label for="task">Task&lt;/label>
+                    &lt;input type="radio" name="entryTypeEdit" id="event" value="event"> 
+                    &lt;label for="event">Event &lt;/label>
+                    &lt;input type="radio" name="entryTypeEdit" id="note" value="note"> 
+                    &lt;label for="note">Note &lt;/label> 
+                  &lt;/div>
+                  &lt;button id="editButton"> Confirm Edit &lt;/button>
+                  &lt;button id="doneButton"> Finish Bullet &lt;/button>
+                  &lt;button id="deleteButton">Delete Bullet &lt;/button> 
+                &lt;/ul>
+              &lt;/form>
+            &lt;/div> 
+          &lt;/div>
               
-          </ul>
-        </div>`
+          &lt;/ul>
+        &lt;/div>`
 
-        //Add styling for bullet points 
-        let style = document.createElement('style'); 
-        style.textContent = 
-        `
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
-        .bullet-container {
-            border: none;
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 1rem;
-            color: white;
-            text-align: left;
-            padding: 0.1em;
-            margin: 0.1em;
-        }
+        let style = document.createElement('style');
         
-        .content-container { 
-            display: flex;  
-            align-items: center; 
-            justify-content: space-between;
-        }
-        li {
-            align-item: left;
-            position: relative;
-            list-style-type: none;
-            border-style: solid;
-            border-width: 1pt;
-            border-color: #6a828d;
-            border-radius: 10px;
-            box-shadow: 1px 1px 3px #6a828d;
-            margin: 0.7em;
-            margin-bottom: -0.25em;
-            margin-left: -0.5em;
-            position: relative;
-            background: #transparent;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 1px 1px 3px #6a828d;
-            transition: 0.5s;
-        }
+         /**
+         * This will render the style sheet for daily bullets
+         */
+       
+            //Add styling for bullet points 
+            style.textContent = 
+            `
+            .bullet-container {
+                border: none;
+                background-color: rgba(255,255,255,0.3);
+                border-radius: 1rem;
+                color: white;
+                text-align: left;
+                padding: 1em;
+                margin: 0.25em;
+            }
+            
+            .content-container { 
+                display: flex;  
+                align-items: center; 
+                justify-content: space-between; 
+            }
+            li {
+                align-item: left;
+                position: relative;
+                list-style-type: none;
+                border-style: solid;
+                border-width: 1pt;
+                border-color: #6a828d;
+                border-radius: 10px;
+                box-shadow: 1px 1px 3px #6a828d;
+                left: 80px;
+                margin: 0.7em;
+                margin-bottom: -0.25em;
+                margin-left: -0.5em;
+                position: relative;
+                background: #transparent;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 1px 1px 3px #6a828d;
+                transition: 0.5s;
+            }
 
-        // li:hover {
-        //     background-color: rgba(255,255,255, 0.25);
-        //     transform: scale(1.05);
-        //     opacity: 1;
-        // }
+            li:hover {
+                background-color: rgba(255,255,255, 0.25);
+                transform: scale(1.05);
+                opacity: 1;
+            }
 
-        li button:hover {
-            background-color: #f9f9f8;
-        }        
-        
-        p { 
-            display: inline; 
-            font-size: 16px;
-            font-family: 'Lato', sans-serif;
-        }
+            li button:hover {
+                background-color: #f9f9f8;
+            }        
+            
+            p { 
+                display: inline; 
+                font-size: 20px;
+                font-family: 'Lato', sans-serif;
+            }
 
-        img{ 
-            height: 0px; 
-            width: auto; 
-        }
+            img{ 
+                height: 0px; 
+                width: auto; 
+            }
 
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-        
-        /* Modal Content/Box */
-        .modal-content {
-            border-radius: 40px;
-            background-color: #C9CBB3;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 30px;
-            border: 5px solid #888;
-            width: 75%; /* Could be more or less, depending on screen size */
-            height: 33%;
-        }
-        #modal-words {
-            padding: 10px; 
-            width: 50vw; 
-            box-sizing: border-box; 
-            font-size: 16pt;
-            border-radius: 10px;
-        }
-        [contenteditable] {
-            outline: 2px solid;
-        }
-        /* The Close Button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 50px;
-            font-weight: bold;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        input[type='radio'] {
-            transform: scale(1.4);
-            margin-top: 18px;
-        }
-        
-        #editButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-        }
-        #doneButton {
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-        }
-        
-        #deleteButton { 
-            border-radius: 10px;
-            margin-top:20px;
-            padding: 10px;
-            width: 90px;
-            height: 90px;
-            font-size: 18px;
-            float: right
-        }
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            
+            /* Modal Content/Box */
+            .modal-content {
+                border-radius: 40px;
+                background-color: #B3D4DB;
+                margin: 15% auto; /* 15% from the top and centered */
+                padding: 30px;
+                border: 5px solid #888;
+                width: 75%; /* Could be more or less, depending on screen size */
+                height: 33%;
+            }
+            #modal-words {
+                padding: 10px; 
+                width: 50vw; 
+                box-sizing: border-box; 
+                font-size: 16pt;
+                border-radius: 10px;
+            }
+            [contenteditable] {
+                outline: 2px solid;
+            }
+            /* The Close Button */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 50px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            input[type='radio'] {
+                transform: scale(1.4);
+                margin-top: 18px;
+            }
+            
+            #editButton {
+                border-radius: 10px;
+                margin-top:20px;
+                padding: 10px;
+                width: 90px;
+                height: 90px;
+                font-size: 18px;
+            }
+            #doneButton {
+                border-radius: 10px;
+                margin-top:20px;
+                padding: 10px;
+                width: 90px;
+                height: 90px;
+                font-size: 18px;
+            }
+            
+            #deleteButton { 
+                border-radius: 10px;
+                margin-top:20px;
+                padding: 10px;
+                width: 90px;
+                height: 90px;
+                font-size: 18px;
+                float: right
+            }
 
-        label {
-            font-size: 20px;
-        }
+            label {
+                font-size: 20px;
+            }
 
-        .modal-title {
-            text-align: center;
-            font-size: 25px;
-            text-decoration: underline;
-            position: relative;
-            height: 10px;
-            margin-top: 5px
-        }
-        
-        .empty { 
-            opacity: .01;
-            height:100%; 
-            width: 500px;
-            padding-left: -30px; 
-        }`
-        ;
+            .empty { 
+                opacity: .01;
+                height:100%; 
+                width: 500px;
+                padding-left: -30px; 
+            }
+
+            .modal-title {
+                text-align: center;
+                font-size: 25px;
+                text-decoration: underline;
+                position: relative;
+                height: 10px;
+                margin-top: 5px
+            }`;
+    
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 
@@ -264,6 +296,8 @@ export default class WeeklyEntry extends HTMLElement{
             entryAudio.setAttribute("controls", true);
         }
     }
+
+    
     /**
      * Function which will return the entry property of Entry
      * @returns The entry property of Entry
@@ -274,9 +308,8 @@ export default class WeeklyEntry extends HTMLElement{
 
     //DnD stuff 
     handleDragStart(event) {
-
         // Keep track of element we're dragging
-        dragSrcEl = event.target; 
+        dragSrcEl = event.target;
         //Make sure you can't drag empty entries 
         if (event.target.entry.journal_id == null){ 
             return; 
@@ -289,7 +322,7 @@ export default class WeeklyEntry extends HTMLElement{
         if (event.preventDefault) {
             event.preventDefault(); // Necessary. Allows us to drop.
         }
-        event.target.classList.add('over'); 
+        event.target.classList.add('over');
       
         return false;
     }
@@ -318,9 +351,12 @@ export default class WeeklyEntry extends HTMLElement{
 
             //Get indices of dragged and dropped on entries 
             let dragIndex = dragEc.idOrder.findIndex((element) => element == dragSrcEl.entry.id);
-            
+            let dOnIndex; 
+
             //Case of dragging on empty 
-            let dOnIndex;
+
+            console.log(event.target.entry.journalId); 
+            console.log(event.target.entry.journal_id); 
             if (event.target.entry.journal_id == null){ 
                 dOnIndex = 0; 
             }
@@ -330,15 +366,16 @@ export default class WeeklyEntry extends HTMLElement{
             }
 
             //Set direction
-            let up2Down = dragIndex < dOnIndex;  
+            console.log("DonIndex: " + dOnIndex); 
+            let up2Down = dragIndex &lt; dOnIndex;   
 
             //If they have the same shadowroot
             if (dragEc.isSameNode(draggedOnEc)) { 
                 parent = event.target.parentNode;
 
+                console.log(dragEc.idOrder); 
                 //Swap positions of elements in id lists
                 dragEc.swapIds(dragIndex, dOnIndex, up2Down);
-    
 
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder, getHeader());
@@ -347,15 +384,16 @@ export default class WeeklyEntry extends HTMLElement{
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
-                let dropElement = new WeeklyEntry();
+                let dropElement = new Entry(); 
                 let entry = dragSrcEl.entry; 
+
                 dropElement.entry = entry; 
 
                 //Dragged object was above the one it's dropped on
                 if (up2Down){ 
                     event.target.insertAdjacentElement('afterend', dropElement);
                 }
-                //Dragged object was below the one it's dropped on
+                //Always insert on top
                 else {
                     event.target.insertAdjacentElement('beforebegin', dropElement);
                 }
@@ -370,14 +408,14 @@ export default class WeeklyEntry extends HTMLElement{
 
                 //Update bullet date in server
                 editBullet(movedBullet, getHeader()).then(
-                ); 
+                );
 
                 //Remove draggedB from its ec id list
                 dragEc.idOrder.splice(dragIndex, 1)
 
-                //Insert draggedB draggedOn's ec id list 
+                //Insert draggedB into draggedOn's ec id list 
                 draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
-
+                
                 //Update sorting in backend 
                 updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder, getHeader());
                 updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder, getHeader());
@@ -385,28 +423,26 @@ export default class WeeklyEntry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-                let dropElement = new WeeklyEntry();
+                let dropElement = new Entry(); 
                 let entry = dragSrcEl.entry; 
                 dropElement.entry = entry; 
     
                 //If dragged to bottom, insert at bottom 
-                if (dOnIndex + 1 == draggedOnEc.idOrder.length){ 
+                if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
                     event.target.insertAdjacentElement('afterend', dropElement); 
                 }
                 else{ 
                     event.target.insertAdjacentElement('beforebegin', dropElement); 
                 }
-
                 //Empty cases
                 if (event.target.entry.journal_id == null){ 
                     let otherParent = event.target.parentNode; 
                     otherParent.removeChild(event.target); 
                 }
-                
                 //Moving the bulle made the moved from ec empty
                 if (parent.children.length == 0){ 
                     //Attach empty entry if no entries 
-                    let entryComponent = new WeeklyEntry(); 
+                    let entryComponent = new Entry(); 
                     entryComponent.entry = { 
                         journal_id: null,
                         body: null,
@@ -466,12 +502,12 @@ export default class WeeklyEntry extends HTMLElement{
         //Strikethrough button
         var strike = shadow.getElementById("doneButton");
 
-        // When the user clicks on <span> (x), close the modal
+        // When the user clicks on &lt;span> (x), close the modal
         span.onclick = function() {
             modal.style.display = "none";
         } 
 
-        //on doubleclick on entry for edit cause single click is drag&drop
+        //on doubleclick on entry for edit cause single click is drag&amp;drop
         entry.addEventListener("dblclick", async () => {
 
             //changes modal textbox to match entry's content
@@ -486,11 +522,11 @@ export default class WeeklyEntry extends HTMLElement{
 
             //Get bullets for that day from the backend to find the one to edit
             await getBulletsByDay(journalId,new Date(theDate), getHeader()).then((value) =>{
-                for(let i = 0; i < value.length; i++) {
+                for(let i = 0; i &lt; value.length; i++) {
 
                     //found the bullet
                     if(value[i].body == shadow.getElementById("content").textContent ||
-                      value[i].body == shadow.getElementById("content").innerHTML    &&
+                      value[i].body == shadow.getElementById("content").innerHTML    &amp;&amp;
                       value[i].type == this.shadowRoot.querySelector("#type").className) {
                         bulletChange = value[i];
                     }
@@ -526,7 +562,6 @@ export default class WeeklyEntry extends HTMLElement{
                 //looks for the bullet type
                 for (const choice of choices) { 
                     if (choice.checked){ 
-                        console.log("choice = " + choice.value);
                         entry.className = choice.value;
                         choice.checked = false;
                         bulletChange.type = choice.value;
@@ -540,7 +575,7 @@ export default class WeeklyEntry extends HTMLElement{
                 shadow.getElementById("symbol").textContent = symbol;
                 
                 //edits bullet in the backend and closes modal
-                await editBullet(bulletChange);
+                await editBullet(bulletChange, getHeader());
                 modal.style.display = "none";
             }; //end edit bullet method
             
@@ -560,8 +595,8 @@ export default class WeeklyEntry extends HTMLElement{
                 if(bulletChange.is_done == true) {
 
                     //remove strikethrough text
-                    strikeT = shadow.getElementById("content").innerHTML.replace("<strike>",'');
-                    strikeT = strikeT.replace("</strike>",'');
+                    strikeT = shadow.getElementById("content").innerHTML.replace("&lt;strike>",'');
+                    strikeT = strikeT.replace("&lt;/strike>",'');
 
                     //updates button txt
                     strike.firstChild.nodeValue = "Finish Bullet";
@@ -576,7 +611,7 @@ export default class WeeklyEntry extends HTMLElement{
                 //add strikethrough and changes strike button text
                 else {
                     //adds strikethrough text
-                    strikeT = "<strike>" + shadow.getElementById("content").innerHTML + "</strike>";
+                    strikeT = "&lt;strike>" + shadow.getElementById("content").innerHTML + "&lt;/strike>";
 
                     //updates button txt
                     strike.firstChild.nodeValue = "Unfinish Bullet";
@@ -591,7 +626,7 @@ export default class WeeklyEntry extends HTMLElement{
 
                 //closes modal and updates bullet
                 modal.style.display = "none";
-                await editBullet(bulletChange);
+                await editBullet(bulletChange, getHeader());
             };    //end strikethrough function
 
             //Delete listener 
@@ -602,7 +637,6 @@ export default class WeeklyEntry extends HTMLElement{
                 //Delete the bullet in the server 
                 deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
-
                     //Update ec id list 
                     let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
                     ec.idOrder.splice(index,1);  
@@ -616,7 +650,6 @@ export default class WeeklyEntry extends HTMLElement{
                     else { 
                         date = ec.currDate; 
                     }
-
                     //Update list in backend
                     updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
                     this.remove(); 
@@ -624,7 +657,7 @@ export default class WeeklyEntry extends HTMLElement{
                     //Empty funcionality 
                     if (ec.shadowRoot.querySelector("#entryContainer").children.length == 0){ 
                         //Attach empty entry if no entries 
-                        let entryComponent = new WeeklyEntry(); 
+                        let entryComponent = new Entry(); 
                         entryComponent.entry = { 
                             journal_id: null,
                             body: null,
@@ -648,4 +681,26 @@ export default class WeeklyEntry extends HTMLElement{
 } //end class
 
 //Define the custom element 
-customElements.define('weekly-entry-comp', WeeklyEntry); 
+customElements.define('entry-comp', Entry); </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DailyPage.html">DailyPage</a></li><li><a href="Delph.html">Delph</a></li><li><a href="LoginPage.html">LoginPage</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="NavigationBar.html">NavigationBar</a></li><li><a href="routes.html">routes</a></li><li><a href="WeeklyPage.html">WeeklyPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addBullet">addBullet</a></li><li><a href="global.html#addDnDHandlers">addDnDHandlers</a></li><li><a href="global.html#changeRoute">changeRoute</a></li><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#deleteBullet">deleteBullet</a></li><li><a href="global.html#diffListIns">diffListIns</a></li><li><a href="global.html#editBullet">editBullet</a></li><li><a href="global.html#emailButtonFunction">emailButtonFunction</a></li><li><a href="global.html#entry">entry</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getBulletsByDay">getBulletsByDay</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getEmail">getEmail</a></li><li><a href="global.html#getJournal">getJournal</a></li><li><a href="global.html#getJournals">getJournals</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#idOrder">idOrder</a></li><li><a href="global.html#isDateSupported">isDateSupported</a></li><li><a href="global.html#kendalCount">kendalCount</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#minusWeek">minusWeek</a></li><li><a href="global.html#plusWeek">plusWeek</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#renderAllEc">renderAllEc</a></li><li><a href="global.html#renderBullets">renderBullets</a></li><li><a href="global.html#sendArray">sendArray</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setEmail">setEmail</a></li><li><a href="global.html#setJournal">setJournal</a></li><li><a href="global.html#setToken">setToken</a></li><li><a href="global.html#signinFunction">signinFunction</a></li><li><a href="global.html#signupFunction">signupFunction</a></li><li><a href="global.html#Store">Store</a></li><li><a href="global.html#swapIds">swapIds</a></li><li><a href="global.html#updateSorting">updateSorting</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Jun 09 2021 20:02:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

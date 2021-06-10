@@ -63,7 +63,7 @@ let dayInd = currDate.getDay();
 
 describe("Date Picker Tests", () => {
   beforeAll(async () => {
-    jest.setTimeout(100000);
+    jest.setTimeout(20000);
     await page.goto(loginURL);
     await page.waitForTimeout(500);
     // Login first
@@ -73,19 +73,19 @@ describe("Date Picker Tests", () => {
     await page.$eval("#signin-button", (e) => e.click());
 
     await page.waitForNavigation();
-    console.log(page.url());
+   
   }, 20000);
 
   it("Test 1: Check if date-picker has correct month-text", async () => {
-
+    await page.waitForTimeout(1000);
     const monthText = await page.evaluate(() => {
       return document
         .querySelector("daily-page")
         .shadowRoot.querySelector("date-picker")
-        .shadowRoot.querySelector(".full-date > h2").innerHTML;
+        .shadowRoot.querySelector("#month-text").innerHTML;
     });
     expect(monthText).toBe(days[dayInd]);
-  });
+  }, 20000);
 
   it("Test 2: Check if date-picker has correct date-text", async () => {
     const dateText = await page.evaluate(() => {
@@ -95,7 +95,7 @@ describe("Date Picker Tests", () => {
         .shadowRoot.querySelector(".full-date > h1").innerHTML;
     });
     expect(dateText).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
-  });
+  }, 20000);
 
   it("Test 3: Check if clicking on right-arrow changes month-text to next day correctly", async () => {
     currDate = new Date(year, monthInd, dateInd + 1);
@@ -107,7 +107,7 @@ describe("Date Picker Tests", () => {
 
     const next = await (
       await page.evaluateHandle(
-        `document.querySelector("body > div:nth-child(5) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#next")`
+        `document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("#next")`
       )
     ).asElement();
 
@@ -133,7 +133,7 @@ describe("Date Picker Tests", () => {
     });
 
     expect(nextDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
-  });
+  }, 20000);
 
   it("Test 5: Check if clicking on left-arrow changes month-text to prev day correctly", async () => {
     //Calc new date
@@ -148,7 +148,7 @@ describe("Date Picker Tests", () => {
     //Grab the prev arrow 
     const prev = await (
       await page.evaluateHandle(
-        `document.querySelector("body > div:nth-child(5) > daily-page").shadowRoot.querySelector("#datePickerDiv > date-picker").shadowRoot.querySelector("#prev")`
+        `document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("#prev")`
       )
     ).asElement();
 
@@ -176,7 +176,7 @@ describe("Date Picker Tests", () => {
     });
 
     expect(prevDT).toBe(months[monthInd] + " " + dates[dateInd] + " " + year);
-  });
+  }, 20000);
 });
 
 // const datePicker = await page.$eval('#datePickerDiv');
