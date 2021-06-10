@@ -247,16 +247,16 @@ export default class Entry extends HTMLElement{
 
         
         //Set necesary image content if the src isn't null
-        if (entry.image != undefined) { 
-            entryImage.setAttribute("src", entry.image.src); 
-            entryImage.setAttribute("alt", entry.image.alt); 
-        }
-        //Set audio if applicable
-        if (entry.audio != undefined){ 
-            let entryAudio = shadow.querySelector(".entry-audio"); 
-            entryAudio.setAttribute("src", entry.audio);
-            entryAudio.setAttribute("controls", true);
-        }
+        // if (entry.image != undefined) { 
+        //     entryImage.setAttribute("src", entry.image.src); 
+        //     entryImage.setAttribute("alt", entry.image.alt); 
+        // }
+        // //Set audio if applicable
+        // if (entry.audio != undefined){ 
+        //     let entryAudio = shadow.querySelector(".entry-audio"); 
+        //     entryAudio.setAttribute("src", entry.audio);
+        //     entryAudio.setAttribute("controls", true);
+        // }
     }
 
     get entry(){ 
@@ -271,12 +271,6 @@ export default class Entry extends HTMLElement{
         if (event.target.entry.journal_id == null){ 
             return; 
         }
-
-        //event.dataTransfer.effectAllowed = 'move';
-
-        //Setting the data of the dataTransfer object to the entire entry-comp DOM object 
-        //event.dataTransfer.setData('text/plain', JSON.stringify(this.entry));
-
         event.target.classList.add('dragElem'); 
     }
 
@@ -323,17 +317,10 @@ export default class Entry extends HTMLElement{
                 dOnIndex = draggedOnEc.idOrder.findIndex((element) => element == event.target.entry.id);
             }
 
-            //Set direction
-            console.log("DonIndex: " + dOnIndex); 
-            let up2Down = dragIndex < dOnIndex;   
-
-            //If they have the same shadowroot
-            //if (dragEc.isSameNode(draggedOnEc)) { 
             parent = event.target.parentNode;
 
-            console.log(dragEc.idOrder); 
             //Swap positions of elements in id lists
-            dragEc.swapIds(dragIndex, dOnIndex, up2Down);
+            dragEc.swapIds(dragIndex, dOnIndex);
 
             //Update sorting in backend 
             updateSorting(getJournal(), new Date(getDate()), dragEc.idOrder);
@@ -345,13 +332,9 @@ export default class Entry extends HTMLElement{
             //Recreate the dropped element 
             let dropElement = document.createElement('entry-comp');
             dropElement.entry = dragSrcEl.entry; 
-            // let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
-            // dropElement.entry = entry; 
 
             //Case where you drag to last position 
-            //console.log(dragEc.idOrder.length -1); 
             if (dOnIndex == dragEc.idOrder.length - 1){ 
-                console.log("afterend"); 
                 event.target.insertAdjacentElement('afterend', dropElement);
             }
             //Always insert on top
@@ -359,66 +342,6 @@ export default class Entry extends HTMLElement{
                 event.target.insertAdjacentElement('beforebegin', dropElement);
             }
         }
-            //Don't have the same shadow root
-            // else { 
-            //     parent = dragSrcEl.parentNode;
-
-            //     //Set date on dragSrcEl to date it was dragged to in server
-            //     let movedBullet = dragSrcEl.entry; 
-            //     movedBullet.date = draggedOnEc.date;  
-
-            //     //Update bullet date in server
-            //     editBullet(movedBullet).then(
-            //     );
-
-            //     //Remove draggedB from its ec id list
-            //     dragEc.idOrder.splice(dragIndex, 1)
-
-            //     //Insert draggedB into draggedOn's ec id list 
-            //     draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
-
-            //     //Update sorting in backend 
-            //     updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
-            //     updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
-
-            //     //UI visuals   
-            //     parent.removeChild(dragSrcEl);            
-            //     //Recreate the element with stored data in DataTransfer object
-            //     let dropElement = document.createElement('entry-comp');
-            //     //let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
-            //     dropElement.entry = dragSrcEl.entry; 
-    
-            //     //If dragged to bottom, insert at bottom 
-            //     if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
-            //         event.target.insertAdjacentElement('afterend', dropElement); 
-            //     }
-            //     else{ 
-            //         event.target.insertAdjacentElement('beforebegin', dropElement); 
-            //     }
-            //     //Empty cases
-            //     if (event.target.entry.journal_id == null){ 
-            //         let otherParent = event.target.parentNode; 
-            //         otherParent.removeChild(event.target); 
-            //     }
-            //     //Moving the bulle made the moved from ec empty
-            //     if (parent.children.length == 0){ 
-            //         //Attach empty entry if no entries 
-            //         let entryComponent = document.createElement('entry-comp'); 
-            //         entryComponent.entry = { 
-            //             journal_id: null,
-            //             body: null,
-            //             type: null,
-            //             priority: 1,
-            //             mood: 1,
-            //             date: null,
-            //         };
-            //         //Make it invisible 
-            //         let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
-            //         entryComponent.shadowRoot.querySelector('li').className = "empty";
-            //         textBox.appendChild(entryComponent); 
-            //     }
-            // }
-       // }
         event.target.classList.remove('over');
         return false;
     }
@@ -660,3 +583,64 @@ export default class Entry extends HTMLElement{
 
 //Define the custom element 
 customElements.define('entry-comp', Entry); 
+
+            //Don't have the same shadow root
+            // else { 
+            //     parent = dragSrcEl.parentNode;
+
+            //     //Set date on dragSrcEl to date it was dragged to in server
+            //     let movedBullet = dragSrcEl.entry; 
+            //     movedBullet.date = draggedOnEc.date;  
+
+            //     //Update bullet date in server
+            //     editBullet(movedBullet).then(
+            //     );
+
+            //     //Remove draggedB from its ec id list
+            //     dragEc.idOrder.splice(dragIndex, 1)
+
+            //     //Insert draggedB into draggedOn's ec id list 
+            //     draggedOnEc.diffListIns(dOnIndex, dragSrcEl.entry); 
+
+            //     //Update sorting in backend 
+            //     updateSorting(getJournal(), new Date(dragEc.date), dragEc.idOrder);
+            //     updateSorting(getJournal(), new Date(draggedOnEc.date), draggedOnEc.idOrder);
+
+            //     //UI visuals   
+            //     parent.removeChild(dragSrcEl);            
+            //     //Recreate the element with stored data in DataTransfer object
+            //     let dropElement = document.createElement('entry-comp');
+            //     //let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
+            //     dropElement.entry = dragSrcEl.entry; 
+    
+            //     //If dragged to bottom, insert at bottom 
+            //     if (dOnIndex + 1 == draggedOnEc.idOrder.length - 1){ 
+            //         event.target.insertAdjacentElement('afterend', dropElement); 
+            //     }
+            //     else{ 
+            //         event.target.insertAdjacentElement('beforebegin', dropElement); 
+            //     }
+            //     //Empty cases
+            //     if (event.target.entry.journal_id == null){ 
+            //         let otherParent = event.target.parentNode; 
+            //         otherParent.removeChild(event.target); 
+            //     }
+            //     //Moving the bulle made the moved from ec empty
+            //     if (parent.children.length == 0){ 
+            //         //Attach empty entry if no entries 
+            //         let entryComponent = document.createElement('entry-comp'); 
+            //         entryComponent.entry = { 
+            //             journal_id: null,
+            //             body: null,
+            //             type: null,
+            //             priority: 1,
+            //             mood: 1,
+            //             date: null,
+            //         };
+            //         //Make it invisible 
+            //         let textBox =  dragEc.shadowRoot.querySelector("#entryContainer");
+            //         entryComponent.shadowRoot.querySelector('li').className = "empty";
+            //         textBox.appendChild(entryComponent); 
+            //     }
+            // }
+       // }
