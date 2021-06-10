@@ -120,8 +120,6 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         dragAndDrop(entry1, entry2); 
         await page.waitForTimeout(1000); 
 
-        
-
     }); 
 
 })

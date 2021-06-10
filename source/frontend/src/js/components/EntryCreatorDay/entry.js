@@ -49,17 +49,17 @@ export default class Entry extends HTMLElement{
                   <input type="text" id="modal-words" placeholder="Your entry">
                   <div id="radioEdit">
                     <input type="radio" name="entryTypeEdit" id="task" value="task">
-                    <label for="task">
-                    <span>task 📌</span>
-                    </label>
+                        <label for="task">
+                            <span>task 📌</span>
+                        </label>
                     <input type="radio" name="entryTypeEdit" id="event" value="event"> 
-                    <label for="event">
-                    <span>event 🥳</span>
-                    </label>
+                        <label for="event">
+                            <span>event 🥳</span>
+                        </label>
                     <input type="radio" name="entryTypeEdit" id="note" value="note"> 
-                    <label for="note">                          
-                        <span>note 📝</span> 
-                    </label> 
+                        <label for="note">                          
+                            <span>note 📝</span> 
+                        </label> 
                   </div>
                   <button id="editButton"> Confirm Edit </button>
                   <button id="doneButton"> Finish Bullet </button>
@@ -74,6 +74,22 @@ export default class Entry extends HTMLElement{
 
         //Add styling for bullet points 
         let style = document.createElement('style'); 
+        style.textContent =`
+        .bullet-container {
+            border: none;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 1rem;
+            color: white;
+            text-align: left;
+            padding: 0.5em;
+            margin: 0.25em;
+        }`
+        
+         /**
+         * This will render the style sheet for daily bullets
+         */
+       
+        //Add styling for bullet points 
         style.textContent = 
         `
         .bullet-container {
@@ -82,7 +98,7 @@ export default class Entry extends HTMLElement{
             border-radius: 1rem;
             color: white;
             text-align: left;
-            padding: 0.5em;
+            padding: 1em;
             margin: 0.25em;
         }
         
@@ -100,13 +116,22 @@ export default class Entry extends HTMLElement{
             border-color: #6a828d;
             border-radius: 10px;
             box-shadow: 1px 1px 3px #6a828d;
-            margin: 0.7em; 
+            left: 80px;
+            margin: 0.7em;
+            margin-bottom: -0.25em;
+            margin-left: -0.5em;
+            position: relative;
+            background: #transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 1px 1px 3px #6a828d;
+            transition: 0.5s;
         }
-
         li:hover {
-            background-color: #f9f9f8;
+            background-color: rgba(255,255,255, 0.25);
+            transform: scale(1.05);
+            opacity: 1;
         }
-
         li button:hover {
             background-color: #f9f9f8;
         }        
@@ -116,12 +141,10 @@ export default class Entry extends HTMLElement{
             font-size: 20px;
             font-family: 'Lato', sans-serif;
         }
-
         img{ 
             height: 0px; 
             width: auto; 
         }
-
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -138,7 +161,7 @@ export default class Entry extends HTMLElement{
         /* Modal Content/Box */
         .modal-content {
             border-radius: 40px;
-            background-color: #C9CBB3;
+            background-color: #B3D4DB;
             margin: 15% auto; /* 15% from the top and centered */
             padding: 30px;
             border: 5px solid #888;
@@ -200,18 +223,15 @@ export default class Entry extends HTMLElement{
             font-size: 18px;
             float: right
         }
-
         label {
             font-size: 20px;
         }
-
         .empty { 
             opacity: .01;
             height:100%; 
             width: 500px;
             padding-left: -30px; 
         }
-
         .modal-title {
             text-align: center;
             font-size: 25px;
@@ -220,7 +240,7 @@ export default class Entry extends HTMLElement{
             height: 10px;
             margin-top: 5px
         }`;
-
+    
 
         //Attach shadow 
         this.attachShadow({ mode: 'open'}); 

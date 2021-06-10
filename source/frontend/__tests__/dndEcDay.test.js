@@ -4,7 +4,7 @@
  * @param {*} source - The object we're dragging 
  * @param {*} target - Where we're dragging the object to
  */
-async function dragAndDrop(source, target) {
+ async function dragAndDrop(source, target) {
     await page.evaluate((source, target) => {
         let event
         event = document.createEvent("CustomEvent");
@@ -222,4 +222,3 @@ describe('E2E Testing for dragging within same list', () => {
         expect(entryOrder).toEqual(entryOrderAfter);
     }); 
 });
-

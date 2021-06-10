@@ -104,8 +104,6 @@ export default class Calendar extends HTMLElement {
         }))
     }
 
-    
-    
     /**
      * Function which returns the current date
      * @returns The current date
