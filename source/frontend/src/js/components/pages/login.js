@@ -288,6 +288,8 @@ window.onload = function () {
 document.onkeydown=function(){
     if(window.event.keyCode=='13'){
         var signinbutton = document.getElementById('tab-1');
+        if(signinbutton == null)
+            return;
         if(signinbutton.checked == true)
             signinFunction();
         else
