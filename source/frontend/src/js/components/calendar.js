@@ -22,15 +22,14 @@ export default class Calendar extends HTMLElement {
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: #b3d4db;
             background-image: url(https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png);
         }
         .datepicker-input {
             position: absolute;
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
+            width: 150%;
+            height: 150%;
             opacity: 0;
             cursor: pointer;
             box-sizing: border-box;
@@ -45,10 +44,13 @@ export default class Calendar extends HTMLElement {
             padding: 0;
             cursor: pointer;
         }
+        span{
+            font-size: 20px;
+        }
         </style>
         <span class="datepicker-toggle">
-            <span class="datepicker-toggle-button"></span>
-            <input 
+            <span class="datepicker-toggle-button">🗓</span>
+            <input
                 id="today" 
                 type="date"
                 class="datepicker-input" 

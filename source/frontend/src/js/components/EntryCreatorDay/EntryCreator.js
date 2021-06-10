@@ -1,6 +1,7 @@
 import { addBullet, updateSorting, getBulletsByDay } from "../../api/journal"
 import getHeader from "../../utils/header";
 import { getJournal, getDate } from '../../utils/localStorage'
+import Entry from "./entry";
 import EntryComponent from './entry'
 
 export default class EntryCreator extends HTMLElement {
@@ -21,15 +22,15 @@ export default class EntryCreator extends HTMLElement {
                     <div id="radio1">
                         <input type="radio" name="entryType" id="task" value="task" checked required>
                         <label for="task">
-                            <span>task</span>
+                            <span>task 📌</span>
                         </label>
                         <input type="radio" name="entryType" id="event" value="event"> 
                         <label for="event">
-                            <span>event</span>
+                            <span>event 🥳</span>
                         </label>
                         <input type="radio" name="entryType" id="note" value="note"> 
                         <label for="note">
-                            <span>note</span>
+                            <span>note 📝</span>
                         </label> 
                     </div>
                     </li>
@@ -98,7 +99,7 @@ export default class EntryCreator extends HTMLElement {
         #textBox{
             margin-left: auto; 
             margin-right: auto; 
-            margin-top: 30px; 
+            margin-top: 4em; 
             width: 60%; 
         }
         #entryCreator { 
@@ -117,9 +118,9 @@ export default class EntryCreator extends HTMLElement {
             border: 1px solid;
             border-radius: 10px;
             border-color: #6a828d;
-            margin: 0px  0px auto; 
-            padding: 15px; 
-            width: 100%;
+            margin-left: -2em;
+            padding: 12px; 
+            width: 95%;
             box-sizing: border-box; 
             font-size: 15pt;
             font-family: 'Lato', sans-serif;
@@ -128,6 +129,15 @@ export default class EntryCreator extends HTMLElement {
         ul { 
             list-style-type: none;
             margin: 0.5em;
+            margin-top: -0.25em;
+            list-style-type: none;
+            position: relative;
+            width: 100%;
+            padding-left: 20px;
+            display: flex-column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
         /* Basic styles */
         input[type="checkbox"],
@@ -300,7 +310,7 @@ export default class EntryCreator extends HTMLElement {
                 this.idList.push(element.id);
 
                 //Make an entry component 
-                let entryComponent = document.createElement("entry-comp");
+                let entryComponent = new Entry();
 
                 //Append the component to the page 
                 entryComponent.entry = element;
@@ -331,7 +341,7 @@ export default class EntryCreator extends HTMLElement {
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = new EntryComponent()
+            let entryComponent = new Entry();
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry();
@@ -358,7 +368,7 @@ export default class EntryCreator extends HTMLElement {
     /**
      * Helper function which swaps the positions of the two ids passed in within 
      * the id array 
-     * @param {Object} dragged - First bullet to be swapped
+     * @param {Object} dragged - First bullet to be bped
      * @param {Object} droppedOn - Second bullet to be swapped
      * @param {bool} direction - true if dragged object was above the dropped-on element, false if drop area
      * dropped-on element was above. 

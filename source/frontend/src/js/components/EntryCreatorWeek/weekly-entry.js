@@ -1,11 +1,10 @@
-
-import {updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay} from "../../api/journal"
+import { updateSorting, deleteBullet, addBullet, editBullet, getBulletsByDay } from "../../api/journal"
 import {getJournal, getDate} from '../../utils/localStorage'
 
 //Hold the dragged element
 var dragSrcEl = null; 
 
-export default class Entry extends HTMLElement{ 
+export default class WeeklyEntry extends HTMLElement{ 
 
     //Make the entry-comp element draggable when appended to DOM 
     connectedCallback(){ 
@@ -68,20 +67,21 @@ export default class Entry extends HTMLElement{
         let style = document.createElement('style'); 
         style.textContent = 
         `
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
         .bullet-container {
             border: none;
             background-color: rgba(255,255,255,0.3);
             border-radius: 1rem;
             color: white;
             text-align: left;
-            padding: 0.5em;
-            margin: 0.25em;
+            padding: 0.1em;
+            margin: 0.1em;
         }
         
         .content-container { 
             display: flex;  
             align-items: center; 
-            justify-content: space-between; 
+            justify-content: space-between;
         }
         li {
             align-item: left;
@@ -92,11 +92,21 @@ export default class Entry extends HTMLElement{
             border-color: #6a828d;
             border-radius: 10px;
             box-shadow: 1px 1px 3px #6a828d;
-            margin: 0.7em; 
+            margin: 0.7em;
+            margin-bottom: -0.25em;
+            margin-left: -0.5em;
+            position: relative;
+            background: #transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 1px 1px 3px #6a828d;
+            transition: 0.5s;
         }
 
         li:hover {
-            background-color: #f9f9f8;
+            background-color: rgba(255,255,255, 0.25);
+            transform: scale(1.05);
+            opacity: 1;
         }
 
         li button:hover {
@@ -105,7 +115,7 @@ export default class Entry extends HTMLElement{
         
         p { 
             display: inline; 
-            font-size: 20px;
+            font-size: 16px;
             font-family: 'Lato', sans-serif;
         }
 
@@ -224,7 +234,7 @@ export default class Entry extends HTMLElement{
 
         //Set type, content and Id of entry component 
         shadow.querySelector("li").setAttribute("class", entry.type);
-        const symbol = entry.type == "task" ? "☐" : entry.type == "event" ? "○" : "\u2022"
+        const symbol = entry.type == "task" ? "📌" : entry.type == "event" ? "🥳" : "📝"
         shadow.getElementById("symbol").innerHTML = symbol;
         this.setAttribute("id", entry.id); 
         shadow.querySelector("#content").innerHTML = entry.body; 
@@ -315,7 +325,7 @@ export default class Entry extends HTMLElement{
                 parent.removeChild(dragSrcEl);
 
                 //Recreate the element with stored data in DataTransfer object in UI
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new WeeklyEntry();
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
 
@@ -355,7 +365,7 @@ export default class Entry extends HTMLElement{
                 //UI visuals   
                 parent.removeChild(dragSrcEl);            
                 //Recreate the element with stored data in DataTransfer object
-                let dropElement = document.createElement('entry-comp');
+                let dropElement = new WeeklyEntry();
                 let entry = JSON.parse(event.dataTransfer.getData('text/plain'));
                 dropElement.entry = entry; 
     
@@ -481,7 +491,7 @@ export default class Entry extends HTMLElement{
                 //used to change onscreen bullet type since the above only changes backend
                 let symbol = "";
                 if(symbol == "") {
-                    symbol = entry.className == "task" ? "☐" : entry.className == "event" ? "○" : "\u2022"
+                    symbol = entry.className == "task" ? "📌" : entry.className == "event" ? "🥳" : "📝"
                 }
                 shadow.getElementById("symbol").textContent = symbol;
                 
@@ -576,4 +586,4 @@ export default class Entry extends HTMLElement{
 } //end class
 
 //Define the custom element 
-customElements.define('entry-comp', Entry); 
+customElements.define('weekly-entry-comp', WeeklyEntry); 

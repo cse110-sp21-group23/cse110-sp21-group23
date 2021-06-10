@@ -1,6 +1,7 @@
 import { getBulletsByDay, addBullet, updateSorting, deleteBullet } from '../../api/journal'
 import getHeader from '../../utils/header';
 import { getJournal } from "../../utils/localStorage"
+import WeeklyEntry from './weekly-entry';
 
 export default class EntryCreatorWeek extends HTMLElement{
     //Stores bullets by id's 
@@ -55,8 +56,8 @@ export default class EntryCreatorWeek extends HTMLElement{
             flex-direction: column;
         }
         #entryCreator { 
-            margin-top: 10px; 
-            margin-bottom: 10px; 
+            margin-top: 0px; 
+            margin-bottom: 0px; 
             margin-left: -10px; 
         }
         #radio1 { 
@@ -70,16 +71,24 @@ export default class EntryCreatorWeek extends HTMLElement{
             border: 1px solid;
             border-radius: 10px;
             border-color: #6a828d;
-            margin: 0px auto 0px auto; 
-            padding: 10px; 
-            width: 85%; 
+            margin: 0px auto 0px 15px; 
+            padding: 12px; 
+            width: 100%; 
             box-sizing: border-box; 
             font-size: 12pt;
             font-family: 'Lato', sans-serif;
         }
-        
+
         ul {
-            list-style-type: none; 
+            margin-top: -0.25em;
+            list-style-type: none;
+            position: relative;
+            width: 100%;
+            padding-left: 20px;
+            display: flex-column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }`;
 
         //Attach the template and style to this shadow root
@@ -155,7 +164,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             //No bullets for that day, return
             if (value.length == 0) {
                 //Attach empty entry if no entries 
-                let entryComponent = document.createElement('entry-comp'); 
+                let entryComponent = new WeeklyEntry(); 
                 entryComponent.entry = { 
                     journal_id: null,
                     body: null,
@@ -165,8 +174,8 @@ export default class EntryCreatorWeek extends HTMLElement{
                     date: null,
                 };
                 //Make it invisible 
-                entryComponent.shadowRoot.querySelector('li').className = "empty";
-                textBox.appendChild(entryComponent); 
+                //entryComponent.shadowRoot.querySelector('li').className = "empty";
+                //textBox.appendChild(entryComponent); 
 
                 return;
             };
@@ -176,7 +185,7 @@ export default class EntryCreatorWeek extends HTMLElement{
                 this.idList.push(element.id);
 
                 //Make an entry component 
-                let entryComponent = document.createElement("entry-comp");
+                let entryComponent = new WeeklyEntry(); 
 
                 //Append the component to the page 
                 entryComponent.entry = element;
@@ -204,7 +213,7 @@ export default class EntryCreatorWeek extends HTMLElement{
             let textBox = this.shadowRoot.querySelector("#entryContainer");
 
             //Make an entry component 
-            let entryComponent = document.createElement("entry-comp");
+            //let entryComponent = new WeeklyEntry;
 
             //Create entry object using entry-creator and use to set entry-component
             let entry = await this.createEntry(); 
