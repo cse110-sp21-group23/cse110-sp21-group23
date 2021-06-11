@@ -1,12 +1,12 @@
 /**
  * @jest-environment puppeteer
  */
-const baseURL = 'http://127.0.0.1:5000'
+const baseURL = 'http://127.0.0.1:5000';
 
 describe('Test bullet', () => {
   beforeAll(async () => {
-    await jest.setTimeout(30000)
-    await page.goto('http://127.0.0.1:5000/')
+    await jest.setTimeout(30000);
+    await page.goto('http://127.0.0.1:5000/');
     await page.waitForTimeout(1000);
   });
 
