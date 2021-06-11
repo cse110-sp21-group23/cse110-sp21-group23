@@ -1,4 +1,4 @@
-import {login, register} from '../src/js/api/user'
+import {login, register} from '../src/js/api/user';
 
 test('Test1: Valid login', async () => {
   const res = await login('e@gmail.com', 'asd');
