@@ -1,19 +1,19 @@
 // <navigation-bar> custom web component
 import { store } from '../../store';
-import { loadRoute } from '../../actions'
+import { loadRoute } from '../../actions';
 
 /**
- * Creates a new Side Navigation Bar for to load on every page 
- * @class 
+ * Creates a new Side Navigation Bar for to load on every page
+ * @class
  * */
 class NavigationBar extends HTMLElement {
-    constructor(custom) {
-      super();
-  
-      // templated HTML content
-      const template = document.createElement('template');
-  
-      template.innerHTML = `
+  constructor (custom) {
+    super();
+
+    // templated HTML content
+    const template = document.createElement('template');
+
+    template.innerHTML = `
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
             
@@ -93,110 +93,102 @@ class NavigationBar extends HTMLElement {
           
           `;
 
+    this.setAttribute('custom', custom);
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-      this.setAttribute('custom', custom);
-      this.attachShadow({ mode: 'open' })
-      this.shadowRoot.appendChild(template.content.cloneNode(true))
+    custom.forEach(element => {
+      const newLog = document.createElement('button');
+      newLog.className = 'sidebar-entry';
+      newLog.innerHTML = element;
+      this.shadowRoot.querySelector('#customLogs').append(newLog);
+    });
 
-      custom.forEach(element => {
-        let newLog = document.createElement('button');
-        newLog.className = "sidebar-entry";
-        newLog.innerHTML = element;
-        this.shadowRoot.querySelector('#customLogs').append(newLog);
-      });
-
-
-      var elem = this.shadowRoot.querySelector(".sidebar");
-      var hidebutton = this.shadowRoot.querySelector("#hide");
-      var id = null;
-      var hiding = false;
-      this.shadowRoot.querySelector("#hide").onclick = function(){ 
-        if(!hiding){
-            var pos = -20;
+    const elem = this.shadowRoot.querySelector('.sidebar');
+    const hidebutton = this.shadowRoot.querySelector('#hide');
+    let id = null;
+    let hiding = false;
+    this.shadowRoot.querySelector('#hide').onclick = function () {
+      if (!hiding) {
+        var pos = -20;
+        clearInterval(id);
+        id = setInterval(frame, 1);
+        function frame () {
+          if (pos == -200) {
             clearInterval(id);
-            id = setInterval(frame, 1);
-            function frame() {
-              if (pos == -200) {
-                clearInterval(id);
-              } else {
-                pos--;  
-                elem.style.left = pos + "px"; 
-              }
-            }
-            hiding = !hiding;
-            hidebutton.innerHTML = ">";
-        }else{
-            var pos = -200;
-            clearInterval(id);
-            id = setInterval(frame, 1);
-            function frame() {
-              if (pos == -20) {
-                clearInterval(id);
-              } else {
-                pos++;  
-                elem.style.left = pos + "px"; 
-              }
-            }
-            hiding = !hiding;
-            hidebutton.innerHTML = "<";
+          } else {
+            pos--;
+            elem.style.left = pos + 'px';
+          }
         }
-      };
-
-      var entries = this.shadowRoot.querySelectorAll(".sidebar-entry");
-      for(var i = 0; i < entries.length; i++){
-          entries[i].onclick = function(e){
-            store.dispatch(loadRoute({ path: this.dataset.page }))
-            for(var j = 0; j < entries.length; j++){
-                entries[j].style.backgroundColor = '#97b1ba';
-            }
-            e.target.style.backgroundColor = "#437587";
-          };
+        hiding = !hiding;
+        hidebutton.innerHTML = '>';
+      } else {
+        var pos = -200;
+        clearInterval(id);
+        id = setInterval(frame, 1);
+        function frame () {
+          if (pos == -20) {
+            clearInterval(id);
+          } else {
+            pos++;
+            elem.style.left = pos + 'px';
+          }
+        }
+        hiding = !hiding;
+        hidebutton.innerHTML = '<';
       }
+    };
 
+    const entries = this.shadowRoot.querySelectorAll('.sidebar-entry');
+    for (let i = 0; i < entries.length; i++) {
+      entries[i].onclick = function (e) {
+        store.dispatch(loadRoute({ path: this.dataset.page }));
+        for (let j = 0; j < entries.length; j++) {
+          entries[j].style.backgroundColor = '#97b1ba';
+        }
+        e.target.style.backgroundColor = '#437587';
+      };
     }
-  
-    
-    /**
+  }
+
+  /**
      * Function which will return the custom attribute from the NavigationBar class
      * @returns The custom attribute from the NavigationBar class
      */
-    get custom() {
-      return this.getAttribute('custom');
-    }
+  get custom () {
+    return this.getAttribute('custom');
+  }
 
-    
-    /**
+  /**
      * Function which sets the custom attribute from the NavigationBar class
      * @param  {} custom
      */
-    set custom(custom) {
-        custom.forEach(element => {
-            let newLog = document.createElement('button');
-            newLog.className = "sidebar-entry";
-            newLog.innerHTML = element;
-            this.shadowRoot.querySelector('#custonLogs').append(newLog);
-        });
-      this.setAttribute('custom', custom);
-    }
+  set custom (custom) {
+    custom.forEach(element => {
+      const newLog = document.createElement('button');
+      newLog.className = 'sidebar-entry';
+      newLog.innerHTML = element;
+      this.shadowRoot.querySelector('#custonLogs').append(newLog);
+    });
+    this.setAttribute('custom', custom);
+  }
 
-    //Infinite loop?
-    connectedCallback(){ 
-      this.render();
-    }
+  // Infinite loop?
+  connectedCallback () {
+    this.render();
+  }
 
-    render() {
-      /*
+  render () {
+    /*
       let newBar;
       let custom = []
       newBar = new NavigationBar(custom);
       let main = document.querySelector("main");
       main.append(newBar);
       */
-    }
-
-
+  }
 }
-  customElements.define('navigation-bar', NavigationBar);
+customElements.define('navigation-bar', NavigationBar);
 
-  
-  export { NavigationBar };
+export { NavigationBar };
