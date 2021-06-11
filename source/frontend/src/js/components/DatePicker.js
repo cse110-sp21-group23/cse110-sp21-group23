@@ -1,12 +1,12 @@
-import {setDate} from "../utils/localStorage"
-import Calendar from './calendar'
+import { setDate } from '../utils/localStorage';
+import Calendar from './calendar';
 // July 9, 2021
-const dates = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-    "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
+const dates = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
+  '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
 
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; 
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 let myDate = new Date();
 let year;
@@ -17,25 +17,24 @@ let dateText;
 
 /**
  * Creates a new Date Picker that attaches to the daily view to allow users to choose which date
- * @class 
+ * @class
  * */
 export default class DatePicker extends HTMLElement {
-    constructor() {
+  constructor () {
+    year = myDate.getFullYear();
+    month = myDate.getMonth();
+    day = myDate.getDay();
+    date = myDate.getDate();
 
-        year = myDate.getFullYear();
-        month = myDate.getMonth();
-        day = myDate.getDay();
-        date = myDate.getDate();
+    dateText = months[month] + ' ' + dates[date] + ' ' + year;
 
-        dateText = months[month] + " " + dates[date] + " " + year;
+    super();
 
-        super();
+    this.attachShadow({ mode: 'open' });
 
-        this.attachShadow({ mode: 'open' })
+    const template = document.createElement('template');
 
-        const template = document.createElement('template');
-
-        template.innerHTML = `
+    template.innerHTML = `
             <div class="full-date">
                 <i class='left-arrow' id="prev"></i>
                 <h2 id="month-text"></h2>
@@ -43,10 +42,10 @@ export default class DatePicker extends HTMLElement {
                 <div id="date"></div>
                 <i class='right-arrow' id="next"></i>
             </div>
-        `
-        let style = document.createElement('style');
+        `;
+    let style = document.createElement('style');
 
-        style.textContent = `
+    style.textContent = `
             #date-text{
                 color: white;
                 font-family: 'Lato', sans-serif;
@@ -102,96 +101,94 @@ export default class DatePicker extends HTMLElement {
                 margin-left: 0.5em;
                 align-items: center;
             }
-        `
+        `;
 
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.shadowRoot.appendChild(style);
-        let calendar = document.createElement('calendar-picker');
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.appendChild(style);
+    let calendar = document.createElement('calendar-picker');
 
-        this.shadowRoot.getElementById("date").append(calendar)
+    this.shadowRoot.getElementById('date').append(calendar);
 
-        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
-        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
+    this.shadowRoot.getElementById('month-text').innerHTML = days[day];
+    this.shadowRoot.getElementById('date-text').innerHTML = dateText;
 
-        //Store the date into local storage 
-        setDate(myDate); 
+    // Store the date into local storage
+    setDate(myDate);
 
-        this.shadowRoot.getElementById("next").addEventListener('click', (e) => {
-            this.next();
-            setDate(myDate); 
-            document.dispatchEvent(new CustomEvent("dateChange", {
-                detail: myDate
-            }))
-        });
+    this.shadowRoot.getElementById('next').addEventListener('click', (e) => {
+      this.next();
+      setDate(myDate);
+      document.dispatchEvent(new CustomEvent('dateChange', {
+        detail: myDate
+      }));
+    });
 
-        this.shadowRoot.getElementById("prev").addEventListener('click', (e) => {
-            this.prev();
-            setDate(myDate); 
-            document.dispatchEvent(new CustomEvent("dateChange", {
-                detail: myDate
-            }))
-        });
+    this.shadowRoot.getElementById('prev').addEventListener('click', (e) => {
+      this.prev();
+      setDate(myDate);
+      document.dispatchEvent(new CustomEvent('dateChange', {
+        detail: myDate
+      }));
+    });
 
-        document.addEventListener('calendarDateChanged', e => {
-            myDate = e.detail
-            myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
-            month = myDate.getMonth();
-            date = myDate.getDate();
-            day = myDate.getDay();
-            year = myDate.getFullYear();
-            //This portion re-renders the current date string and appends it to the h1 tag
-            dateText = months[month] + " " + dates[date] + " " + year;
-            this.shadowRoot.getElementById("date-text").innerHTML = dateText;
-            this.shadowRoot.getElementById("month-text").innerHTML = days[day];
-            setDate(myDate);
-            document.dispatchEvent(new CustomEvent("dateChange", {
-                detail: e.detail
-            }))
-        })
+    document.addEventListener('calendarDateChanged', e => {
+      myDate = e.detail;
+      myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
+      month = myDate.getMonth();
+      date = myDate.getDate();
+      day = myDate.getDay();
+      year = myDate.getFullYear();
+      // This portion re-renders the current date string and appends it to the h1 tag
+      dateText = months[month] + ' ' + dates[date] + ' ' + year;
+      this.shadowRoot.getElementById('date-text').innerHTML = dateText;
+      this.shadowRoot.getElementById('month-text').innerHTML = days[day];
+      setDate(myDate);
+      document.dispatchEvent(new CustomEvent('dateChange', {
+        detail: e.detail
+      }));
+    });
+  }
 
+  expandComponent (e) {
+    let content = e.nextElementSibling;
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + 'px';
     }
+  }
 
-    expandComponent(e) {
-        let content = e.nextElementSibling;
-        if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-        } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-        }
-    }
+  next () {
+    myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
+    year = myDate.getFullYear();
+    month = myDate.getMonth();
+    day = myDate.getDay();
+    date = myDate.getDate();
+    this.shadowRoot.querySelector('calendar-picker').date = myDate;
 
-    next() {
-        myDate = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate() + 1);
-        year = myDate.getFullYear();
-        month = myDate.getMonth();
-        day = myDate.getDay();
-        date = myDate.getDate();
-        this.shadowRoot.querySelector('calendar-picker').date = myDate
+    // This portion re-renders the current date string and appends it to the h1 tag
+    dateText = months[month] + ' ' + dates[date] + ' ' + year;
+    this.shadowRoot.getElementById('date-text').innerHTML = dateText;
+    this.shadowRoot.getElementById('month-text').innerHTML = days[day];
+  }
 
-        //This portion re-renders the current date string and appends it to the h1 tag
-        dateText = months[month] + " " + dates[date] + " " + year;
-        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
-        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
-    }
+  prev () {
+    myDate = new Date(myDate - 86400000);
+    year = myDate.getFullYear();
+    month = myDate.getMonth();
+    day = myDate.getDay();
+    date = myDate.getDate();
+    this.shadowRoot.querySelector('calendar-picker').date = myDate;
 
-    prev() {
-        myDate = new Date(myDate - 86400000);
-        year = myDate.getFullYear();
-        month = myDate.getMonth();
-        day = myDate.getDay();
-        date = myDate.getDate();
-        this.shadowRoot.querySelector('calendar-picker').date = myDate
-        
-        //This portion re-renders the current date string and appends it to the h1 tag
-        dateText = months[month] + " " + dates[date] + " " + year;
-        this.shadowRoot.getElementById("date-text").innerHTML = dateText;
-        this.shadowRoot.getElementById("month-text").innerHTML = days[day];
-    }
-    
-    get date() { 
-        return myDate; 
-    }
+    // This portion re-renders the current date string and appends it to the h1 tag
+    dateText = months[month] + ' ' + dates[date] + ' ' + year;
+    this.shadowRoot.getElementById('date-text').innerHTML = dateText;
+    this.shadowRoot.getElementById('month-text').innerHTML = days[day];
+  }
 
+  get date () {
+    return myDate;
+  }
 }
 
 window.customElements.define('date-picker', DatePicker);
