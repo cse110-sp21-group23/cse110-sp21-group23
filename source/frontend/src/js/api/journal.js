@@ -1,4 +1,4 @@
-import axios from './axios'
+import axios from './axios';
 import "@babel/polyfill";
 
 /**
@@ -8,12 +8,12 @@ import "@babel/polyfill";
  */
 export const getJournals = async (header) => {
     try {
-        const res = (await axios.get('journal', header))
-        return res.data
+        const res = (await axios.get('journal', header));
+        return res.data;
     } catch (err) {
-        throw err
+        throw err;
     }
-}
+};
 
 /**
  * Retrieves all bullets belonging to a user in a particular date
@@ -25,11 +25,11 @@ export const getJournals = async (header) => {
  */
 export const getBulletsByDay = async (journalId, start, header) => {
     try {
-        return (await axios.get(`journal/${journalId}/bullet/day/${start.toDateString()}`, header)).data
+        return (await axios.get(`journal/${journalId}/bullet/day/${start.toDateString()}`, header)).data;
     } catch (err) {
-        throw err
+        throw err;
     }
-}
+};
 
 /*
 Bullet must look like this
@@ -53,11 +53,11 @@ export const addBullet = async (bullet, header) => {
             'journal/bullet',
             bullet,
             header
-        )).data
+        )).data;
     } catch (err) {
-        throw err
+        throw err;
     }
-}
+};
 
 /**
  * Deletes a bullet 
@@ -69,11 +69,11 @@ export const deleteBullet = async (id, header) => {
         await axios.delete(
             `/journal/bullet/${id}`,
             header
-        )
+        );
     } catch (err) {
-        throw err
+        throw err;
     }
-}
+};
 
 /**
  * Function which will edit a bullet in the journal
@@ -85,11 +85,11 @@ export const editBullet = async (bullet, header) => {
             `/journal/bullet`,
             bullet,
             header
-        )
+        );
     } catch (err) {
-        throw err
+        throw err;
     }
-}
+};
 
 /**
  * Function which will set the sorting order for the bullets of a particular day specified by array
@@ -108,18 +108,18 @@ export const updateSorting = async (journalId, date, array, header) => {
                 },
                 header
             )
-        ).data
+        ).data;
     } catch (err) {
-        throw err
+        throw err;
     }
-}
+};
 
 /**
  * Function which will return the content-type header used HTTP requests with axios
  * @returns content-type header used HTTP requests with axios
  */
 const getHeader = () => {
-    const token = getToken()
+    const token = getToken();
     return {
         headers: {
             Authorization: token,
