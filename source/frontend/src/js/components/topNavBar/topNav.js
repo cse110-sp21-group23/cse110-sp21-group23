@@ -1,18 +1,17 @@
-import { getEmail } from '../../utils/localStorage'
+import { getEmail } from '../../utils/localStorage';
 /**
  * Creates a new Top Header Navgation Bar and renders it to display on every page
- * @class 
+ * @class
  * */
 export default class TopNav extends HTMLElement {
-    constructor() {
+  constructor () {
+    super();
 
-        super();
+    this.attachShadow({ mode: 'open' });
 
-        this.attachShadow({ mode: 'open' })
+    const template = document.createElement('template');
 
-        const template = document.createElement('template');
-
-		template.innerHTML = `
+    template.innerHTML = `
 		<script src="/source/frontend/src/js/components/topNavBar/topNav.js"></script>
 		
 		<header class="header">
@@ -24,10 +23,10 @@ export default class TopNav extends HTMLElement {
 		</header>
 		
 		<script src="/source/frontend/src/js/components/topNavBar/topNav.js"></script>
-        `
-        let style = document.createElement('style');
+        `;
+    const style = document.createElement('style');
 
-		style.textContent = `
+    style.textContent = `
 
 		@font-face{
 			font-family: 'Rock Salt', cursive;
@@ -136,31 +135,28 @@ export default class TopNav extends HTMLElement {
 			}
 		
 		}
-        `
+        `;
 
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-		this.shadowRoot.appendChild(style);
-		/**
-		 * Adds email information to the signout button on the right
-		 * Also adds an event listener to that button with function indicated below
-		 * Not yet implemented
-		 * */
-		let emailButton = this.shadowRoot.getElementById('email');
-		if (emailButton) {
-			emailButton.innerHTML = getEmail();
-			emailButton.addEventListener('click', emailButtonFunction());
-		}
-		
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.appendChild(style);
+    /**
+	 *  Adds email information to the signout button on the right
+	 *  Also adds an event listener to that button with function indicated below
+	 *  Not yet implemented
+	 * */
+    const emailButton = this.shadowRoot.getElementById('email');
+    if (emailButton) {
+      emailButton.innerHTML = getEmail();
+      emailButton.addEventListener('click', emailButtonFunction());
     }
+  }
 }
 
-// document.getElementById('email').innerHTML = getEmail();
-
- /**
+/**
  * Function that triggers when Email button is clicked
  * probably log out function of some sort
  */
-function emailButtonFunction() {
+function emailButtonFunction () {
 
 }
 

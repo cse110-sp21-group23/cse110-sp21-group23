@@ -1,114 +1,107 @@
-const loginURL = "http://127.0.0.1:5000/";
-const dailyURL = "http://127.0.0.1:5000/daily";
+const loginURL = 'http://127.0.0.1:5000/';
+const dailyURL = 'http://127.0.0.1:5000/daily';
 
-describe("Bottom and Top Navigation test:", () => {
+describe('Bottom and Top Navigation test:', () => {
+  beforeAll(async () => {
+    jest.setTimeout(20000);
+    await page.goto(loginURL);
+    await page.waitForTimeout(500);
+    // Login first
+    await page.$eval('#username-input', (e) => (e.value = 'e@gmail.com'));
+    await page.$eval('#password-input', (e) => (e.value = 'asd'));
 
-    beforeAll(async () => {
-        jest.setTimeout(20000);
-        await page.goto(loginURL);
-        await page.waitForTimeout(500);
-        // Login first
-        await page.$eval("#username-input", (e) => (e.value = "e@gmail.com"));
-        await page.$eval("#password-input", (e) => (e.value = "asd"));
-    
-        await page.$eval("#signin-button", (e) => e.click());
-    
-        await page.waitForNavigation();
-       
-      }, 20000);
+    await page.$eval('#signin-button', (e) => e.click());
 
+    await page.waitForNavigation();
+  }, 20000);
 
-    // check landing page 
-    it('Test1: Check landing page is on the Daily Page', async () => {
-        let curURL = page.url(); 
-        // ASK ABOUT THE CURRENT BASE OR WHATEVER 
-        expect(curURL).toBe('http://127.0.0.1:5000/daily')
+  it('Test1: Check landing page is on the Daily Page', async () => {
+    const curURL = page.url();
+    expect(curURL).toBe('http://127.0.0.1:5000/daily');
+  });
 
-    })
+  it('Test2: Have access to weekly page', async () => {
+    await page.evaluate(() => {
+      document.querySelector('navigation-bar').shadowRoot.querySelector('[data-page="weekly').click();
+    });
 
-    // click on week button from navigation bar 
-    it('Test2: Have access to weekly page', async() => {
-        
-        await page.evaluate(() => {
-            document.querySelector('navigation-bar').shadowRoot.querySelector('[data-page="weekly').click();
-        });
+    const curURL = page.url();
 
-        let curURL = page.url(); 
+    expect(curURL).toBe('http://127.0.0.1:5000/weekly');
+  });
 
-        expect(curURL).toBe('http://127.0.0.1:5000/weekly')
+  it('Test3: Check if the logo brings user back to home page (daily page)', async () => {
+    const dailyB = await (
+      await page.evaluateHandle(
+        'document.querySelector("top-navbar").shadowRoot.querySelector("h1 > a")'
+      )
+    ).asElement();
 
-    })
+    await dailyB.click();
+    await page.waitForTimeout(3000);
 
-    it('Test3: Check if the logo brings user back to home page (daily page)', async() => {
-        
-        await page.evaluate(() => {
-            document.querySelector('top-navbar').click('a[href="/daily"]');
-        });
+    const curURL = page.url();
 
-        let curURL = page.url(); 
+    expect(curURL).toBe('http://127.0.0.1:5000/daily');
+  });
 
-        expect(curURL).toBe('http://127.0.0.1:5000/daily')
+  it('Test2: Have access to weekly page', async () => {
+    await page.evaluate(() => {
+      document.querySelector('navigation-bar').shadowRoot.querySelector('[data-page="weekly').click();
+    });
 
-    })
+    const curURL = page.url();
 
-    it('Test3: Have access to daily page', async() => {
-        
-        await page.evaluate(() => {
-            document.querySelector('navigation-bar').shadowRoot.querySelector('[data-page="daily').click();
-        });
+    expect(curURL).toBe('http://127.0.0.1:5000/weekly');
+  });
 
-        let curURL = page.url(); 
+  it('Test3: Have access to daily page', async () => {
+    await page.evaluate(() => {
+      document.querySelector('navigation-bar').shadowRoot.querySelector('[data-page="daily').click();
+    });
 
-        expect(curURL).toBe('http://127.0.0.1:5000/daily')
+    const curURL = page.url();
 
-    })
+    expect(curURL).toBe('http://127.0.0.1:5000/daily');
+  });
 
-    it('Test4: Check if side navigation bar can hide', async() => {
+  it('Test4: Check if side navigation bar can hide', async () => {
+    const closed = await page.evaluate(() => {
+      document.querySelector('navigation-bar').shadowRoot.querySelector('#hide').click();
+      return document
+        .querySelector('navigation-bar')
+        .shadowRoot.querySelector('#hide').innerHTML;
+    });
 
-        const closed = await page.evaluate(() => {
-            document.querySelector('navigation-bar').shadowRoot.querySelector('#hide').click();
-            return document
-              .querySelector('navigation-bar')
-              .shadowRoot.querySelector("#hide").innerHTML;
-          });
+    expect(closed.replace('&gt;', '>')).toBe('>');
+  });
 
-          expect(closed.replace('&gt;','>')).toBe('>');
-    })
+  it('Test5: Check if side navigation bar can show', async () => {
+    const closed = await page.evaluate(() => {
+      document.querySelector('navigation-bar').shadowRoot.querySelector('#hide').click();
+      return document
+        .querySelector('navigation-bar')
+        .shadowRoot.querySelector('#hide').innerHTML;
+    });
 
-        
-    it('Test4: Check if side navigation bar can show', async() => {
+    expect(closed.replace('&lt;', '<')).toBe('<');
+  });
 
-        const closed = await page.evaluate(() => {
-            document.querySelector('navigation-bar').shadowRoot.querySelector('#hide').click();
-            return document
-              .querySelector('navigation-bar')
-              .shadowRoot.querySelector("#hide").innerHTML;
-          });
+  it('Test6: Check if user can navigate to back page in history', async () => {
+    console.log(page.url());
 
-          expect(closed.replace('&lt;','<')).toBe('<');
-    })
+    await page.goBack();
 
-    it('Test5: Check if user can navigate to back page in history', async() => {
+    const curURL = page.url();
 
-        await page.goBack(); 
+    expect(curURL).toBe('http://127.0.0.1:5000/weekly');
+  });
 
-        let curURL = page.url(); 
+  it('Test7: Check if user can navigate forward page in history', async () => {
+    await page.goForward();
 
-        expect(curURL).toBe('http://127.0.0.1:5000/weekly');
+    const curURL = page.url();
 
-
-    })
-
-
-    it('Test6: Check if user can navigate forward page in history', async() => {
-
-        await page.goForward(); 
-
-        let curURL = page.url(); 
-
-        expect(curURL).toBe('http://127.0.0.1:5000/daily');
-
-
-    })
-
-})
+    expect(curURL).toBe('http://127.0.0.1:5000/daily');
+  });
+});

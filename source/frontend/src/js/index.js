@@ -1,22 +1,20 @@
 import { store } from './store';
 import { Delph } from './Delph';
-//import { Header } from './components/header'
-import { routes } from './routes'
-import "@babel/polyfill";
+import { routes } from './routes';
+import '@babel/polyfill';
 
 export class Index {
-
-  constructor() {
-    let path = window.location.pathname.substr(1)
-    let config = {
+  constructor () {
+    const path = window.location.pathname.substr(1);
+    const config = {
       routes: routes,
       store: store,
       path: path
-    }
-    //new Header(config)
-    new Delph(config)
+    };
+    // new Header(config)
+    new Delph(config);
   }
 };
 document.addEventListener('DOMContentLoaded', () => {
-  new Index()
-})
+  new Index();
+});
