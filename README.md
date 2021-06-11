@@ -12,6 +12,7 @@ You can access our 23andMe Bullet Journal using this [TODO].
 
 ## Final Project Videos
 - [TODO]
+- [Final video - Private version](https://youtu.be/F7HqybqDJ2w)
 
 ## CI/CD Pipeline Information and Documentation:
 All of the CI/CD pipeline can be found in the **/admin** folder\
