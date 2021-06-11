@@ -11,7 +11,7 @@ test('Test2: Login with unregistered email', async () => {
   } catch (err) {
     expect(err).toBe("Email not found");
   }
-})
+});
 
 test('Test3: Login with wrong password', async () => {
   try {
@@ -19,7 +19,7 @@ test('Test3: Login with wrong password', async () => {
   } catch (err) {
     expect(err).toBe("Wrong password");
   }
-})
+});
 
 test('Test4: Register with used email', async () => {
   try {
@@ -27,4 +27,4 @@ test('Test4: Register with used email', async () => {
   } catch (err) {
     expect(err).toBe("The email has already been used");
   }
-})
+});
