@@ -7,7 +7,7 @@
     beforeAll(async () => {
         await jest.setTimeout(30000)
         await page.goto('http://127.0.0.1:5000/')
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(1000);
     });
 
     it('Test1: Login and go to July 4, 2019', async () => {
@@ -201,21 +201,21 @@
     it('Test9: Delete bullet', async () => {
         
         //clicks on the entry made in test2 to open modal
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(1000);
         await page.mouse.click(550, 350,  {clickCount: 2});
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(1000);
 
         //click on the delete entry button
         let del = await (await page.evaluateHandle(`document.querySelector('daily-page').shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("entry-comp").shadowRoot.getElementById("deleteButton")`)).asElement();
         await del.click();
 
+        await page.waitForTimeout(2000); 
         //Get the number of things inside entryContainer (number of bullets / entry)
         let numEntries = await page.evaluate(() => {
             let entries = document.querySelector('daily-page').shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer").children;
             return entries.length;
         });
         expect(numEntries).toEqual(0);
-        
-    });
+    }, 15000);
     
 });
