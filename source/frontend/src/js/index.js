@@ -11,7 +11,7 @@ export class Index {
       store: store,
       path: path
     };
-    // new Header(config)
+    // new Header(config) 
     new Delph(config);
   }
 };
