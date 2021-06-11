@@ -53,8 +53,8 @@ describe('E2E Testing for dragging within same list', () => {
   });
 
   it('Test1: Login and go to July 7, 1950', async () => {
-    await page.$eval('#username-input', e => e.value = 'e@gmail.com');
-    await page.$eval('#password-input', e => e.value = 'asd');
+    await page.$eval('#username-input', e => e.value = 'f@gmail.com');
+    await page.$eval('#password-input', e => e.value = '123');
     await page.$eval('#signin-button', e => e.click());
     await page.waitForTimeout(1000);
     await page.evaluate(() => {
