@@ -1,4 +1,4 @@
-const baseURL = 'http://127.0.0.1:5000'
+const baseURL = 'http://127.0.0.1:5000';
 /**
  * Helper function for dragging and dropping elements on the page natively through JS. (Puppeteer alternatives just did 
  * not work)
@@ -7,7 +7,7 @@ const baseURL = 'http://127.0.0.1:5000'
  */
  async function dragAndDrop(source, target) {
     await page.evaluate((source, target) => {
-        let event
+        let event;
         event = document.createEvent("CustomEvent");
         event.initCustomEvent("mousedown", true, true, null);
         event.clientX = source.getBoundingClientRect().left;
@@ -48,16 +48,16 @@ const baseURL = 'http://127.0.0.1:5000'
 
 describe('E2E testing for dragging/dropping between different lists', ()=> { 
     beforeAll(async () => {
-        await jest.setTimeout(30000)
-        await page.goto('http://127.0.0.1:5000/')
+        await jest.setTimeout(30000);
+        await page.goto('http://127.0.0.1:5000/');
         await page.waitForTimeout(500);
     });
 
     it('Test1: Login', async () => {
         //Login 
-        await page.$eval('#username-input', e => e.value = "f@gmail.com")
-        await page.$eval('#password-input', e => e.value = "123")
-        await page.$eval('#signin-button', e => e.click())
+        await page.$eval('#username-input', e => e.value = "f@gmail.com");
+        await page.$eval('#password-input', e => e.value = "123");
+        await page.$eval('#signin-button', e => e.click());
         await page.waitForTimeout(1000);
 
         //Goto the weekly page 
@@ -108,7 +108,7 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         let day3Listbefore = await page.evaluate(()=> { 
             let numChildren = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("#entryContainer").children.length; 
             return numChildren;
-        })
+        });
         //click on the add button 
         let textB = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("#entryBox")`)); 
         await textB.click();  
@@ -177,7 +177,7 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         let day1Listbefore = await page.evaluate(()=> { 
             let numChildren = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("#entryContainer").children.length; 
             return numChildren;
-        })
+        });
         //Grab first entry content in third day
         let entry1Body = await page.evaluate(()=> { 
             let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
@@ -187,7 +187,7 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         let entry2Body = await page.evaluate(()=> { 
             let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML; 
             return content; 
-        })
+        });
 
          //Grab entries to DnD
          let entry1 = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(1)")`));
@@ -276,7 +276,7 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         await page.waitForTimeout(2000); 
 
         //Check entry at day 2 index 1 
-        let entry1BodyAfter
+        let entry1BodyAfter;
         //Normal cases where there isn't one entry in dragged on list
         if (day2Listbefore == 1 && entry2Body != ""){
             entry1BodyAfter = await page.evaluate(() => { 
@@ -364,4 +364,4 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         await page.waitForTimeout(1000);
         expect(entry1Body).toBe(entry1BodyAfter); 
     }, 15000);
-})
+});
