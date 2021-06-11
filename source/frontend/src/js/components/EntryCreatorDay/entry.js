@@ -633,7 +633,7 @@ export default class Entry extends HTMLElement{
                 shadow.getElementById("symbol").textContent = symbol;
                 
                 //edits bullet in the backend and closes modal
-                await editBullet(bulletChange);
+                await editBullet(bulletChange, getHeader());
                 modal.style.display = "none";
             }; //end edit bullet method
             
@@ -684,7 +684,7 @@ export default class Entry extends HTMLElement{
 
                 //closes modal and updates bullet
                 modal.style.display = "none";
-                await editBullet(bulletChange);
+                await editBullet(bulletChange, getHeader());
             };    //end strikethrough function
 
             //Delete listener 
@@ -696,15 +696,17 @@ export default class Entry extends HTMLElement{
                 deleteBullet(this.internalEntry.id, getHeader()).then(()=> { 
                     let ec = this.getRootNode().host; 
                     //Update ec id list 
-
-                    let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
-                    ec.idOrder.splice(index,1);  
-                    let date = ec.date; 
-
-                    //Update list in backend
-                    updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
-                    //Remove
-                    this.remove(); 
+                    console.log(ec);
+                    if(ec != null) {
+                        let index = ec.idOrder.findIndex((element) => element == this.internalEntry.id);
+                        ec.idOrder.splice(index,1);  
+                        let date = ec.date; 
+    
+                        //Update list in backend
+                        updateSorting(getJournal(), new Date(date), ec.idOrder, getHeader()); 
+                        //Remove
+                        this.remove(); 
+                    }
                 }); 
             });
 
