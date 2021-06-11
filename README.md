@@ -2,6 +2,9 @@
 
 ## Bullet Journal by 23andMe
 You can access our 23andMe Bullet Journal using [here](https://cse110-23-web.herokuapp.com/)!
+![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/dailyView.png)
+![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/weeklyView.png)
+
 
 ## Project Features
 * User signup
