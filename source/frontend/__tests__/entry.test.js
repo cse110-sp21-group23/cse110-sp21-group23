@@ -11,9 +11,9 @@ describe('Test bullet', () => {
   });
 
   it('Test1: Login and go to July 4, 2019', async () => {
-    await page.$eval('#username-input', e => e.value = "e@gmail.com")
-    await page.$eval('#password-input', e => e.value = "asd")
-    await page.$eval('#signin-button', e => e.click())
+    await page.$eval('#username-input', e => e.value = "e@gmail.com");
+    await page.$eval('#password-input', e => e.value = "asd");
+    await page.$eval('#signin-button', e => e.click());
     await page.waitForTimeout(1000);
     await page.evaluate(() => {
       let calendar = document.querySelector("daily-page").shadowRoot.querySelector("date-picker").shadowRoot.querySelector("calendar-picker");
@@ -28,14 +28,14 @@ describe('Test bullet', () => {
 
     expect(dateText).toEqual("Jul 4 2019");
     await page.waitForTimeout(1000);
-  }, 15000)
+  }, 15000);
 
   it('Test1.5: Make sure July 4, 2019 is empty', async () => {
     let numEntries = await page.evaluate(() => {
       let entries = document.querySelector('daily-page').shadowRoot.querySelector("entry-creator").shadowRoot.querySelector("#entryContainer").children;
       return entries.length;
     });
-    expect(numEntries).toEqual(0)
+    expect(numEntries).toEqual(0);
   });
 
     
