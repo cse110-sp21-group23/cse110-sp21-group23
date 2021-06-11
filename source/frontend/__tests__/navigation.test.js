@@ -88,35 +88,27 @@ describe("Bottom and Top Navigation test:", () => {
           expect(closed.replace('&lt;','<')).toBe('<');
     })
 
+    it('Test5: Check if user can navigate to back page in history', async() => {
 
-/*
-    // click on day btn from navigation bar
-    // if /weekly
-    it('Test5: Have access to daily page', async() => {
-        
-        await page.evaluate(() => {
-            document.querySelector('[data-page="daily"]').click();
-        });
+        await page.goBack(); 
 
         let curURL = page.url(); 
 
-        expect(curURL).toBe('http://0.0.0.0:2014/daily')
+        expect(curURL).toBe('http://127.0.0.1:5000/weekly');
+
 
     })
- 
-    // click on 23ANDME 
-    // if /daily
-    it('Test##: Check if logo directs the site to daily page', async () => {
-        await page.evaluate(() => {
-            document.querySelector('.logo').click();
-        });
+
+
+    it('Test6: Check if user can navigate forward page in history', async() => {
+
+        await page.goForward(); 
+
         let curURL = page.url(); 
-        // ASK ABOUT THE CURRENT BASE OR WHATEVER 
-        expect(curURL).toBe('http://0.0.0.0:2014/daily')
+
+        expect(curURL).toBe('http://127.0.0.1:5000/daily');
+
+
     })
-    */
 
-    // check it see if hide navigation bar works 
-
-    // Back arrow history 
 })
