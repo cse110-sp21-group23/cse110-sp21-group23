@@ -1,7 +1,7 @@
 const loginURL = "http://127.0.0.1:5000/";
 const dailyURL = "http://127.0.0.1:5000/daily";
 
-describe("Navigation test:", () => {
+describe("Bottom and Top Navigation test:", () => {
 
     beforeAll(async () => {
         jest.setTimeout(20000);
@@ -61,6 +61,31 @@ describe("Navigation test:", () => {
 
         expect(curURL).toBe('http://127.0.0.1:5000/daily')
 
+    })
+
+    it('Test4: Check if side navigation bar can hide', async() => {
+
+        const closed = await page.evaluate(() => {
+            document.querySelector('navigation-bar').shadowRoot.querySelector('#hide').click();
+            return document
+              .querySelector('navigation-bar')
+              .shadowRoot.querySelector("#hide").innerHTML;
+          });
+
+          expect(closed.replace('&gt;','>')).toBe('>');
+    })
+
+        
+    it('Test4: Check if side navigation bar can show', async() => {
+
+        const closed = await page.evaluate(() => {
+            document.querySelector('navigation-bar').shadowRoot.querySelector('#hide').click();
+            return document
+              .querySelector('navigation-bar')
+              .shadowRoot.querySelector("#hide").innerHTML;
+          });
+
+          expect(closed.replace('&lt;','<')).toBe('<');
     })
 
 
