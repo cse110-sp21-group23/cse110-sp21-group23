@@ -4,8 +4,7 @@
         "es2021": true
     },
     "extends": [
-        "plugin:vue/essential",
-        "standard"
+        "plugin:vue/essential"
     ],
     "parserOptions": {
         "ecmaVersion": 12,
