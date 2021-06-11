@@ -43,7 +43,7 @@ export default class DatePicker extends HTMLElement {
                 <i class='right-arrow' id="next"></i>
             </div>
         `;
-    let style = document.createElement('style');
+    const style = document.createElement('style');
 
     style.textContent = `
             #date-text{
@@ -105,7 +105,7 @@ export default class DatePicker extends HTMLElement {
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.shadowRoot.appendChild(style);
-    let calendar = document.createElement('calendar-picker');
+    const calendar = document.createElement('calendar-picker');
 
     this.shadowRoot.getElementById('date').append(calendar);
 
@@ -150,7 +150,7 @@ export default class DatePicker extends HTMLElement {
   }
 
   expandComponent (e) {
-    let content = e.nextElementSibling;
+    const content = e.nextElementSibling;
     if (content.style.maxHeight) {
       content.style.maxHeight = null;
     } else {

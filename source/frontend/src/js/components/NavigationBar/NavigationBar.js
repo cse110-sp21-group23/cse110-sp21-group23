@@ -98,16 +98,16 @@ class NavigationBar extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     custom.forEach(element => {
-      let newLog = document.createElement('button');
+      const newLog = document.createElement('button');
       newLog.className = 'sidebar-entry';
       newLog.innerHTML = element;
       this.shadowRoot.querySelector('#customLogs').append(newLog);
     });
 
-    var elem = this.shadowRoot.querySelector('.sidebar');
-    var hidebutton = this.shadowRoot.querySelector('#hide');
-    var id = null;
-    var hiding = false;
+    const elem = this.shadowRoot.querySelector('.sidebar');
+    const hidebutton = this.shadowRoot.querySelector('#hide');
+    let id = null;
+    let hiding = false;
     this.shadowRoot.querySelector('#hide').onclick = function () {
       if (!hiding) {
         var pos = -20;
@@ -140,11 +140,11 @@ class NavigationBar extends HTMLElement {
       }
     };
 
-    var entries = this.shadowRoot.querySelectorAll('.sidebar-entry');
-    for (var i = 0; i < entries.length; i++) {
+    const entries = this.shadowRoot.querySelectorAll('.sidebar-entry');
+    for (let i = 0; i < entries.length; i++) {
       entries[i].onclick = function (e) {
         store.dispatch(loadRoute({ path: this.dataset.page }));
-        for (var j = 0; j < entries.length; j++) {
+        for (let j = 0; j < entries.length; j++) {
           entries[j].style.backgroundColor = '#97b1ba';
         }
         e.target.style.backgroundColor = '#437587';
@@ -166,7 +166,7 @@ class NavigationBar extends HTMLElement {
      */
   set custom (custom) {
     custom.forEach(element => {
-      let newLog = document.createElement('button');
+      const newLog = document.createElement('button');
       newLog.className = 'sidebar-entry';
       newLog.innerHTML = element;
       this.shadowRoot.querySelector('#custonLogs').append(newLog);
@@ -174,7 +174,7 @@ class NavigationBar extends HTMLElement {
     this.setAttribute('custom', custom);
   }
 
-  //Infinite loop?
+  // Infinite loop?
   connectedCallback () {
     this.render();
   }
