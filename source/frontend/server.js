@@ -1,5 +1,5 @@
 const express = require('express');
-const history = require('connect-history-api-fallback')
+const history = require('connect-history-api-fallback');
 const server = express();
 const staticFileMiddleware = express.static('dist');
 server.use(staticFileMiddleware);
