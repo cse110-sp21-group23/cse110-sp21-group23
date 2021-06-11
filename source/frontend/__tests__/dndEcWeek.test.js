@@ -105,6 +105,10 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
             let textBox = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("#entryBox"); 
             textBox.value = "example entry"; 
         }); 
+        let day3Listbefore = await page.evaluate(()=> { 
+            let numChildren = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("#entryContainer").children.length; 
+            return numChildren;
+        })
         //click on the add button 
         let textB = await (await page.evaluateHandle(`document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.monday entry-creator-week").shadowRoot.querySelector("#entryBox")`)); 
         await textB.click();  
@@ -133,17 +137,35 @@ describe('E2E testing for dragging/dropping between different lists', ()=> {
         await page.waitForTimeout(1000); 
 
         //Check everything's alright 
-        let entry1BodyAfter = await page.evaluate(() => { 
-            let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML;
-            return content; 
-        }); 
-        console.log("The third day's first: " + entry2Body); 
-        //Should only run test if entry2 was not the empty entry 
-        if (entry2Body != ""){ 
-            let entry2BodyAfter = await page.evaluate(()=> { 
+        let entry1BodyAfter; 
+        if (day3Listbefore == 1 && entry2Body != ""){
+            entry1BodyAfter = await page.evaluate(() => { 
                 let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML;
                 return content; 
             }); 
+        }
+        else { 
+            entry1BodyAfter = await page.evaluate(() => { 
+                let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML;
+                return content; 
+            });
+        }
+        console.log("The third day's first: " + entry2Body); 
+        //Should only run test if entry2 was not the empty entry 
+        if (entry2Body != ""){ 
+            let entry2BodyAfter; 
+            if (day3Listbefore == 1){
+                entry2BodyAfter = await page.evaluate(()=> { 
+                    let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(1)").shadowRoot.querySelector("#content").innerHTML;
+                    return content; 
+                }); 
+            }
+            else { 
+                entry2BodyAfter = await page.evaluate(()=> { 
+                    let content = document.querySelector("weekly-page").shadowRoot.querySelector("weekly-kanban").shadowRoot.querySelector(".column-container > div:nth-child(1) > div.day.wednesday entry-creator-week").shadowRoot.querySelector("weekly-entry-comp:nth-child(2)").shadowRoot.querySelector("#content").innerHTML;
+                    return content; 
+                }); 
+            }
             expect(entry2Body).toBe(entry2BodyAfter); 
         }
 
