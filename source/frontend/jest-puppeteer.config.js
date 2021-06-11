@@ -8,4 +8,4 @@ module.exports = {
       '--window-size=2000,2000'
     ]
   }
-}
+};
