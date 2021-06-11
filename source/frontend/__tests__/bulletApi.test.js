@@ -45,7 +45,7 @@ test('Test3: Fetch bullet', async () => {
       Authorization: await login('e@gmail.com', 'asd'),
       'Content-Type': 'application/json'
     }
-  };   
+  };
   const date = new Date('04 Jan 2069 00:00:00 PDT');
   date.setDate(date.getDate() + 1);
   let res = await getBulletsByDay(
