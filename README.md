@@ -1,7 +1,7 @@
 # Team 23 - 23andMe
 
 ## Bullet Journal by 23andMe
-You can access our 23andMe Bullet Journal using this [TODO].
+You can access our 23andMe Bullet Journal using [here](https://cse110-23-web.herokuapp.com/)!
 
 ## Project Features
 * User signup
