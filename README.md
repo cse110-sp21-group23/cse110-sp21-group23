@@ -11,7 +11,7 @@ You can access our 23andMe Bullet Journal using this [TODO].
 * Slidable navigation bar
 
 ## Final Project Videos
-- [TODO]
+- [Final video - Public version](https://youtu.be/Salzrti5DCI)
 - [Final video - Private version](https://youtu.be/F7HqybqDJ2w)
 
 ## CI/CD Pipeline Information and Documentation:
@@ -25,7 +25,7 @@ The JsDocs information is [here](https://cse110-sp21-group23.github.io/cse110-sp
 
 The full design documentation of our Bullet Journal Application is under **/specs** folder.
 
-- We have five **architecture decision records (adr)**,  [ADRS](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/specs/adrs).
+- We have five **architecture decision records (ADRS)**,  [ADRS](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/specs/adrs).
 
 - Here is our [pitch document](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/specs/pitch/23andMe_Bullet_Journal_Pitch_Deck.pdf). The pitch document contain the topics of risks and rabbit holes as well as a visual representation of what you are doing in the form of system diagrams and wireframes. Our pitch also have a statement of purpose as well as a section on user personas. 
 
@@ -52,14 +52,7 @@ The **[/source](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/
 We split our code into two, with the [frontend folder](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend)being about the frontend and holds all our different webcomponents while the [server folder](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/server) is the backend, where our server is held.
 
 ## Testing
-We mainly focus on the unit tests, and have some cypress test for the part that we cannot use unit test to test. We spent a lot of time on how to run both unit test and Puppeteer test together and have an integrated test coverage, but it does not allow us to do it, so we have separated test coverages.
-- Unit test (Jest)
-  - TODO  
-   [TODO]()
-
-- Puppeteer
-  - We did small tests for E2E with Puppeteer 
-  [TODO]()
+We utlized the jest and puppeteer framework in order to test our code. We spent a lot of time on both writing and running these tests, which can be found in **[/__tests__]**(https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend/__tests__)
 
 # Contribution
 ## Cloning the repository
