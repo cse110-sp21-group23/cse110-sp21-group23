@@ -3,8 +3,6 @@
 ## Bullet Journal by 23andMe
 You can access our 23andMe Bullet Journal using [here](https://cse110-23-web.herokuapp.com/)!
 ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/dailyView.png)
-![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/weeklyView.png)
-
 
 ## Project Features
 * User signup
@@ -91,3 +89,8 @@ We utlized the jest and puppeteer framework in order to test our code. We spent 
    - Then run in your terminal `npm test ./__tests__/[testname].test.js` with [testname] being the test you want to run
 ## Documentation
    - Here is our [documentation](https://cse110-sp21-group23.github.io/cse110-sp21-group23/)
+
+# Closer Look at our Bullet Journal
+![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/login-page.png)
+![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/weeklyView.png)
+![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/edit-modal-weekly.png)
