@@ -49,10 +49,12 @@ The full design documentation of our Bullet Journal Application is under **/spec
 
 ## Source 
 The **[/source](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source)** folder includes all source code and test code of Bullet Journal Application.\
-We split our code into two, with the [frontend folder](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend)being about the frontend and holds all our different webcomponents while the [server folder](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/server) is the backend, where our server is held.
+We separated our code based on the frontend and backend
+- **[/frontend](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend)** is about the frontend and holds all our different webcomponents 
+- **[/server](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/server)** is the backend, where our server is held.
 
 ## Testing
-We utlized the jest and puppeteer framework in order to test our code. We spent a lot of time on both writing and running these tests, which can be found in **[/__tests__]**(https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend/__tests__)
+We utlized the jest and puppeteer framework in order to test our code. We spent a lot of time on both writing and running these tests, which can be found in **[/__tests__](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/source/frontend/__tests__)**
 
 # Contribution
 ## Cloning the repository
