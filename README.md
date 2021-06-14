@@ -45,7 +45,7 @@ The full design documentation of our Bullet Journal Application is under **/spec
 - The signed contract is included [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/admin/misc)
 - You can see all the meeting notes [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/admin/meetings)
 - Standup meeting records listed [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/admin/standups)
-- All the status video and final project video [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/admin/videos)
+- All the status video are included [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/tree/main/admin/videos)
 - Our Team 23andMe Kanban board [here](https://github.com/cse110-sp21-group23/cse110-sp21-group23/projects/1)
 
 ## Source 
