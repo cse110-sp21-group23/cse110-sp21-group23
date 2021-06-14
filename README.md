@@ -114,3 +114,12 @@ Do one of the following to view the End-User Documentation content:
 5. In this entry editor, you can edit the entry's content, mark a task as finished, edit the entry's type, and delete the entry altogether.
    ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/admin/branding/edit-modal-weekly.png)
 6. Enjoy our bullet journal application!
+
+
+# 23andMe Backend Architecture
+
+Our backend stack is composed of NodeJS server using Express and Postgres. The server can be broken into 3 main modules: Routers, Services and Databases. The Routers act as first point of contact and will call the varying Services depending on the usecase. The Services is in charge of the bussiness logic. It will then call functions from the database modules to perform the appropriate crud operations.  
+ ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/docs/backend_architecture.png)
+ 
+ ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/docs/journal_schema.png)
+ 
