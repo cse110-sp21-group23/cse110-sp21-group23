@@ -25,7 +25,8 @@ This article explains how to get started with working on and contributing to thi
 2. Submit a pull request
    - Once you created and tested your change and you like it, submit a pull request
    - To do that make sure you push your branch and the commit(s) to the repository 
-   - Once you successfully do that, find your branch on the repository, go to it, and submit a pull request for it
+   - After that, find your branch on the repository, go to it, and submit a pull request from your branch to our repository
+   - After review, we may implement your changes!
 ## Running user tests
 1. Install Jest
    - In your terminal, run `npm install --save-dev jest babel-jest @babel/core @babel/preset-env`
