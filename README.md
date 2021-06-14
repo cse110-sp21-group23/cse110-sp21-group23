@@ -121,5 +121,5 @@ Do one of the following to view the End-User Documentation content:
 Our backend stack is composed of NodeJS server using Express and Postgres. The server can be broken into 3 main modules: Routers, Services and Databases. The Routers act as first point of contact and will call the varying Services depending on the usecase. The Services is in charge of the bussiness logic. It will then call functions from the database modules to perform the appropriate crud operations.  
  ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/docs/backend_architecture.png)
  
- ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/docs/journal_schema.png)
+ ![](https://github.com/cse110-sp21-group23/cse110-sp21-group23/blob/main/docs/journal_schema.png) 
  
